@@ -1,10 +1,14 @@
 #include "header.h"
-
+#define ERR_DEFAULT "ERRO "
 void main(int argc, char*argv[]){
 	char str[90];
 	int t, aux, fd_resp, fd; 
 	char fname_users[20]; 
 	USER user_struct;
+	
+	//alterar umask do servidor
+	umask(0000);
+	
 	
 	if(argc != 2) //caso nao seja especificado o nome do ficheiro de usernames/passwords
 	{
@@ -17,9 +21,14 @@ void main(int argc, char*argv[]){
 		strcat(fname_users, ".txt"); //adicionar uma extensão específica
 	}
 	
+	printf(" A abrir servidor (pid:%d)\n",getpid());
 	
 	//criacao do fifo 
-	mkfifo(FIFOSERV,0777);
+	if(mkfifo(FIFOSERV,0777)!=0){
+		perror(ERR_DEFAULT);
+		return;
+	}
+	printf("FIFO Criado\n");
 	if(access(fname_users, F_OK) == 0)
 		{
 		printf("Ficheiro encontrado\n");
@@ -33,6 +42,13 @@ void main(int argc, char*argv[]){
 	}
 	
 	fd=open(FIFOSERV, O_RDWR);//abertura do ficheiro
+	
+	if(fd==-1){
+		perror(ERR_DEFAULT);
+		unlink(FIFOSERV);
+		exit(0);
+	}
+	
 	do{
 	t=read(fd, &user_struct,sizeof(user_struct));
 	if(t==sizeof(user_struct)){
