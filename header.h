@@ -14,6 +14,14 @@
 #define FIFOSERV "server.FIFO"
 #define FIFOCLI "cli%d.FIFO"
 
+#define MAX_CMD 256
+#define MAX_LOGIN 64
+
 typedef struct {
-int algo, pid; 
+	char user_data_fifo[MAX_LOGIN];
+	char user_data_uname[MAX_LOGIN];
+	char user_data_upass[MAX_LOGIN];
+	char user_data_cmd[MAX_CMD];
+	int user_data_order;
+	int algo, pid; 
 }USER;
