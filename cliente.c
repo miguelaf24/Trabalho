@@ -53,16 +53,20 @@ int main(void){
 	user_struct.user_data_order = 0;
 	strcpy(user_struct.user_data_cmd, "login");
 	
+	printf("Enviar...\n");
 	fd_envi = open(FIFOSERV,O_WRONLY);
 	write(fd_envi, &user_struct, sizeof(user_struct));
 	close(fd_envi);
+	printf("Enviado...\n");
 	
 	strcpy(uname_temp, user_struct.user_data_uname);
 	strcpy(upass_temp, user_struct.user_data_upass);
 	
+	printf("Abrir para ler resposta...\n");
 	fd_cli = open(FIFO_CLIENTE, O_RDONLY);
 	read(fd_cli, &user_struct, sizeof(user_struct));
 	close(fd_cli);
+	printf("Resposta recebida...\n");
 	
 	if(strcmp(user_struct.user_data_uname, "OK") == 0 && strcmp(user_struct.user_data_upass, "OK") == 0)
 	{

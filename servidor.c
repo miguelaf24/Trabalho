@@ -475,6 +475,7 @@ void main(int argc, char*argv[]){
 		printf("Ficheiro inexistente. A criar...\n Ficheiro criado\n");
 	}
 	
+	printf("A abrir para leitura do ficheiro...\n");
 	fd=open(FIFOSERV, O_RDWR);//abertura do ficheiro
 	
 	if(fd==-1){
@@ -483,6 +484,7 @@ void main(int argc, char*argv[]){
 		exit(0);
 	}
 	
+	printf("Abrir fifo de leitura...\n");
 	fifo_serv = open(FIFOSERV, O_RDWR | O_NONBLOCK);
 	if(fifo_serv == -1)
 	{
@@ -503,6 +505,7 @@ void main(int argc, char*argv[]){
 		
 		
 		//espera 1ms por alterações no fd de stdin ou no fifo
+		printf("Iniciar Select...\n");
 		fd_return = select(fd+1, &fd_read, NULL, NULL, &timeval);
 		if(fd_return == -1) // ERRO
 			perror(ERR_DEFAULT);
@@ -510,18 +513,24 @@ void main(int argc, char*argv[]){
 		{
 			if(FD_ISSET(0, &fd_read)) //stdin tem dados
 			{
+				printf("Stdin...\n");
 				trata_stdin(fname_users, us_players, &us_players_num, &isGameRunning, game_map); //tratar o input
+				printf("Fim stdin...\n");
 			}
 			if(FD_ISSET(fifo_serv, &fd_read)) //fifo server tem dados
 			{
+				printf("Trata fifo...\n");
 				trata_fifo_server(fifo_serv, us_players, &us_players_num, fname_users, &isGameRunning, game_map); //ler do fifo do servidor	
+				printf("Fim Trata fifo...\n");
 			}
 		}
 		//descriptors a ter em conta (eliminar no fim de cada iteração)
 		FD_CLR(fifo_serv, &fd_read); //fifo server
 		FD_CLR(0, &fd_read); //stdin 
 		//verificar constantemente o estado dos clientes (se continua ligado ou nao)
+		printf("Verificar os clientes conectados...\n");
 		verify_connected_clients(us_players, &us_players_num);
+		printf("Fim verifica...\n");
 		/**/
 	}
 	/*
