@@ -3314,7 +3314,8 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 	//alocar espaço de 1*char e atribuir um valor de string vazia
     if(cmd == NULL)
     {
-        return;
+        cmd = malloc(sizeof(char));
+        cmd = '\0';
     }
     if(arg1 == NULL)
     {
@@ -3326,6 +3327,14 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
         arg2 = malloc(sizeof(char));
 		arg2 = '\0';
     }
+	
+	//caso stdin seja apenas '\n' -> um click em enter
+	//é convertido para \0 e é verificado de seguida
+	//para evitar segmentation fault em strcmp()
+	if(cmd == '\0')
+	{
+		return;
+	}
 	
 	//verificar se o comando é válido
 	if(strcmp(cmd, "add") == 0) //add username password
@@ -3656,8 +3665,11 @@ void trata_fifo_server(int fifo_serv, user_data *us_players, int *us_players_num
 	//	se NAO -> fazer verificação do login
 	if(verifica_registo(us_players, us_players_num, &user_struct_temp) && strcmp(user_struct_temp.user_data_cmd, "login") != 0)
 	{
-		//COMANDOS CLIENTE
-		trata_comando_cliente(&user_struct_temp, us_players, us_players_num, isGameRunning, game_map);	
+		//função que trata comandos vindos de clientes
+		trata_comando_cliente(&user_struct_temp, us_players, us_players_num, isGameRunning, game_map);
+		
+		
+		
 	}
 	else if(verifica_registo(us_players, us_players_num, &user_struct_temp) && strcmp(user_struct_temp.user_data_cmd, "login") == 0)
 	{
@@ -3711,7 +3723,7 @@ void main(int argc, char *argv[])
 	else
 	{
 		strcpy(fname_users, argv[1]); //guardar o nome do ficheiro dos login's
-		strcat(fname_users, ".txt"); //adicionar uma extensão específica
+		strcat(fname_users, ".usr"); //adicionar uma extensão específica
 	}
 	
 	printf(" A abrir servidor (pid:%d)\n", getpid());
@@ -3775,12 +3787,10 @@ void main(int argc, char *argv[])
 		{
 			if(FD_ISSET(0, &fd_read)) //stdin tem dados
 			{
-				//COMANDOS SERVIDOR
 				trata_stdin(fname_users, us_players, &us_players_num, &isGameRunning, game_map); //tratar o input
 			}
 			if(FD_ISSET(fifo_serv, &fd_read)) //fifo server tem dados
 			{
-				//JOGADORES
 				trata_fifo_server(fifo_serv, us_players, &us_players_num, fname_users, &isGameRunning, game_map); //ler do fifo do servidor	
 			}
 		}
