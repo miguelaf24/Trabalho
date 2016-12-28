@@ -39,7 +39,7 @@ void verify_connected_clients(user_data *us_players, int *us_players_num)
 			if(access(us_players[i].user_data_fifo, F_OK) == 0)
 				count_ok++; //OK
 			else
-				us_players[i].user_data_pid = 0; //NOT OK
+				us_players[i].pid = 0; //NOT OK
 				//colocar o pid a 0 como uma referencia para
 				//"este cliente já saiu, apagá-lo de seguida"
 		}
@@ -49,7 +49,7 @@ void verify_connected_clients(user_data *us_players, int *us_players_num)
 		//e reajustar o array
 		for(i=0; i < *us_players_num; i++)
 		{
-			if(us_players[i].user_data_pid == 0)
+			if(us_players[i].pid == 0)
 			{//cliente que já saiu
 				printf(ASC_C_GREEN " - Utilizador %s desligou-se..." ASC_C_NORMAL, us_players[i].user_data_uname);
 				
