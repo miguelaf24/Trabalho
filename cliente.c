@@ -17,7 +17,6 @@ int FIFO_SERVIDOR_CORRER()
 int main(void){
 	char FIFO_CLIENTE[90];
 	int fd_envi, fd_cli,t,fd_resp,resp; 
-	USER user_struct; 
 	char uname_temp[MAX_LOGIN], upass_temp[MAX_LOGIN];
 	//verificacao do servidor se esta a correr atraves da funcao 
 	if (FIFO_SERVIDOR_CORRER()!=0){
@@ -28,10 +27,10 @@ int main(void){
 		printf("Antes de iniciar o cliente e necessario colocar o servidor a correr!\n "); 
 		exit(0); 
 	}
-	user_struct.pid=getpid();//obtem o pid do cliente 
+	user_data.pid=getpid();//obtem o pid do cliente 
 	
 	//criacao do fifo para o cliente 
-	sprintf(FIFO_CLIENTE,FIFOCLI,user_struct.pid); 
+	sprintf(FIFO_CLIENTE,FIFOCLI,user_data.pid); 
 	if(mkfifo(FIFO_CLIENTE,0777)!=0){
 		//sai do programa porque o fifo com o pid anteriormente obtido já existe
 		return 0; 
@@ -40,49 +39,49 @@ int main(void){
 	
 	printf("Username: ");
 	fflush(stdin);
-	fgets(user_struct.user_data_username, sizeof(user_struct.user_data_username),stdin);
-	user_struct.user_data_username[strlen(user_struct.user_data_username) -1]='\0';
+	fgets(user_data.user_data_uname, sizeof(user_data.user_data_uname),stdin);
+	user_data.user_data_uname[strlen(user_data.user_data_uname) -1]='\0';
 	
 	printf("Password: ");
 	fflush(stdin);
-	fgets(user_struct.user_data_upass, sizeof(user_struct.user_data_upass),stdin);
-	user_struct.user_data_upass[strlen(user_struct.user_data_upass) -1]='\0';
+	fgets(user_data.user_data_upass, sizeof(user_data.user_data_upass),stdin);
+	user_data.user_data_upass[strlen(user_data.user_data_upass) -1]='\0';
 	
-	user_struct.pid = getpid();
-	strcpy(user_struct.user_data_fifo, FIFO_CLIENTE);
-	user_struct.user_data_order = 0;
-	strcpy(user_struct.user_data_cmd, "login");
+	user_data.pid = getpid();
+	strcpy(user_data.user_data_fifo, FIFO_CLIENTE);
+	user_data.user_data_order = 0;
+	strcpy(user_data.user_data_cmd, "login");
 	
 	fd_envi = open(FIFOSERV,O_WRONLY);
-	write(fd_envi, &user_struct, sizeof(user_struct));
+	write(fd_envi, &user_data, sizeof(user_data));
 	close(fd_envi);
 	
-	strcpy(uname_temp, user_struct.user_data_uname);
-	strcpy(upass_temp, user_struct.user_data_upass);
+	strcpy(uname_temp, user_data.user_data_uname);
+	strcpy(upass_temp, user_data.user_data_upass);
 	
 	fd_cli = open(FIFO_CLIENTE, O_RDONLY);
-	read(fd_cli, &user_struct, sizeof(user_struct));
-	close(fifo_cli);
+	read(fd_cli, &user_data, sizeof(user_data));
+	close(fd_cli);
 	
-	if(strcmp(user_struct.user_data_uname, "OK") == 0 && strcmp(user_struct.user_data_upass, "OK") == 0)
+	if(strcmp(user_data.user_data_uname, "OK") == 0 && strcmp(user_data.user_data_upass, "OK") == 0)
 	{
 		printf(" - Login aceite, ligado ao servidor\n");
 		sleep(1);
 		
-		strcpy(user_struct.user_data_uname, uname_temp);
-		strcpy(user_struct.user_data_upass, upass_temp);
+		strcpy(user_data.user_data_uname, uname_temp);
+		strcpy(user_data.user_data_upass, upass_temp);
 		
-		//start_game(&user_struct);
+		//start_game(&user_data);
 	}
-	else if(strcmp(user_struct.user_data_uname, "FAIL") == 0 && strcmp(user_struct.user_data_upass, "FAIL") == 0)
+	else if(strcmp(user_data.user_data_uname, "FAIL") == 0 && strcmp(user_data.user_data_upass, "FAIL") == 0)
 	{
 		printf(" - Login invalido, a sair...\n");
 	}
-	else if(strcmp(user_struct.user_data_uname, "EXISTS") == 0 && strcmp(user_struct.user_data_upass, "EXISTS") == 0)
+	else if(strcmp(user_data.user_data_uname, "EXISTS") == 0 && strcmp(user_data.user_data_upass, "EXISTS") == 0)
 	{
 		printf(" - Login ja registado, a sair...\n");
 	}
-	else if(strcmp(user_struct.user_data_uname, "MAX") == 0 && strcmp(user_struct.user_data_upass, "MAX") == 0)
+	else if(strcmp(user_data.user_data_uname, "MAX") == 0 && strcmp(user_data.user_data_upass, "MAX") == 0)
 	{
 		printf(" - Servidor cheio, a sair...\n");
 	}
@@ -97,9 +96,9 @@ int main(void){
 	fd_envi=open(FIFOSERV,O_WRONLY); //abertura do ficheiro para comunicação com o servidor
 	do{
 		printf("Vou mandar algo para o servidor\n"); 
-		scanf("%d", &user_struct.algo); 
+		scanf("%d", &user_data.algo); 
 		//escrita para o servidor 
-		t=write(fd_envi,&user_struct,sizeof(user_struct)); 
+		t=write(fd_envi,&user_data,sizeof(user_data)); 
 		printf("Mandei um pedido para o servidor de %d bytes\n", t); 
 
 		//receber a resposta por parte do servidor 
@@ -107,7 +106,7 @@ int main(void){
 		t=read(fd_resp, &resp,sizeof(resp));
 		close(fd_resp); 
 		printf("Recebi a resposta do servidor com o seguinte conteudo %d %d\n", resp, t); 
-	}while(user_struct.algo!=0);
+	}while(user_data.algo!=0);
 	
 	close(fd_envi); //fecho do ficheiro para comunicação com o servidor
 	unlink(FIFO_CLIENTE); 

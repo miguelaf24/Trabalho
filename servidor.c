@@ -1,6 +1,17 @@
 #include "header.h"
 #define ERR_DEFAULT "ERRO "
 
+typedef struct utilizador user_data;
+
+void terminate()
+{
+	//remover o fifo do servidor
+	unlink(FSERV);
+	
+	exit(0);
+}
+
+
 void verify_connected_clients(user_data *us_players, int *us_players_num)
 {
 	//sair logo caso nao haja jogadores ligados
@@ -412,13 +423,16 @@ void faz_login(user_data *us_players, int *us_players_num, user_data *us_temp)
 void main(int argc, char*argv[]){
 	char str[90];
 	int t, aux, fd_resp, fd; 
+	int fifo_serv;
 	char fname_users[20]; 
-	USER user_struct;
 	user_data us_players[10];//array de estruturas de jogadores
 	int us_players_num = 0;
 	char game_map[MAP_X][MAP_Y];
 	//alterar umask do servidor
 	umask(0000);
+	int isGameRunning = 0;
+	
+	int fd_return;
 	
 	fd_set fd_read;
 	struct timeval timeval;//timeout para o select()
@@ -462,6 +476,13 @@ void main(int argc, char*argv[]){
 		exit(0);
 	}
 	
+	fifo_serv = open(FSERV, O_RDWR | O_NONBLOCK);
+	if(fifo_serv == -1)
+	{
+		perror(ERR_DEFAULT);
+		terminate();
+	}
+	
 	while(1){
 		
 		//////////////////select//////////////////
@@ -498,19 +519,19 @@ void main(int argc, char*argv[]){
 	}
 	/*
 	do{
-	t=read(fd, &user_struct,sizeof(user_struct));
-	if(t==sizeof(user_struct)){
+	t=read(fd, &user_data,sizeof(user_data));
+	if(t==sizeof(user_data)){
 		printf("Chegou um pedido(%d bytes)",t);
-		printf("PEDIDO %d %d\n",user_struct.algo,user_struct.pid); 
+		printf("PEDIDO %d %d\n",user_data.algo,user_data.pid); 
 		aux = 999; 
-		sprintf(str,FIFOCLI,user_struct.pid); 
+		sprintf(str,FIFOCLI,user_data.pid); 
 		//printf("%s",str); 
 		fd_resp=open(str,O_WRONLY); 
 		t=write(fd_resp,&aux,sizeof(aux)); 
 		close(fd_resp); 
 		printf("A resposta foi enviada %d bytes\n", t); 
 	}
-	}while(user_struct.algo!=0); */
+	}while(user_data.algo!=0); */
 	close(fd); 
 	unlink(FIFOSERV); 
 	printf("A terminar...\n"); 

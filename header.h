@@ -20,7 +20,8 @@
 #define MAP_X			28//56
 #define MAP_Y			31//33
 
-typedef struct {
+typedef struct utilizador user_data;
+struct utilizador{
 	char user_data_fifo[MAX_LOGIN];
 	char user_data_uname[MAX_LOGIN];
 	char user_data_upass[MAX_LOGIN];
@@ -28,4 +29,4 @@ typedef struct {
 	int user_data_order;
 	int user_data_ingame;
 	int algo, pid; 
-}USER;
+};
