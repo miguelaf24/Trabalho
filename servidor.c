@@ -14,7 +14,7 @@ typedef struct utilizador user_data;
 void terminate()
 {
 	//remover o fifo do servidor
-	unlink(FSERV);
+	unlink(FIFOSERV);
 	
 	exit(0);
 }
@@ -484,7 +484,7 @@ void main(int argc, char*argv[]){
 		exit(0);
 	}
 	
-	fifo_serv = open(FSERV, O_RDWR | O_NONBLOCK);
+	fifo_serv = open(FIFOSERV, O_RDWR | O_NONBLOCK);
 	if(fifo_serv == -1)
 	{
 		perror(ERR_DEFAULT);

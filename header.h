@@ -17,6 +17,8 @@
 #define MAX_CMD 256
 #define MAX_LOGIN 64
 
+#define MAX_JOG 20
+
 #define MAP_X			28//56
 #define MAP_Y			31//33
 
