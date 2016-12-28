@@ -3751,12 +3751,12 @@ void main(int argc, char *argv[])
 	//garantida a existencia do ficheiro de login's neste ponto
 	
 	//criar o mapa original
-	create_game_map(game_map, map);
+	//create_game_map(game_map, map);
 	
 	sleep(2);
 	limpa_consola();
 	
-	fifo_serv = open(FSERV, O_RDWR | O_NONBLOCK);
+	fifo_serv = open(FSERV, O_RDWR);
 	if(fifo_serv == -1)
 	{
 		perror(ERR_DEFAULT);
