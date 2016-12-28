@@ -74,7 +74,6 @@ void verify_connected_clients(user_data *us_players, int *us_players_num)
 			//else..continue
 		}
 		
-		*/
 	}//fim while
 }
 
