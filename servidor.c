@@ -1,6 +1,14 @@
 #include "header.h"
 #define ERR_DEFAULT "ERRO "
 
+//ASCII colour escapes
+#define ASC_C_NORMAL	"\x1b[0m"
+#define ASC_C_RED		"\x1b[31m"
+#define ASC_C_GREEN		"\x1b[32m"
+#define ASC_C_YELLOW	"\x1b[33m"
+#define ASC_C_BLUE		"\x1b[34m"
+#define ASC_C_CYAN		"\x1b[36m"
+
 typedef struct utilizador user_data;
 
 void terminate()
