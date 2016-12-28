@@ -463,6 +463,8 @@ void main(int argc, char*argv[]){
 		return;
 	}
 	printf("FIFO Criado\n");
+	
+	
 	if(access(fname_users, F_OK) == 0)
 		{
 		printf("Ficheiro encontrado\n");
@@ -475,8 +477,7 @@ void main(int argc, char*argv[]){
 		printf("Ficheiro inexistente. A criar...\n Ficheiro criado\n");
 	}
 	
-	printf("A abrir para leitura do ficheiro...\n");
-	fd=open(FIFOSERV, O_RDWR);//abertura do ficheiro
+	fd=open(FIFOSERV, O_RDWR | O_NONBLOCK);//abertura do ficheiro
 	if(fd==-1){
 		perror(ERR_DEFAULT);
 		terminate();
