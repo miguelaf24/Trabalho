@@ -505,7 +505,7 @@ void main(int argc, char*argv[]){
 		
 		
 		//espera 1ms por alterações no fd de stdin ou no fifo
-		printf("Iniciar Select...\n");
+		//printf("Iniciar Select...\n");
 		fd_return = select(fd+1, &fd_read, NULL, NULL, &timeval);
 		if(fd_return == -1) // ERRO
 			perror(ERR_DEFAULT);
@@ -528,9 +528,9 @@ void main(int argc, char*argv[]){
 		FD_CLR(fifo_serv, &fd_read); //fifo server
 		FD_CLR(0, &fd_read); //stdin 
 		//verificar constantemente o estado dos clientes (se continua ligado ou nao)
-		printf("Verificar os clientes conectados...\n");
+		//printf("Verificar os clientes conectados...\n");
 		verify_connected_clients(us_players, &us_players_num);
-		printf("Fim verifica...\n");
+		//printf("Fim verifica...\n");
 		/**/
 	}
 	/*
