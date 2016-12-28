@@ -17,11 +17,15 @@
 #define MAX_CMD 256
 #define MAX_LOGIN 64
 
+#define MAP_X			28//56
+#define MAP_Y			31//33
+
 typedef struct {
 	char user_data_fifo[MAX_LOGIN];
 	char user_data_uname[MAX_LOGIN];
 	char user_data_upass[MAX_LOGIN];
 	char user_data_cmd[MAX_CMD];
 	int user_data_order;
+	int user_data_ingame;
 	int algo, pid; 
 }USER;
