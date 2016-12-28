@@ -477,23 +477,13 @@ void main(int argc, char*argv[]){
 	
 	printf("A abrir para leitura do ficheiro...\n");
 	fd=open(FIFOSERV, O_RDWR);//abertura do ficheiro
-	
 	if(fd==-1){
-		perror(ERR_DEFAULT);
-		unlink(FIFOSERV);
-		exit(0);
-	}
-	
-	printf("Abrir fifo de leitura...\n");
-	fifo_serv = open(FIFOSERV, O_RDWR | O_NONBLOCK);
-	if(fifo_serv == -1)
-	{
 		perror(ERR_DEFAULT);
 		terminate();
 	}
 	
-	while(1){
-		
+	while(1)
+	{
 		//////////////////select//////////////////
 		timeval.tv_sec = 0;		
 		timeval.tv_usec = 1000;	//1ms
@@ -505,7 +495,6 @@ void main(int argc, char*argv[]){
 		
 		
 		//espera 1ms por alterações no fd de stdin ou no fifo
-		//printf("Iniciar Select...\n");
 		fd_return = select(fd+1, &fd_read, NULL, NULL, &timeval);
 		if(fd_return == -1) // ERRO
 			perror(ERR_DEFAULT);
@@ -528,10 +517,7 @@ void main(int argc, char*argv[]){
 		FD_CLR(fifo_serv, &fd_read); //fifo server
 		FD_CLR(0, &fd_read); //stdin 
 		//verificar constantemente o estado dos clientes (se continua ligado ou nao)
-		//printf("Verificar os clientes conectados...\n");
 		verify_connected_clients(us_players, &us_players_num);
-		//printf("Fim verifica...\n");
-		/**/
 	}
 	/*
 	do{
