@@ -512,10 +512,10 @@ void start_game(user_data *user_struct)
 				
 			case KEY_RIGHT:
 				if(!isPlaying){
-					if(choice >= 1 && choise<=9)
-						choise +=9;
-					else if(choice >= 10 && choise<=18)
-						choise -=9;
+					if(choice >= 1 && choice<=9)
+						choice +=9;
+					else if(choice >= 10 && choice<=18)
+						choice -=9;
 				}
 				else
 				{
@@ -526,10 +526,10 @@ void start_game(user_data *user_struct)
 				
 			case KEY_LEFT:
 				if(!isPlaying){
-					if(choice >= 1 && choise<=9)
-						choise +=9;
-					else if(choice >= 10 && choise<=18)
-						choise -=9;
+					if(choice >= 1 && choice<=9)
+						choice +=9;
+					else if(choice >= 10 && choice<=18)
+						choice -=9;
 				}
 				else
 				{
