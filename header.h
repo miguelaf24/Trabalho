@@ -24,8 +24,8 @@
 #define TERM_MAX_X		60
 #define TERM_MAX_Y		35
 //mapa do pacman
-#define MAP_X			28//56
-#define MAP_Y			31//33
+#define MAP_X			51//56
+#define MAP_Y			21//33
 /////////////////////////
 #define C_SUP_ESQ_X		2
 #define C_SUP_ESQ_y		1
@@ -51,6 +51,8 @@ struct utilizador
 	char user_data_cmd[MAX_CMD]; //contém as ações do cliente (key presses, etc)
 	//ou simplesmente "login" na primeira ligação ao servidor
 	int user_data_ingame; // 1/0
+	
+	int escolha_pos[18];
 	//mapa do jogo
 	char user_data_map[MAP_X][MAP_Y];
 	//de acordo com a atribuição do servidor

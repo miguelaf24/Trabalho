@@ -39,6 +39,8 @@ int old_xy_ghost4[2] = {0, 0};
 int pos_xy_A[2] = {0, 0};
 int pos_xy_B[2] = {0, 0};
 
+int pos_ocupadas[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
 //número total de casas com comida
 int count_total_food = 0;
 //total casas 'O' já comidas
@@ -213,6 +215,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	int fifo_cli;
 	char msgToSend[MAX_CMD]; //mensagem a enviar de volta
 	
+	
 	if(strcmp(user_struct_temp->user_data_cmd, "PLAY") == 0) //comando PLAY vindo dum cliente
 	{
 		//atualizar as posições do pacman e dos fantasmas
@@ -223,40 +226,122 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		//else, o cliente acabou de criar um novo jogo (será o pacman)
 		if(*isGameRunning) //jogo a correr
 		{
-			strcpy(msgToSend, "gameUp");
-			playerOrder++;
-			for(i = 0; i < *us_players_num; i++)
-			{
-				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			if(pos_ocupadas[user_struct_temp->user_data_order - 1]==0){
+				strcpy(msgToSend, "gameUp");
+				playerOrder++;//incrementa numero de jogadores
+				for(i = 0; i < *us_players_num; i++)
 				{
-					switch(playerOrder)
+					if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
 					{
-						case 2:
-							us_players[i].posx = old_xy_ghost1[0];
-							us_players[i].posy = old_xy_ghost1[1];
-							break;
-						
-						case 3:
-							us_players[i].posx = old_xy_ghost2[0];
-							us_players[i].posy = old_xy_ghost2[1];
-							break;
-						
-						case 4:
-							us_players[i].posx = old_xy_ghost3[0];
-							us_players[i].posy = old_xy_ghost3[1];
-							break;
-						
-						case 5:
-							us_players[i].posx = old_xy_ghost4[0];
-							us_players[i].posy = old_xy_ghost4[1];
-							break;
+						switch(user_struct_temp->user_data_order)
+						{
+							case 1:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+								
+							case 2:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+							
+							case 3:
+								us_players[i].posx = old_xy_ghost2[0];
+								us_players[i].posy = old_xy_ghost2[1];
+								break;
+							
+							case 4:
+								us_players[i].posx = old_xy_ghost3[0];
+								us_players[i].posy = old_xy_ghost3[1];
+								break;
+								
+							case 5:
+								us_players[i].posx = old_xy_ghost3[0];
+								us_players[i].posy = old_xy_ghost3[1];
+								break;
+								
+							case 6:
+								us_players[i].posx = old_xy_ghost4[0];
+								us_players[i].posy = old_xy_ghost4[1];
+								break;
+								
+							case 7:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+								
+							case 8:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+								
+							case 9:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+								
+							case 10:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+								
+							case 11:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+								
+							case 12:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+							
+							case 13:
+								us_players[i].posx = old_xy_ghost2[0];
+								us_players[i].posy = old_xy_ghost2[1];
+								break;
+							
+							case 14:
+								us_players[i].posx = old_xy_ghost3[0];
+								us_players[i].posy = old_xy_ghost3[1];
+								break;
+							
+							case 15:
+								us_players[i].posx = old_xy_ghost4[0];
+								us_players[i].posy = old_xy_ghost4[1];
+								break;
+							case 16:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+								
+							case 17:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+								
+							case 18:
+								us_players[i].posx = old_xy_ghost1[0];
+								us_players[i].posy = old_xy_ghost1[1];
+								break;
+						}
+						us_players[i].user_data_order = user_data_order; //posição do jogador
+						us_players[i].ghosts = 0;
+						us_players[i].food = 0;
+						us_players[i].edible = 0;
+						us_players[i].user_data_ingame = 1;
 					}
-					us_players[i].user_data_order = playerOrder; //fantasma
-					us_players[i].ghosts = 0;
-					us_players[i].food = 0;
-					us_players[i].edible = 0;
-					us_players[i].user_data_ingame = 1;
 				}
+			}
+			else{
+				for(i = 0; i < *us_players_num; i++)
+				{
+					if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+					{
+						us_players[i].user_data_order=0;
+						for(j =0;j<18;j++)
+							us_players[i].escolha_pos[j] = pos_ocupadas[j];
+					}
+					strcpy(msgToSend, "gameUp");
 			}
 		}
 		else
@@ -265,13 +350,14 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			strcpy(msgToSend, "gameUp");
 			//encontrar o jogador que criou o jogo
 			//e colocar lhe user_data_order a 1 (pacman)
-			playerOrder = 1;
-			pacman_lives = 3;
+			playerOrder = 1;//numero de jogadores (inicialmente a 1)
+			//pacman_lives = 3;
+			pos_ocupadas[user_struct_temp->user_data_order - 1] = 1;
 			for(i = 0; i < *us_players_num; i++)
 			{
 				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
 				{
-					us_players[i].user_data_order = playerOrder; //pacman
+					us_players[i].user_data_order = user_struct_temp->user_data_order; //pacman
 					us_players[i].posx = init_xy_pacman[0];
 					us_players[i].posy = init_xy_pacman[1];
 					us_players[i].ghosts = 0;
@@ -3579,6 +3665,7 @@ void falhou_login(user_data *us_players, int *us_players_num, user_data *us_temp
 //função que completa o login
 void faz_login(user_data *us_players, int *us_players_num, user_data *us_temp)
 {
+	int i;
 	if(*us_players_num == MAX_JOG) //numero de jogadores no maximo
 	{
 		falhou_login(us_players, us_players_num, us_temp, 0);
@@ -3607,6 +3694,8 @@ void faz_login(user_data *us_players, int *us_players_num, user_data *us_temp)
 	//colocar OK nos 2 campos
 	strcpy(us_temp->user_data_uname, "OK");
 	strcpy(us_temp->user_data_upass, "OK");
+	for(i =0;i<18;i++)
+		us_temp->escolha_pos[i] = pos_ocupadas[i];
 }
 
 //função que verifica o login pedido (se está registado no ficheiro de usernames:passwords)

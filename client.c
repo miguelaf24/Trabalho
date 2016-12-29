@@ -248,6 +248,11 @@ void print_menu(WINDOW * w, int c)
 			mvwprintw(w, 11, 17, "9");
 			wattroff(w, A_REVERSE); 
 			break;
+		case 19:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 13, 10, "SAIR");
+			wattroff(w, A_REVERSE); 
+			break;
 	}
 	wrefresh(w);
 }
@@ -424,7 +429,7 @@ void start_game(user_data *user_struct)
 	else
 		mvprintw(2, 1, "Nao existe jogo a decorrer");
 	refresh();
-	print_menu_limit(wmenu, 40, 20);
+	print_menu_limit(wmenu, 25, 18);
 
 	while(1)
 	{
@@ -459,7 +464,7 @@ void start_game(user_data *user_struct)
 					else
 						mvprintw(2, 1, "Nao existe jogo a decorrer");
 					refresh();
-					print_menu_limit(wmenu, 20, 8);
+					print_menu_limit(wmenu, 25, 18);
 					print_menu(wmenu, choice);
 					wrefresh(wmenu);
 				}
@@ -562,12 +567,20 @@ void start_game(user_data *user_struct)
 			case 10: //ENTER
 				if(!isPlaying)
 				{
-					if(choice == 1) //JOGAR
+					if(choice >= 1 && choice<=18) //JOGAR
 					{
 						//começar o jogo
+						/*char *msg, *strchoice, *cmdenv = "PLAY ";
+						int length = snprintf( NULL, 0, "%d", choice );
+						*strchoice = malloc( length + 1 );
+						snprintf( strchoice, length + 1, "%d", choice );
+						*msg = malloc(strlen(cmdenv)+strlen(strchoice)+1);
+						strcpy(msg, cmdenv);
+						strcat(msg, strchoice);*/
+						user_struct->user_data_order=choice;
 						enviar_mensagem_server(user_struct, "PLAY");
 					}
-					else if(choice == 2) //SAIR
+					else if(choice == 19) //SAIR
 					{
 						endwin();
 						terminate(user_struct->user_data_fifo);
