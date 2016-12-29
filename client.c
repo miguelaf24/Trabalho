@@ -122,7 +122,7 @@ void print_menu_limit(WINDOW * w, int dim_x, int dim_y)
 		mvwaddch(w, i, dim_x-1, 97 | A_ALTCHARSET);
 	}
 	wattron(w, A_REVERSE); 
-	mvwprintw(w, dim_y-1, 7, "PACMAN");
+	mvwprintw(w, 0, dim_x/2 -5, "Soccer ISEC");
 	wattroff(w, A_REVERSE); 
 	
 }

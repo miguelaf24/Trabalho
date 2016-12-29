@@ -3664,15 +3664,12 @@ void trata_fifo_server(int fifo_serv, user_data *us_players, int *us_players_num
 	//	se SIM -> verificar que informações tráz
 	//	se NAO -> fazer verificação do login
 	if(verifica_registo(us_players, us_players_num, &user_struct_temp) && strcmp(user_struct_temp.user_data_cmd, "login") != 0)
-	{
-		//função que trata comandos vindos de clientes
+	{	//JOGO
+		//COMANDOS CLIENTES
 		trata_comando_cliente(&user_struct_temp, us_players, us_players_num, isGameRunning, game_map);
-		
-		
-		
 	}
 	else if(verifica_registo(us_players, us_players_num, &user_struct_temp) && strcmp(user_struct_temp.user_data_cmd, "login") == 0)
-	{
+	{	//ERRO LOGIN
 		//caso uname:passwd usados já estejam ligados
 		//mas o cliente que enviou, pretende fazer login -> uname já está ligado
 		falhou_login(us_players, us_players_num, &user_struct_temp, 2);
@@ -3681,7 +3678,7 @@ void trata_fifo_server(int fifo_serv, user_data *us_players, int *us_players_num
 		write(fifo_cli_temp, &user_struct_temp, sizeof(user_struct_temp));
 		close(fifo_cli_temp);
 	}
-	else //verificar login
+	else //LOGIN
 	{
 		verifica_login(us_players, us_players_num, &user_struct_temp, fname_users);
 	}
@@ -3787,10 +3784,12 @@ void main(int argc, char *argv[])
 		{
 			if(FD_ISSET(0, &fd_read)) //stdin tem dados
 			{
+				//COMANDOS SERVIDOR
 				trata_stdin(fname_users, us_players, &us_players_num, &isGameRunning, game_map); //tratar o input
 			}
 			if(FD_ISSET(fifo_serv, &fd_read)) //fifo server tem dados
 			{
+				//DADOS JOGADORES
 				trata_fifo_server(fifo_serv, us_players, &us_players_num, fname_users, &isGameRunning, game_map); //ler do fifo do servidor	
 			}
 		}
