@@ -353,6 +353,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			//e colocar lhe user_data_order a 1 (pacman)
 			playerOrder = 1;//numero de jogadores (inicialmente a 1)
 			//pacman_lives = 3;
+			printf(ASC_C_GREEN " - Utilizador %s order %d..." ASC_C_NORMAL, us_players[i].user_data_uname, user_struct_temp->user_data_order);
 			pos_ocupadas[user_struct_temp->user_data_order - 1] = 1;
 			for(i = 0; i < *us_players_num; i++)
 			{
