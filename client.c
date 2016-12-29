@@ -497,7 +497,7 @@ void start_game(user_data *user_struct)
 				if(!isPlaying)
 				{
 					if(choice == 9)
-						choise =19;
+						choice =19;
 					else if(choice == 19)
 						choice = 1;
 					else
