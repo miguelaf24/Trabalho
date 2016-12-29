@@ -470,7 +470,11 @@ void start_game(user_data *user_struct)
 				}
 				else
 				{//se estiver a jogar e recebeu alguma mensagem do servidor
-					print_game_map(user_struct, wgame);
+					//print_game_map(user_struct, wgame);
+					clear();
+					mvprintw(1, 1, "User: %s", user_struct->user_data_uname);
+					if(isGameRunning)
+						mvprintw(2, 1, "Jogo a decorrer");
 				}
 			}
 		}
