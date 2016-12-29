@@ -131,19 +131,41 @@ void print_menu_limit(WINDOW * w, int dim_x, int dim_y)
 void print_menu(WINDOW * w, int c)
 {
 	
-	mvwprintw(w, 2, 7, "JOGAR!");
-	mvwprintw(w, 4, 8, "SAIR");
+	
+	mvwprintw(w, 2, 5, "VERDE");
+	mvwprintw(w, 3, 7, "0");
+	mvwprintw(w, 4, 7, "1");
+	mvwprintw(w, 5, 7, "2");
+	mvwprintw(w, 6, 7, "3");
+	mvwprintw(w, 7, 7, "4");
+	mvwprintw(w, 8, 7, "6");
+	mvwprintw(w, 9, 7, "7");
+	mvwprintw(w, 10, 7, "8");
+	mvwprintw(w, 11, 7, "9");
+	
+	mvwprintw(w, 2, 13, "VERMELHO");
+	mvwprintw(w, 3, 17, "0");
+	mvwprintw(w, 4, 17, "1");
+	mvwprintw(w, 5, 17, "2");
+	mvwprintw(w, 6, 17, "3");
+	mvwprintw(w, 7, 17, "4");
+	mvwprintw(w, 8, 17, "6");
+	mvwprintw(w, 9, 17, "7");
+	mvwprintw(w, 10, 17, "8");
+	mvwprintw(w, 11, 17, "9");
+	
+	mvwprintw(w, 13, 10, "SAIR");
 	
 	switch(c)
 	{
 		case 1:
 			wattron(w, A_REVERSE); 
-			mvwprintw(w, 2, 7, "JOGAR!");
+			mvwprintw(w, 3, 7, "0");
 			wattroff(w, A_REVERSE); 
 			break;
 		case 2:
 			wattron(w, A_REVERSE); 
-			mvwprintw(w, 4, 8, "SAIR");
+			mvwprintw(w, 4, 7, "1");
 			wattroff(w, A_REVERSE); 
 			break;
 	}
@@ -310,7 +332,7 @@ void start_game(user_data *user_struct)
 	//mostrar menu inicial (está atento a key presses e ao proprio fifo)
 	resizeterm(TERM_MAX_Y, TERM_MAX_X); //redimensionar o terminal
 	
-	wmenu = newwin(8, 20, 6, 10);
+	wmenu = newwin(20, 40, 6, 10);
 	keypad(wmenu, TRUE);
 	wgame = newwin(MAP_Y, MAP_X, 1, 2);
 	keypad(wgame, TRUE);
@@ -322,7 +344,7 @@ void start_game(user_data *user_struct)
 	else
 		mvprintw(2, 1, "Nao existe jogo a decorrer");
 	refresh();
-	print_menu_limit(wmenu, 20, 8);
+	print_menu_limit(wmenu, 40, 20);
 
 	while(1)
 	{
