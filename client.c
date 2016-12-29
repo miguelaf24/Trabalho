@@ -168,6 +168,86 @@ void print_menu(WINDOW * w, int c)
 			mvwprintw(w, 4, 7, "1");
 			wattroff(w, A_REVERSE); 
 			break;
+		case 3:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 5, 7, "2");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 4:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 6, 7, "3");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 5:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 7, 7, "4");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 6:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 8, 7, "6");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 7:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 9, 7, "7");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 8:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 10, 7, "8");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 9:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 11, 7, "9");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 10:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 3, 17, "0");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 11:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 4, 17, "1");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 12:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 5, 17, "2");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 13:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 6, 17, "3");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 14:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 7, 17, "4");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 15:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 8, 17, "6");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 16:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 9, 17, "7");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 17:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 10, 17, "8");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 18:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 11, 17, "9");
+			wattroff(w, A_REVERSE); 
+			break;
 	}
 	wrefresh(w);
 }
@@ -332,7 +412,7 @@ void start_game(user_data *user_struct)
 	//mostrar menu inicial (está atento a key presses e ao proprio fifo)
 	resizeterm(TERM_MAX_Y, TERM_MAX_X); //redimensionar o terminal
 	
-	wmenu = newwin(20, 40, 6, 10);
+	wmenu = newwin(18, 25, 6, 10);
 	keypad(wmenu, TRUE);
 	wgame = newwin(MAP_Y, MAP_X, 1, 2);
 	keypad(wgame, TRUE);
@@ -399,8 +479,10 @@ void start_game(user_data *user_struct)
 			case KEY_UP:
 				if(!isPlaying)
 				{
-					if(choice == 1)
-						choice = 2;
+					if(choice == 10)
+						choice = 19;
+					else if(choice == 1)
+						choice = 19;
 					else
 						choice --;
 				}
@@ -414,7 +496,9 @@ void start_game(user_data *user_struct)
 			case KEY_DOWN:
 				if(!isPlaying)
 				{
-					if(choice == 2)
+					if(choice == 9)
+						choise =19;
+					else if(choice == 19)
 						choice = 1;
 					else
 						choice ++;
@@ -427,7 +511,13 @@ void start_game(user_data *user_struct)
 				break;
 				
 			case KEY_RIGHT:
-				if(isPlaying)
+				if(!isPlaying){
+					if(choice >= 1 && choise<=9)
+						choise +=9;
+					else if(choice >= 10 && choise<=18)
+						choise -=9;
+				}
+				else
 				{
 					//enviar KEYRIGHT para server
 					enviar_mensagem_server(user_struct, "KEYRIGHT");
@@ -435,7 +525,13 @@ void start_game(user_data *user_struct)
 				break;
 				
 			case KEY_LEFT:
-				if(isPlaying)
+				if(!isPlaying){
+					if(choice >= 1 && choise<=9)
+						choise +=9;
+					else if(choice >= 10 && choise<=18)
+						choise -=9;
+				}
+				else
 				{
 					//enviar KEYLEFT para server
 					enviar_mensagem_server(user_struct, "KEYLEFT");
