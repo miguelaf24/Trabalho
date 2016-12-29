@@ -324,7 +324,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 								us_players[i].posy = old_xy_ghost1[1];
 								break;
 						}
-						us_players[i].user_data_order = user_data_order; //posição do jogador
+						us_players[i].user_data_order = user_struct_temp->user_data_order; //posição do jogador
 						us_players[i].ghosts = 0;
 						us_players[i].food = 0;
 						us_players[i].edible = 0;
@@ -342,6 +342,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 							us_players[i].escolha_pos[j] = pos_ocupadas[j];
 					}
 					strcpy(msgToSend, "gameUp");
+				}
 			}
 		}
 		else
