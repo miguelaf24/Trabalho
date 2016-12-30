@@ -220,12 +220,12 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	if(strcmp(user_struct_temp->user_data_cmd, "PLAY") == 0) //comando PLAY vindo dum cliente
 	{
 		//atualizar as posições do pacman e dos fantasmas
-		update_pos(game_map);
+		//update_pos(game_map);
 		
 		//se já estiver um jogo a correr
 		//juntar o cliente em questão ao jogo
 		//else, o cliente acabou de criar um novo jogo (será o pacman)
-		printf(ASC_C_RED " - Entrei Utilizador %s order %d..." ASC_C_NORMAL, us_players[i].user_data_uname, user_struct_temp->user_data_order);
+		printf(ASC_C_RED " - Entrei...\n" ASC_C_NORMAL);
 		if(*isGameRunning) //jogo a correr
 		{
 			if(pos_ocupadas[user_struct_temp->user_data_order - 1]==0){
