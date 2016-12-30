@@ -225,7 +225,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		//se já estiver um jogo a correr
 		//juntar o cliente em questão ao jogo
 		//else, o cliente acabou de criar um novo jogo (será o pacman)
-		printf(ASC_C_RED " - Entrei 2...\n" ASC_C_NORMAL);
+		printf(ASC_C_RED " - Entrei 2...\n");
 		if(*isGameRunning) //jogo a correr
 		{
 			if(pos_ocupadas[user_struct_temp->user_data_order - 1]==0){
@@ -349,13 +349,13 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		}
 		else
 		{
+			printf(ASC_C_BLUE " Entrei 3...");
 			*isGameRunning = 1; //um jogo está agora a correr
 			strcpy(msgToSend, "gameUp");
 			//encontrar o jogador que criou o jogo
 			//e colocar lhe user_data_order a 1 (pacman)
 			playerOrder = 1;//numero de jogadores (inicialmente a 1)
 			//pacman_lives = 3;
-			printf(ASC_C_GREEN " Entrei 3..." ASC_C_NORMAL);
 			pos_ocupadas[user_struct_temp->user_data_order - 1] = 1;
 			for(i = 0; i < *us_players_num; i++)
 			{
