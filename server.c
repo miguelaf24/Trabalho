@@ -215,7 +215,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	int fifo_cli;
 	char msgToSend[MAX_CMD]; //mensagem a enviar de volta
 	
-	printf(ASC_C_RED " - Entrei Utilizador %s order %d..." ASC_C_NORMAL, us_players[i].user_data_uname, user_struct_temp->user_data_order);
+	printf(ASC_C_RED " - Entrei 1 %s order %d..." ASC_C_NORMAL, user_struct_temp->user_data_cmd, user_struct_temp->user_data_order);
 	
 	if(strcmp(user_struct_temp->user_data_cmd, "PLAY") == 0) //comando PLAY vindo dum cliente
 	{
@@ -225,7 +225,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		//se já estiver um jogo a correr
 		//juntar o cliente em questão ao jogo
 		//else, o cliente acabou de criar um novo jogo (será o pacman)
-		printf(ASC_C_RED " - Entrei...\n" ASC_C_NORMAL);
+		printf(ASC_C_RED " - Entrei 2...\n" ASC_C_NORMAL);
 		if(*isGameRunning) //jogo a correr
 		{
 			if(pos_ocupadas[user_struct_temp->user_data_order - 1]==0){
@@ -355,7 +355,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			//e colocar lhe user_data_order a 1 (pacman)
 			playerOrder = 1;//numero de jogadores (inicialmente a 1)
 			//pacman_lives = 3;
-			printf(ASC_C_GREEN " - Utilizador %s order %d..." ASC_C_NORMAL, us_players[i].user_data_uname, user_struct_temp->user_data_order);
+			printf(ASC_C_GREEN " Entrei 3..." ASC_C_NORMAL);
 			pos_ocupadas[user_struct_temp->user_data_order - 1] = 1;
 			for(i = 0; i < *us_players_num; i++)
 			{
