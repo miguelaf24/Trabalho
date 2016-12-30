@@ -581,7 +581,7 @@ void start_game(user_data *user_struct)
 						*msg = malloc(strlen(cmdenv)+strlen(strchoice)+1);
 						strcpy(msg, cmdenv);
 						strcat(msg, strchoice);*/
-						//user_struct->user_data_order=choice;
+						user_struct->user_data_order=choice;
 						enviar_mensagem_server(user_struct, "PLAY");
 					}
 					else if(choice == 19) //SAIR
