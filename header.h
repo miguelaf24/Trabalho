@@ -51,6 +51,10 @@ struct utilizador
 	char user_data_cmd[MAX_CMD]; //contém as ações do cliente (key presses, etc)
 	//ou simplesmente "login" na primeira ligação ao servidor
 	int user_data_ingame; // 1/0
+	int criador;
+	int next_menu;
+	int n_atacantes;
+	int n_defesas;
 	
 	int escolha_pos[18];
 	//mapa do jogo

@@ -124,11 +124,103 @@ void print_menu_limit(WINDOW * w, int dim_x, int dim_y)
 	wattron(w, A_REVERSE); 
 	mvwprintw(w, 0, dim_x/2 -5, "Soccer ISEC");
 	wattroff(w, A_REVERSE); 
-	
 }
 
 //função que mostra o menu quando fora de jogo
-void print_menu(WINDOW * w, int c)
+void print_menu1(WINDOW * w, int c){
+	mvwprintw(w, 2, 7, "Jogar");
+	mvwprintw(w, 4, 7, "Sair");
+
+	switch(c)
+	{
+		case 1:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 2, 7, "Jogar");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 2:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 4, 7, "Sair");
+			wattroff(w, A_REVERSE); 
+			break;
+	}
+}
+
+void print_menu2(WINDOW * w, int c){
+	clear();
+	mvwprintw(w, 2, 5, "Defesas");
+	mvwprintw(w, 3, 5, "1");
+	mvwprintw(w, 3, 7, "2");
+	mvwprintw(w, 3, 9, "3");
+	mvwprintw(w, 3, 11, "4");
+	
+	mvwprintw(w, 2, 13, "Atacantes");
+	mvwprintw(w, 3, 13, "1");
+	mvwprintw(w, 3, 15, "2");
+	mvwprintw(w, 3, 17, "3");
+	mvwprintw(w, 3, 19, "4");
+
+	mvwprintw(w, 5, 5, "Jogar");
+	mvwprintw(w, 5, 13, "Sair");
+
+	switch(c)
+	{
+		case 1:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 3, 5, "1");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 2:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 3, 7, "2");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 3:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 3, 9, "3");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 4:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 3, 11, "4");
+			wattroff(w, A_REVERSE); 
+			break;
+
+		case 5:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 3, 13, "1");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 6:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 3, 15, "2");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 7:
+			wattron(w, A_REVERSE); 
+			mvwprintw(w, 3, 17, "3");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 8:
+			wattron(w, A_REVERSE);
+			mvwprintw(w, 3, 19, "4");
+			wattroff(w, A_REVERSE); 
+			break;
+		case 9:
+			wattron(w, A_REVERSE);
+			mvwprintw(w, 5, 5, "Jogar");
+			wattroff(w, A_REVERSE); 
+			break;	
+		case 10:
+			wattron(w, A_REVERSE);
+			mvwprintw(w, 5, 13, "Sair");
+			wattroff(w, A_REVERSE); 
+			break;
+
+	}
+}
+
+void print_menu3(WINDOW * w, int c)
 {
 	
 	
@@ -256,7 +348,6 @@ void print_menu(WINDOW * w, int c)
 	}
 	wrefresh(w);
 }
-
 //enviar mensagem para o servidor
 void enviar_mensagem_server(user_data *user_struct, char msgToSend[MAX_CMD])
 {
@@ -292,81 +383,113 @@ void print_game_map(user_data *user_struct, WINDOW * wgame)
 	{
 		for(j = 0; j < MAP_X; j++)
 		{
-			if(user_struct->user_data_map[j][i] == 'W')
+			if(user_struct->user_data_map[j][i] == ' ')
 			{
+				wbkgdset(wgame, COLOR_PAIR(4));
 				mvwaddch(wgame, i, j, 97 | A_ALTCHARSET);
 			}
-			else if(user_struct->user_data_map[j][i] == 'S')
+			else if(user_struct->user_data_map[j][i] == 'A')
 			{
-				attron(A_BOLD);
-				//mvwaddch(wgame, i, j, 126 | A_ALTCHARSET);
-				mvwaddch(wgame, i, j, '*');
-				attroff(A_BOLD);
+				wbkgdset(wgame, COLOR_PAIR(4));
+				mvwaddch(wgame, i, j, '0');
 			}
-			else if(user_struct->user_data_map[j][i] == 'O')
+			else if(user_struct->user_data_map[j][i] == 'B')
 			{
-				attron(A_DIM);
-				mvwaddch(wgame, i, j, 126 | A_ALTCHARSET);
-				attroff(A_DIM);
+				wbkgdset(wgame, COLOR_PAIR(4));
+				mvwaddch(wgame, i, j, '1');
 			}
-			else if(user_struct->user_data_map[j][i] == 'N')
+			else if(user_struct->user_data_map[j][i] == 'C')
 			{
-				mvwaddch(wgame, i, j, ' ');
+				wbkgdset(wgame, COLOR_PAIR(4));
+				mvwaddch(wgame, i, j, '2');
+			}
+			else if(user_struct->user_data_map[j][i] == 'D')
+			{
+				wbkgdset(wgame, COLOR_PAIR(4));
+				mvwaddch(wgame, i, j, '3');
+			}
+			else if(user_struct->user_data_map[j][i] == 'E')
+			{
+				wbkgdset(wgame, COLOR_PAIR(4));
+				mvwaddch(wgame, i, j, '4');
+			}
+			else if(user_struct->user_data_map[j][i] == 'F')
+			{
+				wbkgdset(wgame, COLOR_PAIR(4));
+				mvwaddch(wgame, i, j, '6');
 			}
 			else if(user_struct->user_data_map[j][i] == 'G')
 			{
-				mvwaddch(wgame, i, j, 'G');
-			}
-			else if(user_struct->user_data_map[j][i] == 'T')
-			{
-				mvwaddch(wgame, i, j, 'T');
-			}
-			else if(user_struct->user_data_map[j][i] == '1')
-			{
-				attron(A_BOLD);
-				wbkgdset(wgame, COLOR_PAIR(1));
-				mvwaddch(wgame, i, j, 'C');
-				wbkgdset(wgame, old);
-				attroff(A_BOLD);
-			}
-			else if(user_struct->user_data_map[j][i] == '2')
-			{
-				attron(A_BOLD);
-				wbkgdset(wgame, COLOR_PAIR(2));
-				mvwaddch(wgame, i, j, 'A');
-				wbkgdset(wgame, old);
-				attroff(A_BOLD);
-			}
-			else if(user_struct->user_data_map[j][i] == '3')
-			{
-				attron(A_BOLD);
-				wbkgdset(wgame, COLOR_PAIR(3));
-				mvwaddch(wgame, i, j, 'A');
-				wbkgdset(wgame, old);
-				attroff(A_BOLD);
-			}
-			else if(user_struct->user_data_map[j][i] == '4')
-			{
-				attron(A_BOLD);
 				wbkgdset(wgame, COLOR_PAIR(4));
-				mvwaddch(wgame, i, j, 'A');
-				wbkgdset(wgame, old);
-				attroff(A_BOLD);
+				mvwaddch(wgame, i, j, '7');
 			}
-			else if(user_struct->user_data_map[j][i] == '5')
+			else if(user_struct->user_data_map[j][i] == 'H')
 			{
-				attron(A_BOLD);
-				wbkgdset(wgame, COLOR_PAIR(5));
-				mvwaddch(wgame, i, j, 'A');
-				wbkgdset(wgame, old);
-				attroff(A_BOLD);
+				wbkgdset(wgame, COLOR_PAIR(4));
+				mvwaddch(wgame, i, j, '8');
 			}
+			else if(user_struct->user_data_map[j][i] == 'I')
+			{
+				wbkgdset(wgame, COLOR_PAIR(4));
+				mvwaddch(wgame, i, j, '9' );
+			}
+			else if(user_struct->user_data_map[j][i] == 'a')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '0');
+			}
+			else if(user_struct->user_data_map[j][i] == 'b')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '1');
+			}
+			else if(user_struct->user_data_map[j][i] == 'c')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '2');
+			}
+			else if(user_struct->user_data_map[j][i] == 'd')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '3');
+			}
+			else if(user_struct->user_data_map[j][i] == 'e')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '4');
+			}
+			else if(user_struct->user_data_map[j][i] == 'f')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '6');
+			}
+			else if(user_struct->user_data_map[j][i] == 'g')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '7');
+			}
+			else if(user_struct->user_data_map[j][i] == 'h')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '8');
+			}
+			else if(user_struct->user_data_map[j][i] == 'i')
+			{
+				wbkgdset(wgame, COLOR_PAIR(3));
+				mvwaddch(wgame, i, j, '9');
+			}
+			else if(user_struct->user_data_map[j][i] == 'o')
+			{
+				wbkgdset(wgame, COLOR_PAIR(6));
+				mvwaddch(wgame, i, j, 'o');
+			}
+			else
+				mvwaddch(wgame, i, j, user_struct->user_data_map[j][i]);
 		}
 	}
 	
 	refresh();
 	wrefresh(wgame);
-	
 }
 
 //função principal do jogo
@@ -374,8 +497,8 @@ void print_game_map(user_data *user_struct, WINDOW * wgame)
 //só é chamada se o login for aceite pelo servidor
 void start_game(user_data *user_struct)
 {
-	int p_scr_x, p_scr_y; //dimensoes do ecra parent (stdscr)
-	int score_size = 2; //tamanho Y da janela score
+	//int p_scr_x, p_scr_y; //dimensoes do ecra parent (stdscr)
+	//int score_size = 2; //tamanho Y da janela score
 	
 	int fifo_serv, fifo_cli; //file descriptor retornado de open()
 	
@@ -395,7 +518,11 @@ void start_game(user_data *user_struct)
 	struct timeval tv;	//timeout for select()
 	
 	int choice = 1, c;
-	
+	int menu=0;
+	//user_struct->n_defesas=2;
+	//user_struct->n_atacantes=2;
+	user_struct->next_menu=0;
+	user_struct->criador=0;
 	//janela menu
 	WINDOW *wmenu, *wgame;
 	
@@ -424,12 +551,20 @@ void start_game(user_data *user_struct)
 	
 	clear();
 	mvprintw(1, 1, "User: %s", user_struct->user_data_uname);
+	
+	for(i=0;i<18;i++)//VERIFICAR SE O JOGO ESTÁ A CORRER
+		if(user_struct->escolha_pos[i]==1){
+			isGameRunning=1;
+			break;
+		}
+
+
 	if(isGameRunning)
 		mvprintw(2, 1, "Jogo a decorrer");
 	else
 		mvprintw(2, 1, "Nao existe jogo a decorrer");
 	refresh();
-	print_menu_limit(wmenu, 25, 18);
+	//print_menu_limit(wmenu, 25, 18);
 
 	while(1)
 	{
@@ -437,7 +572,6 @@ void start_game(user_data *user_struct)
 		tv.tv_sec = 0;		
 		tv.tv_usec = 1000;	//1ms
 		FD_ZERO(&fd_read);
-	
 		// descriptors a ter em conta
 		FD_SET(fifo_cli, &fd_read); //fifo server
 		
@@ -454,23 +588,48 @@ void start_game(user_data *user_struct)
 				//apenas fazer refresh caso seja enviado algo ao cliente
 				if(!isPlaying)
 				{
+					if(user_struct->next_menu!=0){
+						if(user_struct->criador==0)
+							menu++;
+						menu++;
+						user_struct->next_menu=0;
+						choice = 1;
+						if(menu==1){
+							user_struct->n_defesas=2;
+							user_struct->n_atacantes=2;
+						}
+					}
 					werase(wgame);
 					wrefresh(wgame);
 					isPlaying = 0;
 					clear();
+					//mvprintw(1, 1, "Menu: %d", menu);
+					//mvprintw(2, 1, "Criador: %d", user_struct->criador);
+					/*
 					mvprintw(1, 1, "User: %s", user_struct->user_data_uname);
 					if(isGameRunning)
 						mvprintw(2, 1, "Jogo a decorrer");
 					else
 						mvprintw(2, 1, "Nao existe jogo a decorrer");
+					*/
 					refresh();
-					print_menu_limit(wmenu, 25, 18);
-					print_menu(wmenu, choice);
+					if(menu == 0){
+						print_menu_limit(wmenu, 25, 18);
+						print_menu1(wmenu, choice);
+					}
+					if(menu == 1){
+						print_menu_limit(wmenu, 25, 18);
+						print_menu2(wmenu, choice);
+					}
+					if(menu == 2){
+						print_menu_limit(wmenu, 25, 18);
+						print_menu3(wmenu, choice);
+					}
 					wrefresh(wmenu);
 				}
 				else
 				{//se estiver a jogar e recebeu alguma mensagem do servidor
-					//print_game_map(user_struct, wgame);
+					print_game_map(user_struct, wgame);
 					clear();
 					mvprintw(1, 1, "User: %s", user_struct->user_data_uname);
 					if(isGameRunning)
@@ -483,17 +642,40 @@ void start_game(user_data *user_struct)
 		//getch trabalha em no-delay mode
 		nodelay(wmenu, TRUE);
 		c = wgetch(wmenu);
+
 		switch(c)
 		{
 			case KEY_UP:
 				if(!isPlaying)
 				{
-					if(choice == 10)
-						choice = 19;
-					else if(choice == 1)
-						choice = 19;
-					else
-						choice --;
+					if(menu==0){
+						if(choice==1){
+							choice=2;
+						}
+						else{
+							choice=1;
+						}
+					}
+					if(menu==1){
+						if(choice>=1 && choice <= 4){
+							choice=9;
+						}
+						else if(choice>=5 && choice<=8){
+							choice=10;
+						}
+						else if(choice == 9)
+							choice = 1;
+						else choice = 5;
+					}
+					if(menu==2)
+						do{
+							if(choice == 10)
+								choice = 19;
+							else if(choice == 1)
+								choice = 19;
+							else
+								choice --;
+						}while(user_struct->escolha_pos[choice-1]!=0);	
 				}
 				else
 				{
@@ -505,12 +687,36 @@ void start_game(user_data *user_struct)
 			case KEY_DOWN:
 				if(!isPlaying)
 				{
-					if(choice == 9)
-						choice =19;
-					else if(choice == 19)
-						choice = 1;
-					else
-						choice ++;
+					if(menu==0){
+						if(choice==1){
+							choice=2;
+						}
+						else{
+							choice=1;
+						}
+					}
+					if(menu==1){
+						if(choice>=1 && choice <= 4){
+							choice=9;
+						}
+						else if(choice>=5 && choice<=8){
+							choice=10;
+						}
+						else if(choice == 9)
+							choice = 1;
+						else choice = 5;
+					}
+					if(menu==2)
+						do{
+							if(choice == 9){
+								choice =19;
+								break;
+							}
+							else if(choice == 19)
+								choice = 1;
+							else
+								choice ++;	
+						}while(user_struct->escolha_pos[choice-1]!=0);
 				}
 				else
 				{
@@ -521,10 +727,21 @@ void start_game(user_data *user_struct)
 				
 			case KEY_RIGHT:
 				if(!isPlaying){
-					if(choice >= 1 && choice<=9)
-						choice +=9;
-					else if(choice >= 10 && choice<=18)
-						choice -=9;
+					if(menu==1){
+						if(choice == 8)choice =1;
+						else if(choice == 10)choice--;
+						else choice++;
+					}
+					if(menu==2){
+						if(choice >= 1 && choice<=9){
+							if(user_struct->escolha_pos[choice+9-1]==0)
+								choice +=9;
+						}
+						else if(choice >= 10 && choice<=18){
+							if(user_struct->escolha_pos[choice-9-1]==0)
+								choice -=9;
+						}
+					}
 				}
 				else
 				{
@@ -535,10 +752,21 @@ void start_game(user_data *user_struct)
 				
 			case KEY_LEFT:
 				if(!isPlaying){
-					if(choice >= 1 && choice<=9)
-						choice +=9;
-					else if(choice >= 10 && choice<=18)
-						choice -=9;
+					if(menu==1){
+						if(choice == 1)choice =8;
+						else if(choice == 9)choice++;
+						else choice--;
+					}
+					if(menu==2){
+						if(choice >= 1 && choice<=9){
+							if(user_struct->escolha_pos[choice+9-1]==0)
+								choice +=9;
+						}
+						else if(choice >= 10 && choice<=18){
+							if(user_struct->escolha_pos[choice-9-1]==0)
+								choice -=9;
+						}
+					}
 				}
 				else
 				{
@@ -562,8 +790,9 @@ void start_game(user_data *user_struct)
 					else
 						mvprintw(2, 1, "Nao existe jogo a decorrer");
 					refresh();
+					choice = 1;
 					print_menu_limit(wmenu, 20, 8);
-					print_menu(wmenu, choice);
+					print_menu1(wmenu, choice);
 					wrefresh(wmenu);
 				}
 				break;
@@ -571,24 +800,49 @@ void start_game(user_data *user_struct)
 			case 10: //ENTER
 				if(!isPlaying)
 				{
-					if(choice >= 1 && choice<=18) //JOGAR
-					{
-						//começar o jogo
-						/*char *msg, *strchoice, *cmdenv = "PLAY ";
-						int length = snprintf( NULL, 0, "%d", choice );
-						*strchoice = malloc( length + 1 );
-						snprintf( strchoice, length + 1, "%d", choice );
-						*msg = malloc(strlen(cmdenv)+strlen(strchoice)+1);
-						strcpy(msg, cmdenv);
-						strcat(msg, strchoice);*/
-						user_struct->user_data_order=choice;
-						enviar_mensagem_server(user_struct, "PLAY");
+					if(menu==0){
+						if(choice == 1) //JOGAR
+						{
+							//começar o jogo
+							//user_struct->user_data_order=choice;
+							enviar_mensagem_server(user_struct, "ENTRAR");
+						}
+						if(choice == 2)
+						{
+							endwin();
+							terminate(user_struct->user_data_fifo);
+						}
 					}
-					else if(choice == 19) //SAIR
-					{
-						endwin();
-						terminate(user_struct->user_data_fifo);
+					if(menu == 1){
+						if(choice >= 1 && choice<=4)user_struct->n_defesas=choice;
+						else if(choice >= 5 && choice<=8)user_struct->n_atacantes=choice-4;
+						else if(choice == 9) //JOGAR
+						{
+
+							//começar o jogo
+							//user_struct->user_data_order=choice;
+							enviar_mensagem_server(user_struct, "CONFIG");
+						}
+						else if(choice == 10) //JOGAR
+						{
+							endwin();
+							terminate(user_struct->user_data_fifo);
+						}
 					}
+					if(menu == 2){
+						if(choice >= 1 && choice<=18) //JOGAR
+						{
+							//começar o jogo
+							user_struct->user_data_order=choice;
+							enviar_mensagem_server(user_struct, "PLAY");
+						}
+						else if(choice == 19) //SAIR
+						{
+							endwin();
+							terminate(user_struct->user_data_fifo);
+						}
+					}
+					
 				}
 				break;
 		}
@@ -599,7 +853,12 @@ void start_game(user_data *user_struct)
 		if(!isPlaying)
 		{
 			//mostrar menu com a devida opção escolhida
-			print_menu(wmenu, choice);
+			if(menu==0)
+				print_menu1(wmenu, choice);
+			if(menu==1)
+				print_menu2(wmenu, choice);
+			if(menu==2)
+				print_menu3(wmenu, choice);
 		}
 		
 		//testar constantemente se o servidor ainda corre

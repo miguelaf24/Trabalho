@@ -13,7 +13,7 @@
 #define ASC_C_CYAN		"\x1b[36m"
 
 //max jogadores - A MUDAR PARA VARIAVEL DE AMBIENTE
-#define MAX_JOG		5
+#define MAX_JOG		18
 
 //1- pacman
 //fantasmas:
@@ -21,26 +21,48 @@
 //			3 - amarelo
 //			4 - magenta
 //			5 - ciano
-int playerOrder = 0;
+int playerOrder = 0;//QUANTIDADE DE JOGADORES
+
+int atacantes = 2;
+
+int defesas = 2;
 
 //posições iniciais
-int init_xy_pacman[2] = {0, 0};
-int init_xy_ghost1[2] = {0, 0};
-int init_xy_ghost2[2] = {0, 0};
-int init_xy_ghost3[2] = {0, 0};
-int init_xy_ghost4[2] = {0, 0};
+int init_xy_E1_0[2] = {0, 10};
+int init_xy_E1_1[2] = {10, 12};
+int init_xy_E1_2[2] = {10, 6};
+int init_xy_E1_3[2] = {10, 15};
+int init_xy_E1_4[2] = {10, 3};
+int init_xy_E1_6[2] = {20, 12};
+int init_xy_E1_7[2] = {20, 6};
+int init_xy_E1_8[2] = {20, 15};
+int init_xy_E1_9[2] = {20, 3};
+
+int init_xy_E2_0[2] = {50, 10};
+int init_xy_E2_1[2] = {40, 12};
+int init_xy_E2_2[2] = {40, 6};
+int init_xy_E2_3[2] = {40, 15};
+int init_xy_E2_4[2] = {40, 3};
+int init_xy_E2_6[2] = {30, 12};
+int init_xy_E2_7[2] = {30, 6};
+int init_xy_E2_8[2] = {30, 15};
+int init_xy_E2_9[2] = {30, 3};
+
+int init_bola[2] = {25,10};
 //guardar posições antigas(caso o cliente tenha entrado mas a
 //IA já tenha alterado a posição do seu fantasma)
 int old_xy_ghost1[2] = {0, 0};
 int old_xy_ghost2[2] = {0, 0};
 int old_xy_ghost3[2] = {0, 0};
 int old_xy_ghost4[2] = {0, 0};
+
 //posições de A e B
 int pos_xy_A[2] = {0, 0};
 int pos_xy_B[2] = {0, 0};
 
 int pos_ocupadas[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
+int configurar = 0;
 //número total de casas com comida
 int count_total_food = 0;
 //total casas 'O' já comidas
@@ -49,7 +71,7 @@ int count_eaten = 0;
 int pacman_lives = PACMAN_LIVES_DEFAULT;
 
 //placeholder para o nome do mapa em uso
-char map[MAX_CMD] = "original.map"; //por carrega o mapa original
+//char map[MAX_CMD] = "original.map"; //por carrega o mapa original
 //"backup" do mapa do jogo
 char backup_game_map[MAP_X][MAP_Y];
 
@@ -92,104 +114,70 @@ void update_pos(char game_map[MAP_X][MAP_Y])
 	{
 		for(j = 0; j < MAP_Y; j++)
 		{
-			if(game_map[i][j] == '1')
-			{
-				init_xy_pacman[0] = i;
-				init_xy_pacman[1] = j;
-			}
-			else if(game_map[i][j] == '2')
-			{
-				old_xy_ghost1[0] = i;
-				old_xy_ghost1[1] = j;
-			}
-			else if(game_map[i][j] == '3')
-			{
-				old_xy_ghost2[0] = i;
-				old_xy_ghost2[1] = j;
-			}
-			else if(game_map[i][j] == '4')
-			{
-				old_xy_ghost3[0] = i;
-				old_xy_ghost3[1] = j;
-			}
-			else if(game_map[i][j] == '5')
-			{
-				old_xy_ghost4[0] = i;
-				old_xy_ghost4[1] = j;
-			}
-			
+			if(init_bola[0] == i && init_bola[1] == j)
+				game_map[i][j] = 'o';
+			else if(init_xy_E1_0[0] == i && init_xy_E1_0[1] == j && pos_ocupadas[0]!=-1)
+				game_map[i][j] = 'A';
+			else if(init_xy_E1_1[0] == i && init_xy_E1_1[1] == j && pos_ocupadas[1]!=-1)
+				game_map[i][j] = 'B';
+			else if(init_xy_E1_2[0] == i && init_xy_E1_2[1] == j && pos_ocupadas[2]!=-1)
+				game_map[i][j] = 'C';
+			else if(init_xy_E1_3[0] == i && init_xy_E1_3[1] == j && pos_ocupadas[3]!=-1)
+				game_map[i][j] = 'D';
+			else if(init_xy_E1_4[0] == i && init_xy_E1_4[1] == j && pos_ocupadas[4]!=-1)
+				game_map[i][j] = 'E';
+			else if(init_xy_E1_6[0] == i && init_xy_E1_6[1] == j && pos_ocupadas[5]!=-1)
+				game_map[i][j] = 'F';
+			else if(init_xy_E1_7[0] == i && init_xy_E1_7[1] == j && pos_ocupadas[6]!=-1)
+				game_map[i][j] = 'G';
+			else if(init_xy_E1_8[0] == i && init_xy_E1_8[1] == j && pos_ocupadas[7]!=-1)
+				game_map[i][j] = 'H';
+			else if(init_xy_E1_9[0] == i && init_xy_E1_9[1] == j && pos_ocupadas[8]!=-1)
+				game_map[i][j] = 'I';
+			else if(init_xy_E2_0[0] == i && init_xy_E2_0[1] == j && pos_ocupadas[9]!=-1)
+				game_map[i][j] = 'a';
+			else if(init_xy_E2_1[0] == i && init_xy_E2_1[1] == j && pos_ocupadas[10]!=-1)
+				game_map[i][j] = 'b';
+			else if(init_xy_E2_2[0] == i && init_xy_E2_2[1] == j && pos_ocupadas[11]!=-1)
+				game_map[i][j] = 'c';
+			else if(init_xy_E2_3[0] == i && init_xy_E2_3[1] == j && pos_ocupadas[12]!=-1)
+				game_map[i][j] = 'd';
+			else if(init_xy_E2_4[0] == i && init_xy_E2_4[1] == j && pos_ocupadas[13]!=-1)
+				game_map[i][j] = 'e';
+			else if(init_xy_E2_6[0] == i && init_xy_E2_6[1] == j && pos_ocupadas[14]!=-1)
+				game_map[i][j] = 'f';
+			else if(init_xy_E2_7[0] == i && init_xy_E2_7[1] == j && pos_ocupadas[15]!=-1)
+				game_map[i][j] = 'g';
+			else if(init_xy_E2_8[0] == i && init_xy_E2_8[1] == j && pos_ocupadas[16]!=-1)
+				game_map[i][j] = 'h';
+			else if(init_xy_E2_9[0] == i && init_xy_E2_9[1] == j && pos_ocupadas[17]!=-1)
+				game_map[i][j] = 'i';
 		}
 	}	
 }
 
 //gerar o mapa do jogo
-void create_game_map(char game_map[MAP_X][MAP_Y], char * fileName)
+void create_game_map(char game_map[MAP_X][MAP_Y])
 {
 	
 	int i, j;
-	char aux[MAP_X];
-	FILE * f;
-	
-	count_total_food = 0;
-	
-	f = fopen(fileName, "r"); //abrir para leitura
-	
 	
 	//ler para o array do mapa
 	for(i=0; i < MAP_Y ; i++)
 	{
-		fscanf(f, "%s\n", aux);
 		for(j = 0; j < MAP_X; j++)
 		{
-			game_map[j][i] = aux[j];
-			backup_game_map[j][i] = aux[j]; //criar backup
-			switch(game_map[j][i])
-			{
-				case 'O':
-					count_total_food++;
-					break;
-				case '1':
-					init_xy_pacman[0] = j;
-					init_xy_pacman[1] = i;
-					break;
-					
-				case '2':
-					init_xy_ghost1[0] = j;
-					init_xy_ghost1[1] = i;
-					break;
-					
-				case '3':
-					init_xy_ghost2[0] = j;
-					init_xy_ghost2[1] = i;
-					break;
-					
-				case '4':
-					init_xy_ghost3[0] = j;
-					init_xy_ghost3[1] = i;
-					break;
-					
-				case '5':
-					init_xy_ghost4[0] = j;
-					init_xy_ghost4[1] = i;
-					break;
-				
-				case 'A':
-					pos_xy_A[0] = j;
-					pos_xy_A[1] = i;
-					game_map[j][i] = 'N';
-					break;
-					
-				case 'B':
-					pos_xy_B[0] = j;
-					pos_xy_B[1] = i;
-					game_map[j][i] = 'N';
-					break;
-			}
-			
+			game_map[j][i] = ' ';
+			//backup_game_map[j][i] = 117; //criar backup
 		}
 	}
 	
-	fclose(f);
+	for(i=6;i<15;i++){
+		game_map[0][i]=(char)186;
+		game_map[MAP_X-1][i]=(char)186;
+	}
+	game_map[0][14]=200;
+	game_map[MAP_X-1][14]=188;
 }
 
 //procurar um fantasma pela sua posição [x,y]
@@ -215,126 +203,102 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	int fifo_cli;
 	char msgToSend[MAX_CMD]; //mensagem a enviar de volta
 	
-	printf(ASC_C_RED " - Entrei 1 %s order %d..." ASC_C_NORMAL, user_struct_temp->user_data_cmd, user_struct_temp->user_data_order);
-	
-	if(strcmp(user_struct_temp->user_data_cmd, "PLAY") == 0) //comando PLAY vindo dum cliente
+	printf(" - Entrei 1 %s order %d...\n", user_struct_temp->user_data_cmd, user_struct_temp->user_data_order);
+	fflush(stdout);
+	if(strcmp(user_struct_temp->user_data_cmd, "ENTRAR") == 0) //comando PLAY vindo dum cliente
 	{
-		//atualizar as posições do pacman e dos fantasmas
-		//update_pos(game_map);
-		
-		//se já estiver um jogo a correr
-		//juntar o cliente em questão ao jogo
-		//else, o cliente acabou de criar um novo jogo (será o pacman)
-		printf(ASC_C_RED " - Entrei 2...\n");
-		if(*isGameRunning) //jogo a correr
+		//strcpy(msgToSend, "gameDown");
+		int seguir=0;
+		if(*isGameRunning!=0) //JOGO A CORRER
 		{
-			if(pos_ocupadas[user_struct_temp->user_data_order - 1]==0){
-				strcpy(msgToSend, "gameUp");
-				playerOrder++;//incrementa numero de jogadores
-				for(i = 0; i < *us_players_num; i++)
+			seguir = 1;
+		}
+		else
+		{//INICIAR JOGO
+			if(configurar==0){
+				seguir=2;
+				configurar=1;
+			}
+		}
+		if(seguir != 0){
+			for(i = 0; i < *us_players_num; i++)
+			{
+				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
 				{
-					if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-					{
-						switch(user_struct_temp->user_data_order)
-						{
-							case 1:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-								
-							case 2:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-							
-							case 3:
-								us_players[i].posx = old_xy_ghost2[0];
-								us_players[i].posy = old_xy_ghost2[1];
-								break;
-							
-							case 4:
-								us_players[i].posx = old_xy_ghost3[0];
-								us_players[i].posy = old_xy_ghost3[1];
-								break;
-								
-							case 5:
-								us_players[i].posx = old_xy_ghost3[0];
-								us_players[i].posy = old_xy_ghost3[1];
-								break;
-								
-							case 6:
-								us_players[i].posx = old_xy_ghost4[0];
-								us_players[i].posy = old_xy_ghost4[1];
-								break;
-								
-							case 7:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-								
-							case 8:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-								
-							case 9:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-								
-							case 10:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-								
-							case 11:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-								
-							case 12:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-							
-							case 13:
-								us_players[i].posx = old_xy_ghost2[0];
-								us_players[i].posy = old_xy_ghost2[1];
-								break;
-							
-							case 14:
-								us_players[i].posx = old_xy_ghost3[0];
-								us_players[i].posy = old_xy_ghost3[1];
-								break;
-							
-							case 15:
-								us_players[i].posx = old_xy_ghost4[0];
-								us_players[i].posy = old_xy_ghost4[1];
-								break;
-							case 16:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-								
-							case 17:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-								
-							case 18:
-								us_players[i].posx = old_xy_ghost1[0];
-								us_players[i].posy = old_xy_ghost1[1];
-								break;
-						}
-						us_players[i].user_data_order = user_struct_temp->user_data_order; //posição do jogador
-						us_players[i].ghosts = 0;
-						us_players[i].food = 0;
-						us_players[i].edible = 0;
-						us_players[i].user_data_ingame = 1;
-					}
+					us_players[i].next_menu = 1;
+					if(seguir == 2)
+						us_players[i].criador = 1;
+					else
+						for(j =0;j<18;j++)
+							us_players[i].escolha_pos[j] = pos_ocupadas[j];
 				}
 			}
-			else{
+		}
+	}
+
+	/*printf("-2");
+	fflush(stdout);*/
+	if(strcmp(user_struct_temp->user_data_cmd, "CONFIG") == 0) //comando PLAY vindo dum cliente
+	{
+		//printf("-1");
+		//fflush(stdout);
+		int i, j;
+		strcpy(msgToSend, "gameDown");
+		printf("-- %d - %d --", user_struct_temp->n_defesas, user_struct_temp->n_atacantes);
+		//fflush(stdout);
+		defesas = user_struct_temp->n_defesas;
+		//printf("0.1");
+		//fflush(stdout);
+		atacantes = user_struct_temp->n_atacantes;
+		//printf("0.2\n");
+		//fflush(stdout);
+		for(i=4;i>4-(4-defesas);i--){
+		//	printf("%d",i);
+		//	fflush(stdout);
+			pos_ocupadas[i]=-1;
+			pos_ocupadas[i+9]=-1;
+		}
+		printf("1\n");
+		fflush(stdout);
+		for(i=8;i>8-(4-atacantes);i--){
+		//	printf("%d",i);
+		//	fflush(stdout);
+			pos_ocupadas[i]=-1;
+			pos_ocupadas[i+9]=-1;
+		}
+		//printf("2");
+		//fflush(stdout);
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				us_players[i].next_menu = 1;
+				printf("3");
+				fflush(stdout);
+				for(j =0;j<18;j++)
+							us_players[i].escolha_pos[j] = pos_ocupadas[j];
+				printf("4");
+				fflush(stdout);
+			}
+		}
+	}
+	
+
+	if(strcmp(user_struct_temp->user_data_cmd, "PLAY") == 0) //comando PLAY vindo dum cliente
+	{
+		int temp =0;
+		strcpy(msgToSend, "gameUp");
+		if(*isGameRunning!=0) //JOGO A CORRER
+		{
+			//VER SE A POS ESTÁ OCUPADA
+			if(pos_ocupadas[user_struct_temp->user_data_order - 1]==0){//POS LIVRE
+				temp=1;
+				printf(" - Entrei %d...\n",user_struct_temp->user_data_order);
+				fflush(stdout);
+				playerOrder++;//incrementa numero de jogadores
+				
+			}
+			else{ //POS OCUPADA
 				for(i = 0; i < *us_players_num; i++)
 				{
 					if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
@@ -343,36 +307,141 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 						for(j =0;j<18;j++)
 							us_players[i].escolha_pos[j] = pos_ocupadas[j];
 					}
-					strcpy(msgToSend, "gameUp");
 				}
 			}
 		}
 		else
-		{
-			printf(ASC_C_BLUE " Entrei 3...");
+		{//INICIAR JOGO
+			temp=1;
+			printf(" - Entrei %d...",user_struct_temp->user_data_order);
+			fflush(stdout);
+
 			*isGameRunning = 1; //um jogo está agora a correr
-			strcpy(msgToSend, "gameUp");
 			//encontrar o jogador que criou o jogo
 			//e colocar lhe user_data_order a 1 (pacman)
 			playerOrder = 1;//numero de jogadores (inicialmente a 1)
 			//pacman_lives = 3;
-			pos_ocupadas[user_struct_temp->user_data_order - 1] = 1;
+			
 			for(i = 0; i < *us_players_num; i++)
 			{
 				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
 				{
 					us_players[i].user_data_order = user_struct_temp->user_data_order; //pacman
-					us_players[i].posx = init_xy_pacman[0];
-					us_players[i].posy = init_xy_pacman[1];
-					us_players[i].ghosts = 0;
-					us_players[i].food = 0;
+					us_players[i].posx = init_xy_E1_0[0];
+					us_players[i].posy = init_xy_E1_0[1];
+					//us_players[i].ghosts = 0;
+					//us_players[i].food = 0;
 					us_players[i].user_data_ingame = 1;
 				}
 			}
 		}
-		
+		if(temp == 1){
+			pos_ocupadas[user_struct_temp->user_data_order - 1]=1;
+			for(i = 0; i < *us_players_num; i++)
+			{
+				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+				{
+					switch(user_struct_temp->user_data_order)
+					{
+						case 1:
+							us_players[i].posx = init_xy_E1_0[0];
+							us_players[i].posy = init_xy_E1_0[1];
+							break;
+							
+						case 2:
+							us_players[i].posx = init_xy_E1_1[0];
+							us_players[i].posy = init_xy_E1_1[1];
+							break;
+						
+						case 3:
+							us_players[i].posx = init_xy_E1_2[0];
+							us_players[i].posy = init_xy_E1_2[1];
+							break;
+						
+						case 4:
+							us_players[i].posx = init_xy_E1_3[0];
+							us_players[i].posy = init_xy_E1_3[1];
+							break;
+							
+						case 5:
+							us_players[i].posx = init_xy_E1_4[0];
+							us_players[i].posy = init_xy_E1_4[1];
+							break;
+							
+						case 6:
+							us_players[i].posx = init_xy_E1_6[0];
+							us_players[i].posy = init_xy_E1_6[1];
+							break;
+							
+						case 7:
+							us_players[i].posx = init_xy_E1_7[0];
+							us_players[i].posy = init_xy_E1_7[1];
+							break;
+							
+						case 8:
+							us_players[i].posx = init_xy_E1_8[0];
+							us_players[i].posy = init_xy_E1_8[1];
+							break;
+							
+						case 9:
+							us_players[i].posx = init_xy_E1_9[0];
+							us_players[i].posy = init_xy_E1_9[1];
+							break;
+							
+						case 10:
+							us_players[i].posx = init_xy_E2_0[0];
+							us_players[i].posy = init_xy_E2_0[1];
+							break;
+							
+						case 11:
+							us_players[i].posx = init_xy_E2_1[0];
+							us_players[i].posy = init_xy_E2_1[1];
+							break;
+							
+						case 12:
+							us_players[i].posx = init_xy_E2_2[0];
+							us_players[i].posy = init_xy_E2_2[1];
+							break;
+						
+						case 13:
+							us_players[i].posx = init_xy_E2_3[0];
+							us_players[i].posy = init_xy_E2_3[1];
+							break;
+						
+						case 14:
+							us_players[i].posx = init_xy_E2_4[0];
+							us_players[i].posy = init_xy_E2_4[1];
+							break;
+						
+						case 15:
+							us_players[i].posx = init_xy_E2_6[0];
+							us_players[i].posy = init_xy_E2_6[1];
+							break;
+						case 16:
+							us_players[i].posx = init_xy_E2_7[0];
+							us_players[i].posy = init_xy_E2_7[1];
+							break;
+							
+						case 17:
+							us_players[i].posx = init_xy_E2_8[0];
+							us_players[i].posy = init_xy_E2_8[1];
+							break;
+							
+						case 18:
+							us_players[i].posx = init_xy_E2_9[0];
+							us_players[i].posy = init_xy_E2_9[1];
+							break;
+					}
+					us_players[i].user_data_order = user_struct_temp->user_data_order; //posição do jogador
+					us_players[i].ghosts = 0;
+					//us_players[i].food = 0;
+					us_players[i].edible = 0;
+					us_players[i].user_data_ingame = 1;
+				}
+			}
+		}	
 	}
-	
+
 	if(strcmp(user_struct_temp->user_data_cmd, "QUIT") == 0) //comando QUIT vindo dum cliente
 	{
 		for(i = 0; i < *us_players_num; i++)
@@ -392,19 +461,19 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			strcpy(msgToSend, "gameDown");
 			us_players[i].user_data_order = 0;
 			count_eaten = 0;
-			pacman_lives = PACMAN_LIVES_DEFAULT;
+			//pacman_lives = PACMAN_LIVES_DEFAULT;
 			//repor o mapa
-			memcpy(*game_map, *backup_game_map, MAP_X*MAP_Y);
+			//memcpy(*game_map, *backup_game_map, MAP_X*MAP_Y);
 			
 			for(i = 0; i < *us_players_num; i++)
 			{
 				us_players[i].user_data_order = 0;
-				us_players[i].food = 0;
+				//us_players[i].food = 0;
 				us_players[i].ghosts = 0;
 				us_players[i].user_data_ingame = 0;
 				us_players[i].pacmans = 0;
 				us_players[i].edible = 0;
-				us_players[i].isAtopFood = 'N';
+				//us_players[i].isAtopFood = 'N';
 			}
 		}
 		else
@@ -422,17 +491,291 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 			
 			
-			us_players[i].food = 0;
+			//us_players[i].food = 0;
 			us_players[i].ghosts = 0;
 			us_players[i].user_data_ingame = 0;
 			us_players[i].pacmans = 0;
 			us_players[i].edible = 0;
 			sprintf(msgToSend, "%dleft", us_players[i].user_data_order);
 			us_players[i].user_data_order = 0;
-		}
-		
+		}	
 	}
-	
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYUP") == 0) //comando KEYUP vindo dum cliente
+	{
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		//if()//verificar casa superior
+		switch(us_players[i].user_data_order-1)
+		{
+			case 0:
+				init_xy_E1_0[1]--;
+				break;
+			case 1:
+				init_xy_E1_1[1]--;
+				break;
+			case 2:
+				init_xy_E1_2[1]--;
+				break;
+			case 3:
+				init_xy_E1_3[1]--;
+				break;
+			case 4:
+				init_xy_E1_4[1]--;
+				break;
+			case 5:
+				init_xy_E1_6[1]--;
+				break;
+			case 6:
+				init_xy_E1_7[1]--;
+				break;
+			case 7:
+				init_xy_E1_8[1]--;
+				break;
+			case 8:
+				init_xy_E1_9[1]--;
+				break;
+			case 9:
+				init_xy_E2_0[1]--;
+				break;
+			case 10:
+				init_xy_E2_1[1]--;
+				break;
+			case 11:
+				init_xy_E2_2[1]--;
+				break;
+			case 12:
+				init_xy_E2_3[1]--;
+				break;
+			case 13:
+				init_xy_E2_4[1]--;
+				break;
+			case 14:
+				init_xy_E2_6[1]--;
+				break;
+			case 15:
+				init_xy_E2_7[1]--;
+				break;
+			case 16:
+				init_xy_E2_8[1]--;
+				break;
+			case 17:
+				init_xy_E2_9[1]--;
+				break;
+
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYDOWN") == 0) //comando KEYUP vindo dum cliente
+	{
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		//if()//verificar casa superior
+		switch(us_players[i].user_data_order-1)
+		{
+			case 0:
+				init_xy_E1_0[1]++;
+				break;
+			case 1:
+				init_xy_E1_1[1]++;
+				break;
+			case 2:
+				init_xy_E1_2[1]++;
+				break;
+			case 3:
+				init_xy_E1_3[1]++;
+				break;
+			case 4:
+				init_xy_E1_4[1]++;
+				break;
+			case 5:
+				init_xy_E1_6[1]++;
+				break;
+			case 6:
+				init_xy_E1_7[1]++;
+				break;
+			case 7:
+				init_xy_E1_8[1]++;
+				break;
+			case 8:
+				init_xy_E1_9[1]++;
+				break;
+			case 9:
+				init_xy_E2_0[1]++;
+				break;
+			case 10:
+				init_xy_E2_1[1]++;
+				break;
+			case 11:
+				init_xy_E2_2[1]++;
+				break;
+			case 12:
+				init_xy_E2_3[1]++;
+				break;
+			case 13:
+				init_xy_E2_4[1]++;
+				break;
+			case 14:
+				init_xy_E2_6[1]++;
+				break;
+			case 15:
+				init_xy_E2_7[1]++;
+				break;
+			case 16:
+				init_xy_E2_8[1]++;
+				break;
+			case 17:
+				init_xy_E2_9[1]++;
+				break;
+
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYLEFT") == 0) //comando KEYUP vindo dum cliente
+	{
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		//if()//verificar casa superior
+		switch(us_players[i].user_data_order-1)
+		{
+			case 0:
+				init_xy_E1_0[0]--;
+				break;
+			case 1:
+				init_xy_E1_1[0]--;
+				break;
+			case 2:
+				init_xy_E1_2[0]--;
+				break;
+			case 3:
+				init_xy_E1_3[0]--;
+				break;
+			case 4:
+				init_xy_E1_4[0]--;
+				break;
+			case 5:
+				init_xy_E1_6[0]--;
+				break;
+			case 6:
+				init_xy_E1_7[0]--;
+				break;
+			case 7:
+				init_xy_E1_8[0]--;
+				break;
+			case 8:
+				init_xy_E1_9[0]--;
+				break;
+			case 9:
+				init_xy_E2_0[0]--;
+				break;
+			case 10:
+				init_xy_E2_1[0]--;
+				break;
+			case 11:
+				init_xy_E2_2[0]--;
+				break;
+			case 12:
+				init_xy_E2_3[0]--;
+				break;
+			case 13:
+				init_xy_E2_4[0]--;
+				break;
+			case 14:
+				init_xy_E2_6[0]--;
+				break;
+			case 15:
+				init_xy_E2_7[0]--;
+				break;
+			case 16:
+				init_xy_E2_8[0]--;
+				break;
+			case 17:
+				init_xy_E2_9[0]--;
+				break;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYRIGHT") == 0) //comando KEYUP vindo dum cliente
+	{
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		//if()//verificar casa superior
+		switch(us_players[i].user_data_order-1)
+		{
+			case 0:
+				init_xy_E1_0[0]++;
+				break;
+			case 1:
+				init_xy_E1_1[0]++;
+				break;
+			case 2:
+				init_xy_E1_2[0]++;
+				break;
+			case 3:
+				init_xy_E1_3[0]++;
+				break;
+			case 4:
+				init_xy_E1_4[0]++;
+				break;
+			case 5:
+				init_xy_E1_6[0]++;
+				break;
+			case 6:
+				init_xy_E1_7[0]++;
+				break;
+			case 7:
+				init_xy_E1_8[0]++;
+				break;
+			case 8:
+				init_xy_E1_9[0]++;
+				break;
+			case 9:
+				init_xy_E2_0[0]++;
+				break;
+			case 10:
+				init_xy_E2_1[0]++;
+				break;
+			case 11:
+				init_xy_E2_2[0]++;
+				break;
+			case 12:
+				init_xy_E2_3[0]++;
+				break;
+			case 13:
+				init_xy_E2_4[0]++;
+				break;
+			case 14:
+				init_xy_E2_6[0]++;
+				break;
+			case 15:
+				init_xy_E2_7[0]++;
+				break;
+			case 16:
+				init_xy_E2_8[0]++;
+				break;
+			case 17:
+				init_xy_E2_9[0]++;
+				break;
+
+		}
+	}
+	/*
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYUP") == 0) //comando KEYUP vindo dum cliente
 	{
 		for(i = 0; i < *us_players_num; i++)
@@ -462,26 +805,26 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 						switch(us_players[g].user_data_order)
 						{
 							case 2:
-								us_players[g].posx = init_xy_ghost1[0];
-								us_players[g].posy = init_xy_ghost1[1];
+								//us_players[g].posx = init_xy_ghost1[0];
+								//us_players[g].posy = init_xy_ghost1[1];
 								c = '2';
 								break;
 							
 							case 3:
-								us_players[g].posx = init_xy_ghost2[0];
-								us_players[g].posy = init_xy_ghost2[1];
+								//us_players[g].posx = init_xy_ghost2[0];
+								//us_players[g].posy = init_xy_ghost2[1];
 								c = '3';
 								break;
 							
 							case 4:
-								us_players[g].posx = init_xy_ghost3[0];
-								us_players[g].posy = init_xy_ghost3[1];
+								//us_players[g].posx = init_xy_ghost3[0];
+								//us_players[g].posy = init_xy_ghost3[1];
 								c = '4';
 								break;
 							
 							case 5:
-								us_players[g].posx = init_xy_ghost4[0];
-								us_players[g].posy = init_xy_ghost4[1];
+								//us_players[g].posx = init_xy_ghost4[0];
+								//us_players[g].posy = init_xy_ghost4[1];
 								c = '5';
 								break;
 						}
@@ -3244,8 +3587,9 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			
 		}
 	}
-	
+*/
 	//verificações de fim de jogo
+	/*
 	if(count_total_food - count_eaten == 0)
 	{
 		memset(msgToSend, 0, sizeof(msgToSend));
@@ -3292,7 +3636,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			us_players[i].isAtopFood = 'N';
 		}
 	}
-	
+	*/
 	for(i = 0; i < *us_players_num; i++)
 	{	
 		//reset á mensagem actualmente em user_data_cmd
@@ -3301,13 +3645,12 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		strcpy(us_players[i].user_data_cmd, msgToSend);		
 		//colocar o mapa do jogo
 		memcpy(*us_players[i].user_data_map, *game_map, MAP_X*MAP_Y);
+		update_pos(us_players[i].user_data_map);
 		//abrir o fifo respectivo e escrever para lá
 		fifo_cli = open(us_players[i].user_data_fifo, O_WRONLY);
 		write(fifo_cli, &us_players[i], sizeof(user_data));
 		close(fifo_cli);
 	}
-	
-	
 }
 
 //função que verifica quais clientes continuam ligados
@@ -3370,8 +3713,7 @@ void verify_connected_clients(user_data *us_players, int *us_players_num)
 		}
 		
 		
-	}//fim while
-	
+	}//fim while	
 }
 
 //calcular pontuação
@@ -3539,38 +3881,6 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 		}
 		printf(" - Servidor a terminar...\n");
 		terminate();
-	}
-	else if(strcmp(cmd, "map") == 0) //map nome-ficheiro
-	{
-		if(arg1 == '\0')
-		{
-			printf(ASC_C_RED " - Sintaxe invalida (use help)" ASC_C_NORMAL);
-			printf("\n");
-		}
-		else if(*isGameRunning) //nao se pode alterar o mapa a meio de um jogo
-		{
-			printf(ASC_C_RED " - Impossivel alterar mapa a meio de um jogo" ASC_C_NORMAL);
-			printf("\n");
-		}
-		else if(arg1 != '\0' && !(*isGameRunning))
-		{
-			sprintf(arg1, "%s.map", arg1);
-			
-			//verificar se o ficheiro em arg1 existe
-			if(access(arg1, F_OK) == 0)
-			{
-				//existe
-				strcpy(map, arg1);
-				create_game_map(game_map, map);
-				printf(ASC_C_GREEN " - Mapa alterado" ASC_C_NORMAL);
-				printf("\n");
-			}
-			else
-			{
-				printf(ASC_C_GREEN " - Ficheiro inexistente" ASC_C_NORMAL);
-				printf("\n");
-			}
-		}
 	}
 	else if(strcmp(cmd, "help") == 0) //help (mostra comandos possíveis)
 	{
@@ -3749,13 +4059,10 @@ void trata_fifo_server(int fifo_serv, user_data *us_players, int *us_players_num
 {
 	//estrutura de dados trocada entre programas
 	user_data user_struct_temp;
-	int fifo_cli_temp; //file descriptor do cliente que "falou"
-	
-	//ler info do fifo do servidor
+	int fifo_cli_temp; 
+
 	read(fifo_serv, &user_struct_temp, sizeof(user_struct_temp));
-	//verificar se o nome já está registado
-	//	se SIM -> verificar que informações tráz
-	//	se NAO -> fazer verificação do login
+
 	if(verifica_registo(us_players, us_players_num, &user_struct_temp) && strcmp(user_struct_temp.user_data_cmd, "login") != 0)
 	{	//JOGO
 		//COMANDOS CLIENTES
@@ -3841,7 +4148,7 @@ void main(int argc, char *argv[])
 	//garantida a existencia do ficheiro de login's neste ponto
 	
 	//criar o mapa original
-	//create_game_map(game_map, map);
+	create_game_map(game_map);
 	
 	sleep(2);
 	limpa_consola();
@@ -3895,6 +4202,5 @@ void main(int argc, char *argv[])
 	
 	
 	//fechar o programa corretamente
-	terminate();
-	
+	terminate();	
 }
