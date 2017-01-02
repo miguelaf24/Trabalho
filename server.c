@@ -48,6 +48,7 @@ int init_xy_E2_7[2] = {30, 6};
 int init_xy_E2_8[2] = {30, 15};
 int init_xy_E2_9[2] = {30, 3};
 
+int posse_bola = -1;
 int init_bola[2] = {25,10};
 //guardar posições antigas(caso o cliente tenha entrado mas a
 //IA já tenha alterado a posição do seu fantasma)
@@ -110,50 +111,61 @@ void update_pos(char game_map[MAP_X][MAP_Y])
 {
 	int i, j;
 	
-	for(i = 0; i < MAP_X; i++)
-	{
-		for(j = 0; j < MAP_Y; j++)
-		{
-			if(init_bola[0] == i && init_bola[1] == j)
-				game_map[i][j] = 'o';
-			else if(init_xy_E1_0[0] == i && init_xy_E1_0[1] == j && pos_ocupadas[0]!=-1)
-				game_map[i][j] = 'A';
-			else if(init_xy_E1_1[0] == i && init_xy_E1_1[1] == j && pos_ocupadas[1]!=-1)
-				game_map[i][j] = 'B';
-			else if(init_xy_E1_2[0] == i && init_xy_E1_2[1] == j && pos_ocupadas[2]!=-1)
-				game_map[i][j] = 'C';
-			else if(init_xy_E1_3[0] == i && init_xy_E1_3[1] == j && pos_ocupadas[3]!=-1)
-				game_map[i][j] = 'D';
-			else if(init_xy_E1_4[0] == i && init_xy_E1_4[1] == j && pos_ocupadas[4]!=-1)
-				game_map[i][j] = 'E';
-			else if(init_xy_E1_6[0] == i && init_xy_E1_6[1] == j && pos_ocupadas[5]!=-1)
-				game_map[i][j] = 'F';
-			else if(init_xy_E1_7[0] == i && init_xy_E1_7[1] == j && pos_ocupadas[6]!=-1)
-				game_map[i][j] = 'G';
-			else if(init_xy_E1_8[0] == i && init_xy_E1_8[1] == j && pos_ocupadas[7]!=-1)
-				game_map[i][j] = 'H';
-			else if(init_xy_E1_9[0] == i && init_xy_E1_9[1] == j && pos_ocupadas[8]!=-1)
-				game_map[i][j] = 'I';
-			else if(init_xy_E2_0[0] == i && init_xy_E2_0[1] == j && pos_ocupadas[9]!=-1)
-				game_map[i][j] = 'a';
-			else if(init_xy_E2_1[0] == i && init_xy_E2_1[1] == j && pos_ocupadas[10]!=-1)
-				game_map[i][j] = 'b';
-			else if(init_xy_E2_2[0] == i && init_xy_E2_2[1] == j && pos_ocupadas[11]!=-1)
-				game_map[i][j] = 'c';
-			else if(init_xy_E2_3[0] == i && init_xy_E2_3[1] == j && pos_ocupadas[12]!=-1)
-				game_map[i][j] = 'd';
-			else if(init_xy_E2_4[0] == i && init_xy_E2_4[1] == j && pos_ocupadas[13]!=-1)
-				game_map[i][j] = 'e';
-			else if(init_xy_E2_6[0] == i && init_xy_E2_6[1] == j && pos_ocupadas[14]!=-1)
-				game_map[i][j] = 'f';
-			else if(init_xy_E2_7[0] == i && init_xy_E2_7[1] == j && pos_ocupadas[15]!=-1)
-				game_map[i][j] = 'g';
-			else if(init_xy_E2_8[0] == i && init_xy_E2_8[1] == j && pos_ocupadas[16]!=-1)
-				game_map[i][j] = 'h';
-			else if(init_xy_E2_9[0] == i && init_xy_E2_9[1] == j && pos_ocupadas[17]!=-1)
-				game_map[i][j] = 'i';
-		}
-	}	
+	game_map[init_bola[0]][init_bola[1]] = 'o';
+	if(pos_ocupadas[0]!=-1){
+		game_map[init_xy_E1_0[0]][init_xy_E1_0[1]] = 'A';
+	}
+	if(pos_ocupadas[1]!=-1){
+		game_map[init_xy_E1_1[0]][init_xy_E1_1[1]] = 'B';
+	}
+	if(pos_ocupadas[2]!=-1){
+		game_map[init_xy_E1_2[0]][init_xy_E1_2[1]] = 'C';
+	}
+	if(pos_ocupadas[3]!=-1){
+		game_map[init_xy_E1_3[0]][init_xy_E1_3[1]] = 'D';
+	}
+	if(pos_ocupadas[4]!=-1){
+		game_map[init_xy_E1_4[0]][init_xy_E1_4[1]] = 'E';
+	}
+	if(pos_ocupadas[5]!=-1){
+		game_map[init_xy_E1_6[0]][init_xy_E1_6[1]] = 'F';
+	}
+	if(pos_ocupadas[6]!=-1){
+		game_map[init_xy_E1_7[0]][init_xy_E1_7[1]] = 'G';
+	}
+	if(pos_ocupadas[7]!=-1){
+		game_map[init_xy_E1_8[0]][init_xy_E1_8[1]] = 'H';
+	}
+	if(pos_ocupadas[8]!=-1){
+		game_map[init_xy_E1_9[0]][init_xy_E1_9[1]] = 'I';
+	}
+	if(pos_ocupadas[9]!=-1){
+		game_map[init_xy_E2_0[0]][init_xy_E2_0[1]] = 'a';
+	}
+	if(pos_ocupadas[10]!=-1){
+		game_map[init_xy_E2_1[0]][init_xy_E2_1[1]] = 'b';
+	}
+	if(pos_ocupadas[11]!=-1){
+		game_map[init_xy_E2_2[0]][init_xy_E2_2[1]] = 'c';
+	}
+	if(pos_ocupadas[12]!=-1){
+		game_map[init_xy_E2_3[0]][init_xy_E2_3[1]] = 'd';
+	}
+	if(pos_ocupadas[13]!=-1){
+		game_map[init_xy_E2_4[0]][init_xy_E2_4[1]] = 'e';
+	}
+	if(pos_ocupadas[14]!=-1){
+		game_map[init_xy_E2_6[0]][init_xy_E2_6[1]] = 'f';
+	}
+	if(pos_ocupadas[15]!=-1){
+		game_map[init_xy_E2_7[0]][init_xy_E2_7[1]] = 'g';
+	}
+	if(pos_ocupadas[16]!=-1){
+		game_map[init_xy_E2_8[0]][init_xy_E2_8[1]] = 'h';
+	}
+	if(pos_ocupadas[17]!=-1){
+		game_map[init_xy_E2_9[0]][init_xy_E2_9[1]] = 'i';
+	}
 }
 
 //gerar o mapa do jogo
@@ -282,7 +294,6 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 		}
 	}
-	
 
 	if(strcmp(user_struct_temp->user_data_cmd, "PLAY") == 0) //comando PLAY vindo dum cliente
 	{
@@ -500,7 +511,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			us_players[i].user_data_order = 0;
 		}	
 	}
-	if(strcmp(user_struct_temp->user_data_cmd, "KEYUP") == 0) //comando KEYUP vindo dum cliente
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYUP") == 0) 
 	{
 		for(i = 0; i < *us_players_num; i++)
 		{
@@ -513,31 +524,40 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		switch(us_players[i].user_data_order-1)
 		{
 			case 0:
-				init_xy_E1_0[1]--;
+				if(init_xy_E1_0[1]!=0)
+					init_xy_E1_0[1]--;
 				break;
 			case 1:
-				init_xy_E1_1[1]--;
+				if(init_xy_E1_1[1]!=0)
+					init_xy_E1_1[1]--;
 				break;
 			case 2:
-				init_xy_E1_2[1]--;
+				if(init_xy_E1_2[1]!=0)
+					init_xy_E1_2[1]--;
 				break;
 			case 3:
-				init_xy_E1_3[1]--;
+				if(init_xy_E1_3[1]!=0)
+					init_xy_E1_3[1]--;
 				break;
 			case 4:
-				init_xy_E1_4[1]--;
+				if(init_xy_E1_4[1]!=0)
+					init_xy_E1_4[1]--;
 				break;
 			case 5:
-				init_xy_E1_6[1]--;
+				if(init_xy_E1_6[1]!=0)
+					init_xy_E1_6[1]--;
 				break;
 			case 6:
-				init_xy_E1_7[1]--;
+				if(init_xy_E1_7[1]!=0)
+					init_xy_E1_7[1]--;
 				break;
 			case 7:
-				init_xy_E1_8[1]--;
+				if(init_xy_E1_8[1]!=0)
+					init_xy_E1_8[1]--;
 				break;
 			case 8:
-				init_xy_E1_9[1]--;
+				if(init_xy_E1_0[1]!=0)
+					init_xy_E1_9[1]--;
 				break;
 			case 9:
 				init_xy_E2_0[1]--;
@@ -569,7 +589,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 
 		}
 	}
-	if(strcmp(user_struct_temp->user_data_cmd, "KEYDOWN") == 0) //comando KEYUP vindo dum cliente
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYDOWN") == 0)
 	{
 		for(i = 0; i < *us_players_num; i++)
 		{
@@ -638,7 +658,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 
 		}
 	}
-	if(strcmp(user_struct_temp->user_data_cmd, "KEYLEFT") == 0) //comando KEYUP vindo dum cliente
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYLEFT") == 0)
 	{
 		for(i = 0; i < *us_players_num; i++)
 		{
@@ -706,7 +726,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				break;
 		}
 	}
-	if(strcmp(user_struct_temp->user_data_cmd, "KEYRIGHT") == 0) //comando KEYUP vindo dum cliente
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYRIGHT") == 0) 
 	{
 		for(i = 0; i < *us_players_num; i++)
 		{
@@ -773,6 +793,168 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				init_xy_E2_9[0]++;
 				break;
 
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "0") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=0;
+		else aux=9;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "1") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=1;
+		else aux=10;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "2") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=2;
+		else aux=11;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "3") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=3;
+		else aux=12;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "4") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=4;
+		else aux=13;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "6") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=5;
+		else aux=14;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "7") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=6;
+		else aux=15;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "8") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=7;
+		else aux=16;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
+		}
+	}
+	if(strcmp(user_struct_temp->user_data_cmd, "9") == 0)
+	{
+		int aux;
+		for(i = 0; i < *us_players_num; i++)
+		{
+			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			{
+				break; //quebrar o ciclo quando encontrado o jogador em questão
+			}
+		}
+		if(us_players[i].user_data_order<=9)aux=8;
+		else aux=17;
+		if(pos_ocupadas[aux]==0){
+			pos_ocupadas[us_players[i].user_data_order-1]=0;
+			us_players[i].user_data_order=aux+1;
+			pos_ocupadas[aux]=1;
 		}
 	}
 	/*

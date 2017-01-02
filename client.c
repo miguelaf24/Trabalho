@@ -605,13 +605,11 @@ void start_game(user_data *user_struct)
 					clear();
 					//mvprintw(1, 1, "Menu: %d", menu);
 					//mvprintw(2, 1, "Criador: %d", user_struct->criador);
-					/*
 					mvprintw(1, 1, "User: %s", user_struct->user_data_uname);
 					if(isGameRunning)
 						mvprintw(2, 1, "Jogo a decorrer");
 					else
 						mvprintw(2, 1, "Nao existe jogo a decorrer");
-					*/
 					refresh();
 					if(menu == 0){
 						print_menu_limit(wmenu, 25, 18);
@@ -775,6 +773,61 @@ void start_game(user_data *user_struct)
 				}
 				break;
 				
+			case 48://0
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "0");
+				}
+				break;
+			case 49://1
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "1");
+				}
+				break;
+			case 50://2
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "2");
+				}
+				break;
+			case 51://3
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "3");
+				}
+				break;
+			case 52://4
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "4");
+				}
+				break;
+			case 54://6
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "6");
+				}
+				break;
+			case 55://7
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "7");
+				}
+				break;
+			case 56://8
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "8");
+				}
+				break;
+			case 57://9
+				if(isPlaying)
+				{
+					enviar_mensagem_server(user_struct, "9");
+				}
+				break;
+
 			case 113: //Q
 				if(isPlaying)
 				{
