@@ -1202,8 +1202,8 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 			
 			for(i = 0; i < *us_players_num; i++)
 			{
-				if(us_players[i].user_data_order != 0)
-					printf(" - " ASC_C_GREEN "%s" ASC_C_NORMAL "[%d pts]: a jogar como ", us_players[i].user_data_uname, calc_points(us_players[i].food, us_players[i].ghosts, us_players[i].pacmans, us_players[i].user_data_order));
+				//if(us_players[i].user_data_order != 0)
+					//printf(" - " ASC_C_GREEN "%s" ASC_C_NORMAL "[%d pts]: a jogar como ", us_players[i].user_data_uname, calc_points(us_players[i].food, us_players[i].ghosts, us_players[i].pacmans, us_players[i].user_data_order));
 				switch(us_players[i].user_data_order)
 				{
 					case 1:
