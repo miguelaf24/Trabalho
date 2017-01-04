@@ -643,6 +643,7 @@ void start_game(user_data *user_struct)
 
 		switch(c)
 		{
+			case 'w':
 			case KEY_UP:
 				if(!isPlaying)
 				{
@@ -682,6 +683,7 @@ void start_game(user_data *user_struct)
 				}
 				break;
 			
+			case 'x':
 			case KEY_DOWN:
 				if(!isPlaying)
 				{
@@ -723,6 +725,7 @@ void start_game(user_data *user_struct)
 				}
 				break;
 				
+			case 'd':
 			case KEY_RIGHT:
 				if(!isPlaying){
 					if(menu==1){
@@ -748,6 +751,7 @@ void start_game(user_data *user_struct)
 				}
 				break;
 				
+			case 'a':
 			case KEY_LEFT:
 				if(!isPlaying){
 					if(menu==1){
