@@ -470,8 +470,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				break; //quebrar o ciclo quando encontrado o jogador em questão
 			}
 		}
-		//if()//verificar casa superior
-		init_xy_Jogador[user_struct_temp->user_data_order-1][1]--;
+		if(init_xy_Jogador[user_struct_temp->user_data_order-1][1]!=0)
+			init_xy_Jogador[user_struct_temp->user_data_order-1][1]--;
 		
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYDOWN") == 0)
@@ -483,8 +483,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				break; //quebrar o ciclo quando encontrado o jogador em questão
 			}
 		}
-		//if()//verificar casa superior
-		init_xy_Jogador[user_struct_temp->user_data_order-1][1]++;
+		if(init_xy_Jogador[user_struct_temp->user_data_order-1][1]!=20)
+			init_xy_Jogador[user_struct_temp->user_data_order-1][1]++;
 		
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYLEFT") == 0)
@@ -496,8 +496,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				break; //quebrar o ciclo quando encontrado o jogador em questão
 			}
 		}
-		//if()//verificar casa superior
-		init_xy_Jogador[user_struct_temp->user_data_order-1][0]--;
+		if(init_xy_Jogador[user_struct_temp->user_data_order-1][0]!=0)
+			init_xy_Jogador[user_struct_temp->user_data_order-1][0]--;
 		
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYRIGHT") == 0) 
@@ -509,9 +509,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				break; //quebrar o ciclo quando encontrado o jogador em questão
 			}
 		}
-		//if()//verificar casa superior
-		init_xy_Jogador[user_struct_temp->user_data_order-1][0]++;
-		
+		if(init_xy_Jogador[user_struct_temp->user_data_order-1][0]!=50)
+			init_xy_Jogador[user_struct_temp->user_data_order-1][0]++;
 	}
 
 	int comp_temp = user_struct_temp->user_data_cmd[0]-'0';

@@ -774,57 +774,18 @@ void start_game(user_data *user_struct)
 				break;
 				
 			case 48://0
-				if(isPlaying)
-				{
-					enviar_mensagem_server(user_struct, "0");
-				}
-				break;
 			case 49://1
-				if(isPlaying)
-				{
-					enviar_mensagem_server(user_struct, "1");
-				}
-				break;
 			case 50://2
-				if(isPlaying)
-				{
-					enviar_mensagem_server(user_struct, "2");
-				}
-				break;
 			case 51://3
-				if(isPlaying)
-				{
-					enviar_mensagem_server(user_struct, "3");
-				}
-				break;
 			case 52://4
-				if(isPlaying)
-				{
-					enviar_mensagem_server(user_struct, "4");
-				}
-				break;
 			case 54://6
-				if(isPlaying)
-				{
-					enviar_mensagem_server(user_struct, "6");
-				}
-				break;
 			case 55://7
-				if(isPlaying)
-				{
-					enviar_mensagem_server(user_struct, "7");
-				}
-				break;
 			case 56://8
-				if(isPlaying)
-				{
-					enviar_mensagem_server(user_struct, "8");
-				}
-				break;
 			case 57://9
 				if(isPlaying)
 				{
-					enviar_mensagem_server(user_struct, "9");
+					char str_temp[2]={c,'\0'};
+					enviar_mensagem_server(user_struct, str_temp);
 				}
 				break;
 
