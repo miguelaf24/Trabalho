@@ -28,6 +28,28 @@ int atacantes = 2;
 int defesas = 2;
 
 //posições iniciais
+int init_xy_Jogador[18][2] = {
+	{0, 10},
+	{10, 12},
+	{10, 6},
+	{10, 15},
+	{10, 3},
+	{20, 12},
+	{20, 6},
+	{20, 15},
+	{20, 3},
+
+	{50, 10},
+	{40, 12},
+	{40, 6},
+	{40, 15},
+	{40, 3},
+	{30, 12},
+	{30, 6},
+	{30, 15},
+	{30, 3}};
+
+
 int init_xy_E1_0[2] = {0, 10};
 int init_xy_E1_1[2] = {10, 12};
 int init_xy_E1_2[2] = {10, 6};
@@ -112,6 +134,15 @@ void update_pos(char game_map[MAP_X][MAP_Y])
 	int i, j;
 	
 	game_map[init_bola[0]][init_bola[1]] = 'o';
+	for(i=0;i<18;i++){
+		if(pos_ocupadas[i]!=-1){
+			if(i<9)
+				game_map[init_xy_Jogador[i][0]][init_xy_Jogador[i][1]] = 'A'+i;
+			else
+				game_map[init_xy_Jogador[i][0]][init_xy_Jogador[i][1]] = 'a'+i-9;
+		}
+	}
+	/*
 	if(pos_ocupadas[0]!=-1){
 		game_map[init_xy_E1_0[0]][init_xy_E1_0[1]] = 'A';
 	}
@@ -139,6 +170,7 @@ void update_pos(char game_map[MAP_X][MAP_Y])
 	if(pos_ocupadas[8]!=-1){
 		game_map[init_xy_E1_9[0]][init_xy_E1_9[1]] = 'I';
 	}
+
 	if(pos_ocupadas[9]!=-1){
 		game_map[init_xy_E2_0[0]][init_xy_E2_0[1]] = 'a';
 	}
@@ -166,6 +198,7 @@ void update_pos(char game_map[MAP_X][MAP_Y])
 	if(pos_ocupadas[17]!=-1){
 		game_map[init_xy_E2_9[0]][init_xy_E2_9[1]] = 'i';
 	}
+	*/
 }
 
 //gerar o mapa do jogo
@@ -399,9 +432,9 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			{
 				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
 				{
-					us_players[i].user_data_order = user_struct_temp->user_data_order; //pacman
-					us_players[i].posx = init_xy_E1_0[0];
-					us_players[i].posy = init_xy_E1_0[1];
+					us_players[i].user_data_order = user_struct_temp->user_data_order;
+					//us_players[i].posx = init_xy_Jogador[user_struct_temp->user_data_order-1][0];
+					//us_players[i].posy = init_xy_Jogador[user_struct_temp->user_data_order-1][1];
 					//us_players[i].ghosts = 0;
 					//us_players[i].food = 0;
 					us_players[i].user_data_ingame = 1;
@@ -414,6 +447,9 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			{
 				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
 				{
+					us_players[i].posx = init_xy_Jogador[user_struct_temp->user_data_order-1][0];
+					us_players[i].posy = init_xy_Jogador[user_struct_temp->user_data_order-1][1];
+					/*
 					switch(user_struct_temp->user_data_order)
 					{
 						case 1:
@@ -504,7 +540,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 							us_players[i].posx = init_xy_E2_9[0];
 							us_players[i].posy = init_xy_E2_9[1];
 							break;
-					}
+
+					}*/
 					us_players[i].user_data_order = user_struct_temp->user_data_order; //posição do jogador
 					us_players[i].ghosts = 0;
 					//us_players[i].food = 0;
@@ -583,7 +620,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 		}
 		//if()//verificar casa superior
-		switch(us_players[i].user_data_order-1)
+		init_xy_Jogador[user_struct_temp->user_data_order-1][1]--;
+		/*switch(us_players[i].user_data_order-1)
 		{
 			case 0:
 				if(init_xy_E1_0[1]!=0)
@@ -648,8 +686,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			case 17:
 				init_xy_E2_9[1]--;
 				break;
-
-		}
+		}*/
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYDOWN") == 0)
 	{
@@ -661,7 +698,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 		}
 		//if()//verificar casa superior
-		switch(us_players[i].user_data_order-1)
+		init_xy_Jogador[user_struct_temp->user_data_order-1][1]++;
+		/*switch(us_players[i].user_data_order-1)
 		{
 			case 0:
 				init_xy_E1_0[1]++;
@@ -717,8 +755,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			case 17:
 				init_xy_E2_9[1]++;
 				break;
-
-		}
+		}*/
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYLEFT") == 0)
 	{
@@ -730,7 +767,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 		}
 		//if()//verificar casa superior
-		switch(us_players[i].user_data_order-1)
+		init_xy_Jogador[user_struct_temp->user_data_order-1][0]--;
+		/*switch(us_players[i].user_data_order-1)
 		{
 			case 0:
 				init_xy_E1_0[0]--;
@@ -786,7 +824,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			case 17:
 				init_xy_E2_9[0]--;
 				break;
-		}
+		}*/
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYRIGHT") == 0) 
 	{
@@ -798,7 +836,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 		}
 		//if()//verificar casa superior
-		switch(us_players[i].user_data_order-1)
+		init_xy_Jogador[user_struct_temp->user_data_order-1][0]++;
+		/*switch(us_players[i].user_data_order-1)
 		{
 			case 0:
 				init_xy_E1_0[0]++;
@@ -854,8 +893,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			case 17:
 				init_xy_E2_9[0]++;
 				break;
-
-		}
+		}*/
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "0") == 0)
 	{
