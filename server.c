@@ -142,63 +142,7 @@ void update_pos(char game_map[MAP_X][MAP_Y])
 				game_map[init_xy_Jogador[i][0]][init_xy_Jogador[i][1]] = 'a'+i-9;
 		}
 	}
-	/*
-	if(pos_ocupadas[0]!=-1){
-		game_map[init_xy_E1_0[0]][init_xy_E1_0[1]] = 'A';
-	}
-	if(pos_ocupadas[1]!=-1){
-		game_map[init_xy_E1_1[0]][init_xy_E1_1[1]] = 'B';
-	}
-	if(pos_ocupadas[2]!=-1){
-		game_map[init_xy_E1_2[0]][init_xy_E1_2[1]] = 'C';
-	}
-	if(pos_ocupadas[3]!=-1){
-		game_map[init_xy_E1_3[0]][init_xy_E1_3[1]] = 'D';
-	}
-	if(pos_ocupadas[4]!=-1){
-		game_map[init_xy_E1_4[0]][init_xy_E1_4[1]] = 'E';
-	}
-	if(pos_ocupadas[5]!=-1){
-		game_map[init_xy_E1_6[0]][init_xy_E1_6[1]] = 'F';
-	}
-	if(pos_ocupadas[6]!=-1){
-		game_map[init_xy_E1_7[0]][init_xy_E1_7[1]] = 'G';
-	}
-	if(pos_ocupadas[7]!=-1){
-		game_map[init_xy_E1_8[0]][init_xy_E1_8[1]] = 'H';
-	}
-	if(pos_ocupadas[8]!=-1){
-		game_map[init_xy_E1_9[0]][init_xy_E1_9[1]] = 'I';
-	}
-
-	if(pos_ocupadas[9]!=-1){
-		game_map[init_xy_E2_0[0]][init_xy_E2_0[1]] = 'a';
-	}
-	if(pos_ocupadas[10]!=-1){
-		game_map[init_xy_E2_1[0]][init_xy_E2_1[1]] = 'b';
-	}
-	if(pos_ocupadas[11]!=-1){
-		game_map[init_xy_E2_2[0]][init_xy_E2_2[1]] = 'c';
-	}
-	if(pos_ocupadas[12]!=-1){
-		game_map[init_xy_E2_3[0]][init_xy_E2_3[1]] = 'd';
-	}
-	if(pos_ocupadas[13]!=-1){
-		game_map[init_xy_E2_4[0]][init_xy_E2_4[1]] = 'e';
-	}
-	if(pos_ocupadas[14]!=-1){
-		game_map[init_xy_E2_6[0]][init_xy_E2_6[1]] = 'f';
-	}
-	if(pos_ocupadas[15]!=-1){
-		game_map[init_xy_E2_7[0]][init_xy_E2_7[1]] = 'g';
-	}
-	if(pos_ocupadas[16]!=-1){
-		game_map[init_xy_E2_8[0]][init_xy_E2_8[1]] = 'h';
-	}
-	if(pos_ocupadas[17]!=-1){
-		game_map[init_xy_E2_9[0]][init_xy_E2_9[1]] = 'i';
-	}
-	*/
+	
 }
 
 //gerar o mapa do jogo
@@ -349,7 +293,6 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	{
 		//printf("-1");
 		//fflush(stdout);
-		int i, j;
 		strcpy(msgToSend, "gameDown");
 		printf("-- %d - %d --", user_struct_temp->n_defesas, user_struct_temp->n_atacantes);
 		//fflush(stdout);
@@ -449,99 +392,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				{
 					us_players[i].posx = init_xy_Jogador[user_struct_temp->user_data_order-1][0];
 					us_players[i].posy = init_xy_Jogador[user_struct_temp->user_data_order-1][1];
-					/*
-					switch(user_struct_temp->user_data_order)
-					{
-						case 1:
-							us_players[i].posx = init_xy_E1_0[0];
-							us_players[i].posy = init_xy_E1_0[1];
-							break;
-							
-						case 2:
-							us_players[i].posx = init_xy_E1_1[0];
-							us_players[i].posy = init_xy_E1_1[1];
-							break;
-						
-						case 3:
-							us_players[i].posx = init_xy_E1_2[0];
-							us_players[i].posy = init_xy_E1_2[1];
-							break;
-						
-						case 4:
-							us_players[i].posx = init_xy_E1_3[0];
-							us_players[i].posy = init_xy_E1_3[1];
-							break;
-							
-						case 5:
-							us_players[i].posx = init_xy_E1_4[0];
-							us_players[i].posy = init_xy_E1_4[1];
-							break;
-							
-						case 6:
-							us_players[i].posx = init_xy_E1_6[0];
-							us_players[i].posy = init_xy_E1_6[1];
-							break;
-							
-						case 7:
-							us_players[i].posx = init_xy_E1_7[0];
-							us_players[i].posy = init_xy_E1_7[1];
-							break;
-							
-						case 8:
-							us_players[i].posx = init_xy_E1_8[0];
-							us_players[i].posy = init_xy_E1_8[1];
-							break;
-							
-						case 9:
-							us_players[i].posx = init_xy_E1_9[0];
-							us_players[i].posy = init_xy_E1_9[1];
-							break;
-							
-						case 10:
-							us_players[i].posx = init_xy_E2_0[0];
-							us_players[i].posy = init_xy_E2_0[1];
-							break;
-							
-						case 11:
-							us_players[i].posx = init_xy_E2_1[0];
-							us_players[i].posy = init_xy_E2_1[1];
-							break;
-							
-						case 12:
-							us_players[i].posx = init_xy_E2_2[0];
-							us_players[i].posy = init_xy_E2_2[1];
-							break;
-						
-						case 13:
-							us_players[i].posx = init_xy_E2_3[0];
-							us_players[i].posy = init_xy_E2_3[1];
-							break;
-						
-						case 14:
-							us_players[i].posx = init_xy_E2_4[0];
-							us_players[i].posy = init_xy_E2_4[1];
-							break;
-						
-						case 15:
-							us_players[i].posx = init_xy_E2_6[0];
-							us_players[i].posy = init_xy_E2_6[1];
-							break;
-						case 16:
-							us_players[i].posx = init_xy_E2_7[0];
-							us_players[i].posy = init_xy_E2_7[1];
-							break;
-							
-						case 17:
-							us_players[i].posx = init_xy_E2_8[0];
-							us_players[i].posy = init_xy_E2_8[1];
-							break;
-							
-						case 18:
-							us_players[i].posx = init_xy_E2_9[0];
-							us_players[i].posy = init_xy_E2_9[1];
-							break;
-
-					}*/
+					
 					us_players[i].user_data_order = user_struct_temp->user_data_order; //posição do jogador
 					us_players[i].ghosts = 0;
 					//us_players[i].food = 0;
@@ -621,72 +472,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		}
 		//if()//verificar casa superior
 		init_xy_Jogador[user_struct_temp->user_data_order-1][1]--;
-		/*switch(us_players[i].user_data_order-1)
-		{
-			case 0:
-				if(init_xy_E1_0[1]!=0)
-					init_xy_E1_0[1]--;
-				break;
-			case 1:
-				if(init_xy_E1_1[1]!=0)
-					init_xy_E1_1[1]--;
-				break;
-			case 2:
-				if(init_xy_E1_2[1]!=0)
-					init_xy_E1_2[1]--;
-				break;
-			case 3:
-				if(init_xy_E1_3[1]!=0)
-					init_xy_E1_3[1]--;
-				break;
-			case 4:
-				if(init_xy_E1_4[1]!=0)
-					init_xy_E1_4[1]--;
-				break;
-			case 5:
-				if(init_xy_E1_6[1]!=0)
-					init_xy_E1_6[1]--;
-				break;
-			case 6:
-				if(init_xy_E1_7[1]!=0)
-					init_xy_E1_7[1]--;
-				break;
-			case 7:
-				if(init_xy_E1_8[1]!=0)
-					init_xy_E1_8[1]--;
-				break;
-			case 8:
-				if(init_xy_E1_0[1]!=0)
-					init_xy_E1_9[1]--;
-				break;
-			case 9:
-				init_xy_E2_0[1]--;
-				break;
-			case 10:
-				init_xy_E2_1[1]--;
-				break;
-			case 11:
-				init_xy_E2_2[1]--;
-				break;
-			case 12:
-				init_xy_E2_3[1]--;
-				break;
-			case 13:
-				init_xy_E2_4[1]--;
-				break;
-			case 14:
-				init_xy_E2_6[1]--;
-				break;
-			case 15:
-				init_xy_E2_7[1]--;
-				break;
-			case 16:
-				init_xy_E2_8[1]--;
-				break;
-			case 17:
-				init_xy_E2_9[1]--;
-				break;
-		}*/
+		
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYDOWN") == 0)
 	{
@@ -699,63 +485,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		}
 		//if()//verificar casa superior
 		init_xy_Jogador[user_struct_temp->user_data_order-1][1]++;
-		/*switch(us_players[i].user_data_order-1)
-		{
-			case 0:
-				init_xy_E1_0[1]++;
-				break;
-			case 1:
-				init_xy_E1_1[1]++;
-				break;
-			case 2:
-				init_xy_E1_2[1]++;
-				break;
-			case 3:
-				init_xy_E1_3[1]++;
-				break;
-			case 4:
-				init_xy_E1_4[1]++;
-				break;
-			case 5:
-				init_xy_E1_6[1]++;
-				break;
-			case 6:
-				init_xy_E1_7[1]++;
-				break;
-			case 7:
-				init_xy_E1_8[1]++;
-				break;
-			case 8:
-				init_xy_E1_9[1]++;
-				break;
-			case 9:
-				init_xy_E2_0[1]++;
-				break;
-			case 10:
-				init_xy_E2_1[1]++;
-				break;
-			case 11:
-				init_xy_E2_2[1]++;
-				break;
-			case 12:
-				init_xy_E2_3[1]++;
-				break;
-			case 13:
-				init_xy_E2_4[1]++;
-				break;
-			case 14:
-				init_xy_E2_6[1]++;
-				break;
-			case 15:
-				init_xy_E2_7[1]++;
-				break;
-			case 16:
-				init_xy_E2_8[1]++;
-				break;
-			case 17:
-				init_xy_E2_9[1]++;
-				break;
-		}*/
+		
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYLEFT") == 0)
 	{
@@ -768,63 +498,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		}
 		//if()//verificar casa superior
 		init_xy_Jogador[user_struct_temp->user_data_order-1][0]--;
-		/*switch(us_players[i].user_data_order-1)
-		{
-			case 0:
-				init_xy_E1_0[0]--;
-				break;
-			case 1:
-				init_xy_E1_1[0]--;
-				break;
-			case 2:
-				init_xy_E1_2[0]--;
-				break;
-			case 3:
-				init_xy_E1_3[0]--;
-				break;
-			case 4:
-				init_xy_E1_4[0]--;
-				break;
-			case 5:
-				init_xy_E1_6[0]--;
-				break;
-			case 6:
-				init_xy_E1_7[0]--;
-				break;
-			case 7:
-				init_xy_E1_8[0]--;
-				break;
-			case 8:
-				init_xy_E1_9[0]--;
-				break;
-			case 9:
-				init_xy_E2_0[0]--;
-				break;
-			case 10:
-				init_xy_E2_1[0]--;
-				break;
-			case 11:
-				init_xy_E2_2[0]--;
-				break;
-			case 12:
-				init_xy_E2_3[0]--;
-				break;
-			case 13:
-				init_xy_E2_4[0]--;
-				break;
-			case 14:
-				init_xy_E2_6[0]--;
-				break;
-			case 15:
-				init_xy_E2_7[0]--;
-				break;
-			case 16:
-				init_xy_E2_8[0]--;
-				break;
-			case 17:
-				init_xy_E2_9[0]--;
-				break;
-		}*/
+		
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYRIGHT") == 0) 
 	{
@@ -837,221 +511,23 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		}
 		//if()//verificar casa superior
 		init_xy_Jogador[user_struct_temp->user_data_order-1][0]++;
-		/*switch(us_players[i].user_data_order-1)
-		{
-			case 0:
-				init_xy_E1_0[0]++;
-				break;
-			case 1:
-				init_xy_E1_1[0]++;
-				break;
-			case 2:
-				init_xy_E1_2[0]++;
-				break;
-			case 3:
-				init_xy_E1_3[0]++;
-				break;
-			case 4:
-				init_xy_E1_4[0]++;
-				break;
-			case 5:
-				init_xy_E1_6[0]++;
-				break;
-			case 6:
-				init_xy_E1_7[0]++;
-				break;
-			case 7:
-				init_xy_E1_8[0]++;
-				break;
-			case 8:
-				init_xy_E1_9[0]++;
-				break;
-			case 9:
-				init_xy_E2_0[0]++;
-				break;
-			case 10:
-				init_xy_E2_1[0]++;
-				break;
-			case 11:
-				init_xy_E2_2[0]++;
-				break;
-			case 12:
-				init_xy_E2_3[0]++;
-				break;
-			case 13:
-				init_xy_E2_4[0]++;
-				break;
-			case 14:
-				init_xy_E2_6[0]++;
-				break;
-			case 15:
-				init_xy_E2_7[0]++;
-				break;
-			case 16:
-				init_xy_E2_8[0]++;
-				break;
-			case 17:
-				init_xy_E2_9[0]++;
-				break;
-		}*/
+		
 	}
-	if(strcmp(user_struct_temp->user_data_cmd, "0") == 0)
-	{
+
+	int comp_temp = user_struct_temp->user_data_cmd[0]-'0';
+	if(comp_temp >=0 && comp_temp <=9){
+		if(comp_temp>=6)comp_temp--;
 		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(us_players[i].user_data_order<=9)aux=0;
-		else aux=9;
+		if(us_players[i].user_data_order<=9)aux=0+comp_temp;
+		else aux=9+comp_temp;
 		if(pos_ocupadas[aux]==0){
-			pos_ocupadas[us_players[i].user_data_order-1]=0;
-			us_players[i].user_data_order=aux+1;
-			pos_ocupadas[aux]=1;
-		}
-	}
-	if(strcmp(user_struct_temp->user_data_cmd, "1") == 0)
-	{
-		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+			for(i = 0; i < *us_players_num; i++)
 			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
+				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+				{
+					break; //quebrar o ciclo quando encontrado o jogador em questão
+				}
 			}
-		}
-		if(us_players[i].user_data_order<=9)aux=1;
-		else aux=10;
-		if(pos_ocupadas[aux]==0){
-			pos_ocupadas[us_players[i].user_data_order-1]=0;
-			us_players[i].user_data_order=aux+1;
-			pos_ocupadas[aux]=1;
-		}
-	}
-	if(strcmp(user_struct_temp->user_data_cmd, "2") == 0)
-	{
-		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(us_players[i].user_data_order<=9)aux=2;
-		else aux=11;
-		if(pos_ocupadas[aux]==0){
-			pos_ocupadas[us_players[i].user_data_order-1]=0;
-			us_players[i].user_data_order=aux+1;
-			pos_ocupadas[aux]=1;
-		}
-	}
-	if(strcmp(user_struct_temp->user_data_cmd, "3") == 0)
-	{
-		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(us_players[i].user_data_order<=9)aux=3;
-		else aux=12;
-		if(pos_ocupadas[aux]==0){
-			pos_ocupadas[us_players[i].user_data_order-1]=0;
-			us_players[i].user_data_order=aux+1;
-			pos_ocupadas[aux]=1;
-		}
-	}
-	if(strcmp(user_struct_temp->user_data_cmd, "4") == 0)
-	{
-		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(us_players[i].user_data_order<=9)aux=4;
-		else aux=13;
-		if(pos_ocupadas[aux]==0){
-			pos_ocupadas[us_players[i].user_data_order-1]=0;
-			us_players[i].user_data_order=aux+1;
-			pos_ocupadas[aux]=1;
-		}
-	}
-	if(strcmp(user_struct_temp->user_data_cmd, "6") == 0)
-	{
-		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(us_players[i].user_data_order<=9)aux=5;
-		else aux=14;
-		if(pos_ocupadas[aux]==0){
-			pos_ocupadas[us_players[i].user_data_order-1]=0;
-			us_players[i].user_data_order=aux+1;
-			pos_ocupadas[aux]=1;
-		}
-	}
-	if(strcmp(user_struct_temp->user_data_cmd, "7") == 0)
-	{
-		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(us_players[i].user_data_order<=9)aux=6;
-		else aux=15;
-		if(pos_ocupadas[aux]==0){
-			pos_ocupadas[us_players[i].user_data_order-1]=0;
-			us_players[i].user_data_order=aux+1;
-			pos_ocupadas[aux]=1;
-		}
-	}
-	if(strcmp(user_struct_temp->user_data_cmd, "8") == 0)
-	{
-		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(us_players[i].user_data_order<=9)aux=7;
-		else aux=16;
-		if(pos_ocupadas[aux]==0){
-			pos_ocupadas[us_players[i].user_data_order-1]=0;
-			us_players[i].user_data_order=aux+1;
-			pos_ocupadas[aux]=1;
-		}
-	}
-	if(strcmp(user_struct_temp->user_data_cmd, "9") == 0)
-	{
-		int aux;
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(us_players[i].user_data_order<=9)aux=8;
-		else aux=17;
-		if(pos_ocupadas[aux]==0){
 			pos_ocupadas[us_players[i].user_data_order-1]=0;
 			us_players[i].user_data_order=aux+1;
 			pos_ocupadas[aux]=1;
