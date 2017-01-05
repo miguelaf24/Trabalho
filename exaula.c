@@ -1,4 +1,4 @@
-
+﻿
 //gcc ex.c -o ex -lncurses 
 #include <ncurses.h>
 #include <sys/types.h>
@@ -10,6 +10,8 @@
 #include <sys/wait.h>
 #include <stdlib.h> 
 #include <pthread.h> //bibliotecas para os threads
+
+
 
 typedef struct{
 char y, x; 

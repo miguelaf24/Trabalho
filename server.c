@@ -21,12 +21,18 @@
 //			3 - amarelo
 //			4 - magenta
 //			5 - ciano
+
+typedef struct{
+int tempo, num, num_oc, fim, humano;
+}JOGADOR;
+
 int playerOrder = 0;//QUANTIDADE DE JOGADORES
 
 int atacantes = 2;
 
 int defesas = 2;
 
+int num_jog = 0;
 //posições iniciais
 int init_xy_Jogador[18][2] = {
 	{0, 10},
@@ -98,10 +104,16 @@ int pacman_lives = PACMAN_LIVES_DEFAULT;
 //"backup" do mapa do jogo
 char backup_game_map[MAP_X][MAP_Y];
 
+//--------threads-------
+pthread_mutex_t trinco;
+
+
+
 //função de fecho do programa
 void terminate()
 {
 	//remover o fifo do servidor
+	pthread_mutex_destroy(&trinco);
 	unlink(FSERV);
 	
 	exit(0);
@@ -248,6 +260,52 @@ void verify_connected_clients(user_data *us_players, int *us_players_num)
 	}//fim while	
 }
 
+
+void *move_jogador( void *dados){
+	JOGADOR *j;
+	int ch=-1;
+	j = (JOGADOR *) dados;
+	do{
+		//printf("%d-",j->num_oc);
+		if(pos_ocupadas[j->num_oc] == 0){
+			ch=rand()%4;
+			switch(ch){
+					 
+				case 0:
+					if(init_xy_Jogador[j->num_oc][1]>0)
+						init_xy_Jogador[j->num_oc][1]--;
+						break;
+					
+				case 1:
+				if(init_xy_Jogador[j->num_oc][1]<20)
+					init_xy_Jogador[j->num_oc][1]++;
+					break;
+				case 2:
+				if(init_xy_Jogador[j->num_oc][0]>0)
+					init_xy_Jogador[j->num_oc][0]--;
+					break;
+				case 3:
+				if(init_xy_Jogador[j->num_oc][0]<50)
+					init_xy_Jogador[j->num_oc][0]++;
+					break;
+			}
+		pthread_mutex_lock(&trinco);
+		//if (j->num>=0&&j->num<4){
+		
+		//mvaddch(ele[j->num].y,ele[j->num].x,' ');
+		//ele[j->num].y+=d.y; 
+		//ele[j->num].x+=d.x;
+		//mvaddch(ele[j->num].y,ele[j->num].x,'0'+j->num);
+		//	refresh(); 
+		//	}
+		pthread_mutex_unlock(&trinco);
+		//}
+			usleep(j->tempo);
+		}
+		
+	}while(!j->fim); 
+}
+
 //--------------------------------COMANDOS CLIENTE--------------------------------//
 //tratar comandos recebidos do cliente que falou para o fifo do server
 void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, int *us_players_num, int *isGameRunning, char game_map[MAP_X][MAP_Y])
@@ -308,6 +366,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			pos_ocupadas[i]=-1;
 			pos_ocupadas[i+9]=-1;
 		}
+		num_jog=(defesas+atacantes+1)*2;
 		printf("1\n");
 		fflush(stdout);
 		for(i=8;i>8-(4-atacantes);i--){
@@ -962,10 +1021,14 @@ void main(int argc, char *argv[])
 	
 	//file descriptors
 	fd_set fd_read;
+	int isStarted=0;
 	int fd_return;
 	char fname_users[MAX_LOGIN]; //ficheiro com login's
 	int fifo_serv; //file descriptor retornado de open()
-	
+
+	JOGADOR *jog;
+	pthread_t *tarefa;
+	pthread_mutex_init(&trinco,NULL);
 	//timeval
 	struct timeval tv;	//timeout for select()
 	
@@ -1057,6 +1120,56 @@ void main(int argc, char *argv[])
 				//DADOS JOGADORES
 				trata_fifo_server(fifo_serv, us_players, &us_players_num, fname_users, &isGameRunning, game_map); //ler do fifo do servidor	
 			}
+		}
+		if(isGameRunning!=0){
+			if(isStarted==0){
+				isStarted=1;
+				jog = malloc(sizeof(JOGADOR)*num_jog);
+				if(jog == NULL){
+					terminate();
+				}
+				tarefa = malloc(sizeof(pthread_t)*num_jog);
+				if(tarefa==NULL){
+					terminate();
+				}
+
+				for(i=0;i<num_jog;i++){
+					jog[i].fim=0;
+					jog[i].num=i;
+					jog[i].humano=0;
+					if(i<=defesas)jog[i].num_oc=i;
+					else if(i<num_jog/2)jog[i].num_oc=i+4-defesas;
+					else if(i<=num_jog/2+defesas)jog[i].num_oc=9+i-num_jog/2;
+					else jog[i].num_oc=14+i-num_jog/2-defesas-1;
+					printf("%d: %d ", i, jog[i].num_oc);
+					if((i>0&&i<=defesas)||(i>num_jog/2&&i<=num_jog/2+defesas))
+						jog[i].tempo=300000;
+					else
+						jog[i].tempo=400000;
+						/*
+						if(i<num_jog) jog[i].num=i;
+						else jog[i].num=i + num_jog/2;
+						*/
+					pthread_create(&tarefa[i],NULL,&move_jogador,(void *)&jog[i]);
+					
+				}
+			}
+			else{
+					//pthread_mutex_lock(&trinco);
+					usleep(10000); 
+					for (i=0;i<us_players_num;i++){
+						if(us_players[i].user_data_ingame==1)
+						{
+							memcpy(us_players[i].user_data_map, game_map, MAP_X*MAP_Y);
+							update_pos(us_players[i].user_data_map);
+							//abrir o fifo respectivo e escrever para lá
+							int fifo_cli = open(us_players[i].user_data_fifo, O_WRONLY);
+							write(fifo_cli, &us_players[i], sizeof(user_data));
+							close(fifo_cli);
+						}
+					//pthread_mutex_unlock(&trinco);		
+				}
+		}
 		}
 		//descriptors a ter em conta (eliminar no fim de cada iteração)
 		FD_CLR(fifo_serv, &fd_read); //fifo server

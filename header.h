@@ -13,6 +13,7 @@
 #include <locale.h>
 #include <pthread.h>
 
+
 //fifo's			MUDAR 'agnelo' PARA NOME GENERICO DE USER
 #define FSERV "serv.FIFO"
 #define FCLI "cli%d.FIFO" //juntar pid() para tornar cada fifo de cada cliente unico

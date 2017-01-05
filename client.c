@@ -775,12 +775,19 @@ void start_game(user_data *user_struct)
 				
 			case 48://0
 			case 49://1
+				
 			case 50://2
+				
 			case 51://3
+				
 			case 52://4
+				
 			case 54://6
+			
 			case 55://7
+			
 			case 56://8
+			
 			case 57://9
 				if(isPlaying)
 				{
