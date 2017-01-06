@@ -35,54 +35,55 @@ int defesas = 2;
 
 int num_jog = 0;
 //posições iniciais
-int init_xy_Jogador[18][2] = {
-	{0, 10},
-	{10, 12},
-	{10, 6},
-	{10, 15},
-	{10, 3},
-	{20, 12},
-	{20, 6},
-	{20, 15},
-	{20, 3},
+int init_xy_Jogador[18][3] = {//x , y, dir
+	{0, 10, -1},
+	{10, 12, -1},
+	{10, 7, -1},
+	{10, 15, -1},
+	{10, 5, -1},
+	{20, 12, -1},
+	{20, 8, -1},
+	{20, 15, -1},
+	{20, 6, -1},
 
-	{50, 10},
-	{40, 12},
-	{40, 6},
-	{40, 15},
-	{40, 3},
-	{30, 12},
-	{30, 6},
-	{30, 15},
-	{30, 3}};
+	{50, 10, -1},
+	{40, 13, -1},
+	{40, 7, -1},
+	{40, 15, -1},
+	{40, 5, -1},
+	{30, 12, -1},
+	{30, 8, -1},
+	{30, 15, -1},
+	{30, 6, -1}};
 
 
 int init_xy_E1_0[2] = {0, 10};
-int init_xy_E1_1[2] = {10, 12};
-int init_xy_E1_2[2] = {10, 6};
+int init_xy_E1_1[2] = {10, 13};
+int init_xy_E1_2[2] = {10, 7};
 int init_xy_E1_3[2] = {10, 15};
-int init_xy_E1_4[2] = {10, 3};
+int init_xy_E1_4[2] = {10, 5};
 int init_xy_E1_6[2] = {20, 12};
-int init_xy_E1_7[2] = {20, 6};
+int init_xy_E1_7[2] = {20, 8};
 int init_xy_E1_8[2] = {20, 15};
-int init_xy_E1_9[2] = {20, 3};
+int init_xy_E1_9[2] = {20, 6};
 
 int init_xy_E2_0[2] = {50, 10};
-int init_xy_E2_1[2] = {40, 12};
-int init_xy_E2_2[2] = {40, 6};
+int init_xy_E2_1[2] = {40, 13};
+int init_xy_E2_2[2] = {40, 7};
 int init_xy_E2_3[2] = {40, 15};
-int init_xy_E2_4[2] = {40, 3};
+int init_xy_E2_4[2] = {40, 5};
 int init_xy_E2_6[2] = {30, 12};
-int init_xy_E2_7[2] = {30, 6};
+int init_xy_E2_7[2] = {30, 8};
 int init_xy_E2_8[2] = {30, 15};
-int init_xy_E2_9[2] = {30, 3};
+int init_xy_E2_9[2] = {30, 6};
 
 int posse_bola = -1;
 int posse_bola_ant = -1;
 int dir_bola =-1;
-//int movimento_bola = -1;
+int movimento_bola = -1;
 int init_bola[2] = {25,10};
 int fim = 0;
+int chuto = 0;
 
 //guardar posições antigas(caso o cliente tenha entrado mas a
 //IA já tenha alterado a posição do seu fantasma)
@@ -160,7 +161,6 @@ void update_pos(char game_map[MAP_X][MAP_Y])
 				game_map[init_xy_Jogador[i][0]][init_xy_Jogador[i][1]] = 'a'+i-9;
 		}
 	}
-	
 }
 
 //gerar o mapa do jogo
@@ -250,9 +250,16 @@ void verify_connected_clients(user_data *us_players, int *us_players_num)
 	}//fim while	
 }
 
-void *move_bola(){
+void *move_bola()
+{
 	int ch;
 	do{
+		if(chuto != 0){
+			chuto = 0;
+			posse_bola_ant=posse_bola;
+			posse_bola=-1;
+			dir_bola = rand()%4;
+		}
 		if(posse_bola == -1){
 			if(dir_bola!=-1){
 				switch(dir_bola){
@@ -281,11 +288,8 @@ void *move_bola(){
 			}
 			for(int i= 0; i<18;i++){
 				if(pos_ocupadas[i]!=-1){
-					
 					if(init_xy_Jogador[i][0]>=init_bola[0]-1&&init_xy_Jogador[i][0]<=init_bola[0]+1){
-						printf("%d,%d - %d,%d\n",init_xy_Jogador[i][0],init_xy_Jogador[i][1],init_bola[0],init_bola[1]);
 						if(init_xy_Jogador[i][1]>=init_bola[1]-1&&init_xy_Jogador[i][1]<=init_bola[1]+1){
-							printf("%d,%d - %d,%d\n",init_xy_Jogador[i][0],init_xy_Jogador[i][1],init_bola[0],init_bola[1]);
 							posse_bola=i;
 							dir_bola=-1;
 						}
@@ -308,87 +312,76 @@ void *move_bola(){
 					}
 				}
 			}
-			init_bola[1] = init_xy_Jogador[posse_bola][1]-1;
-			init_bola[0] = init_xy_Jogador[posse_bola][0];
+			if(movimento_bola==0){
+				init_bola[1] = init_xy_Jogador[posse_bola][1]-1;
+				init_bola[0] = init_xy_Jogador[posse_bola][0];
+			}
+			if(movimento_bola==1){
+				init_bola[1] = init_xy_Jogador[posse_bola][1]+1;
+				init_bola[0] = init_xy_Jogador[posse_bola][0];
+			}
+			if(movimento_bola==2){
+				init_bola[1] = init_xy_Jogador[posse_bola][1];
+				init_bola[0] = init_xy_Jogador[posse_bola][0]-1;
+			}
+			if(movimento_bola==3){
+				init_bola[1] = init_xy_Jogador[posse_bola][1];
+				init_bola[0] = init_xy_Jogador[posse_bola][0]+1;
+			}
 		}
 		usleep(100000);
-		printf("posse_bola%d posse_bola_ant%d\n", posse_bola, posse_bola_ant);
-		/*
-		if(posse_bola == -1){
-			ch=rand()%4;
-			switch(ch){
-				case 0:
-					if(init_bola[1]>0)//cima
-						init_bola[1]--;
-						break;
-					
-				case 1:
-				if(init_bola[1]<20)//baixo
-					init_bola[1]++;
-					break;
-				case 2:
-				if(init_bola[0]>0)//esq
-					init_bola[0]--;
-					break;
-				case 3:
-				if(init_bola[0]<50)
-					init_bola[0]++;
-					break;
-			}
-			pthread_mutex_lock(&trinco);
-			//if (j->num>=0&&j->num<4){
-			//mvaddch(ele[j->num].y,ele[j->num].x,' ');
-			//ele[j->num].y+=d.y; 
-			//ele[j->num].x+=d.x;
-			//mvaddch(ele[j->num].y,ele[j->num].x,'0'+j->num);
-			//	refresh(); 
-			//	}
-			pthread_mutex_unlock(&trinco);
-
-			usleep(300000);
-
-		}*/
 	}while(fim!=1); 
 }
 
-void *move_jogador( void *dados){
+void *move_jogador( void *dados)
+{
 	JOGADOR *j;
-	int ch=-1;
 	j = (JOGADOR *) dados;
 	do{
 		//printf("%d-",j->num_oc);
 		if(pos_ocupadas[j->num_oc] == 0){
-			ch=rand()%4;
-			switch(ch){
-				case 0:
-					if(init_xy_Jogador[j->num_oc][1]>0)
-						init_xy_Jogador[j->num_oc][1]--;
-						break;
-					
-				case 1:
-				if(init_xy_Jogador[j->num_oc][1]<20)
-					init_xy_Jogador[j->num_oc][1]++;
-					break;
-				case 2:
-				if(init_xy_Jogador[j->num_oc][0]>0)
-					init_xy_Jogador[j->num_oc][0]--;
-					break;
-				case 3:
-				if(init_xy_Jogador[j->num_oc][0]<50)
-					init_xy_Jogador[j->num_oc][0]++;
-					break;
+			if(j->num_oc==0 || j->num_oc == 9){//GR
+				if(init_bola[1]>init_xy_Jogador[j->num_oc][1])
+					init_xy_Jogador[j->num_oc][2]=1;
+				if(init_bola[1]<init_xy_Jogador[j->num_oc][1])
+					init_xy_Jogador[j->num_oc][2]=0;
 			}
-			pthread_mutex_lock(&trinco);
-			//if (j->num>=0&&j->num<4){
-			//mvaddch(ele[j->num].y,ele[j->num].x,' ');
-			//ele[j->num].y+=d.y; 
-			//ele[j->num].x+=d.x;
-			//mvaddch(ele[j->num].y,ele[j->num].x,'0'+j->num);
-			//	refresh(); 
-			//	}
-			pthread_mutex_unlock(&trinco);
-			usleep(j->tempo);
+			else init_xy_Jogador[j->num_oc][2]=rand()%4;
 		}
+		
+		switch(init_xy_Jogador[j->num_oc][2]){
+			case 0:
+				if(init_xy_Jogador[j->num_oc][1]>0)
+					init_xy_Jogador[j->num_oc][1]--;
+					break;
+			case 1:
+			if(init_xy_Jogador[j->num_oc][1]<20)
+				init_xy_Jogador[j->num_oc][1]++;
+				break;
+			case 2:
+			if(init_xy_Jogador[j->num_oc][0]>0)
+				init_xy_Jogador[j->num_oc][0]--;
+				break;
+			case 3:
+			if(init_xy_Jogador[j->num_oc][0]<50)
+				init_xy_Jogador[j->num_oc][0]++;
+				break;
+		}
+		if(init_xy_Jogador[j->num_oc][2]!=-1){
+			if(j->num_oc==posse_bola)
+				movimento_bola=init_xy_Jogador[j->num_oc][2];
+			init_xy_Jogador[j->num_oc][2]=-1;
+		}
+		pthread_mutex_lock(&trinco);
+		//if (j->num>=0&&j->num<4){
+		//mvaddch(ele[j->num].y,ele[j->num].x,' ');
+		//ele[j->num].y+=d.y; 
+		//ele[j->num].x+=d.x;
+		//mvaddch(ele[j->num].y,ele[j->num].x,'0'+j->num);
+		//	refresh(); 
+		//	}
+		pthread_mutex_unlock(&trinco);
+		usleep(j->tempo);
 	}while(!j->fim); 
 }
 
@@ -606,56 +599,26 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			us_players[i].user_data_order = 0;
 		}	
 	}
+	if(strcmp(user_struct_temp->user_data_cmd, "KEYSPACE") == 0) 
+	{
+		if(user_struct_temp->user_data_order-1 == posse_bola)
+			chuto = 1;
+	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYUP") == 0) 
 	{
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(init_xy_Jogador[user_struct_temp->user_data_order-1][1]!=0)
-			init_xy_Jogador[user_struct_temp->user_data_order-1][1]--;
-		
+		init_xy_Jogador[user_struct_temp->user_data_order-1][2]=0;
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYDOWN") == 0)
-	{
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(init_xy_Jogador[user_struct_temp->user_data_order-1][1]!=20)
-			init_xy_Jogador[user_struct_temp->user_data_order-1][1]++;
-		
+	{	
+		init_xy_Jogador[user_struct_temp->user_data_order-1][2]=1;
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYLEFT") == 0)
 	{
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(init_xy_Jogador[user_struct_temp->user_data_order-1][0]!=0)
-			init_xy_Jogador[user_struct_temp->user_data_order-1][0]--;
-		
+		init_xy_Jogador[user_struct_temp->user_data_order-1][2]=2;
 	}
 	if(strcmp(user_struct_temp->user_data_cmd, "KEYRIGHT") == 0) 
 	{
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				break; //quebrar o ciclo quando encontrado o jogador em questão
-			}
-		}
-		if(init_xy_Jogador[user_struct_temp->user_data_order-1][0]!=50)
-			init_xy_Jogador[user_struct_temp->user_data_order-1][0]++;
+		init_xy_Jogador[user_struct_temp->user_data_order-1][2]=3;
 	}
 
 	int comp_temp = user_struct_temp->user_data_cmd[0]-'0';
@@ -1233,9 +1196,9 @@ void main(int argc, char *argv[])
 					else jog[i].num_oc=14+i-num_jog/2-defesas-1;
 					printf("%d: %d ", i, jog[i].num_oc);
 					if((i>0&&i<=defesas)||(i>num_jog/2&&i<=num_jog/2+defesas))
-						jog[i].tempo=300000;
-					else
 						jog[i].tempo=400000;
+					else
+						jog[i].tempo=300000;
 						/*
 						if(i<num_jog) jog[i].num=i;
 						else jog[i].num=i + num_jog/2;

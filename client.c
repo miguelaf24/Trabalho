@@ -777,6 +777,11 @@ void start_game(user_data *user_struct)
 				}
 				break;
 				
+			case ' ':
+				if(isPlaying){
+					enviar_mensagem_server(user_struct, "KEYSPACE");
+				}
+				break;
 			case 48://0
 			case 49://1
 				
@@ -1006,5 +1011,4 @@ void main()
 	
 	//fechar o programa corretamente
 	terminate(nome_fifo_cli);
-	
 }
