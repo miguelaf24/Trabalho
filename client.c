@@ -511,9 +511,6 @@ void start_game(user_data *user_struct)
 	
 	int i, j;
 	
-	//vidas do pacman
-	int pacman_lifes = PACMAN_LIVES_DEFAULT;
-	
 	//timeval
 	struct timeval tv;	//timeout for select()
 	
@@ -522,7 +519,7 @@ void start_game(user_data *user_struct)
 	//user_struct->n_defesas=2;
 	//user_struct->n_atacantes=2;
 	user_struct->next_menu=0;
-	user_struct->criador=0;
+	//user_struct->jogo_correr=0;
 	//janela menu
 	WINDOW *wmenu, *wgame;
 	
@@ -552,17 +549,22 @@ void start_game(user_data *user_struct)
 	clear();
 	mvprintw(1, 1, "User: %s", user_struct->user_data_uname);
 	
-	for(i=0;i<18;i++)//VERIFICAR SE O JOGO ESTÁ A CORRER
+	/*for(i=0;i<18;i++)//VERIFICAR SE O JOGO ESTÁ A CORRER
 		if(user_struct->escolha_pos[i]==1){
 			isGameRunning=1;
 			break;
-		}
+		}*/
+	isGameRunning=user_struct->jogo_correr;
 
 
-	if(isGameRunning)
+	if(isGameRunning){
 		mvprintw(2, 1, "Jogo a decorrer");
-	else
+
+	}
+	else{
 		mvprintw(2, 1, "Nao existe jogo a decorrer");
+		menu = 0;
+	}
 	refresh();
 	//print_menu_limit(wmenu, 25, 18);
 
@@ -588,16 +590,18 @@ void start_game(user_data *user_struct)
 				//apenas fazer refresh caso seja enviado algo ao cliente
 				if(!isPlaying)
 				{
-					if(user_struct->next_menu!=0){
-						if(user_struct->criador==0)
-							menu++;
-						menu++;
+					if(user_struct->next_menu!=0 && menu != 2){
+						//if(user_struct->criador==0)
+						//	menu++;
+						menu=2;
 						user_struct->next_menu=0;
 						choice = 1;
+						/*
 						if(menu==1){
 							user_struct->n_defesas=2;
 							user_struct->n_atacantes=2;
 						}
+						*/
 					}
 					werase(wgame);
 					wrefresh(wgame);
@@ -615,10 +619,11 @@ void start_game(user_data *user_struct)
 						print_menu_limit(wmenu, 25, 18);
 						print_menu1(wmenu, choice);
 					}
+					/*
 					if(menu == 1){
 						print_menu_limit(wmenu, 25, 18);
 						print_menu2(wmenu, choice);
-					}
+					}*/
 					if(menu == 2){
 						print_menu_limit(wmenu, 25, 18);
 						print_menu3(wmenu, choice);
@@ -655,6 +660,7 @@ void start_game(user_data *user_struct)
 							choice=1;
 						}
 					}
+					/*
 					if(menu==1){
 						if(choice>=1 && choice <= 4){
 							choice=9;
@@ -665,7 +671,7 @@ void start_game(user_data *user_struct)
 						else if(choice == 9)
 							choice = 1;
 						else choice = 5;
-					}
+					}*/
 					if(menu==2)
 						do{
 							if(choice == 10)
@@ -695,6 +701,7 @@ void start_game(user_data *user_struct)
 							choice=1;
 						}
 					}
+					/*
 					if(menu==1){
 						if(choice>=1 && choice <= 4){
 							choice=9;
@@ -705,7 +712,7 @@ void start_game(user_data *user_struct)
 						else if(choice == 9)
 							choice = 1;
 						else choice = 5;
-					}
+					}*/
 					if(menu==2)
 						do{
 							if(choice == 9){
@@ -728,11 +735,12 @@ void start_game(user_data *user_struct)
 			case 'd':
 			case KEY_RIGHT:
 				if(!isPlaying){
+					/*
 					if(menu==1){
 						if(choice == 8)choice =1;
 						else if(choice == 10)choice--;
 						else choice++;
-					}
+					}*/
 					if(menu==2){
 						if(choice >= 1 && choice<=9){
 							if(user_struct->escolha_pos[choice+9-1]==0)
@@ -754,11 +762,12 @@ void start_game(user_data *user_struct)
 			case 'a':
 			case KEY_LEFT:
 				if(!isPlaying){
+					/*
 					if(menu==1){
 						if(choice == 1)choice =8;
 						else if(choice == 9)choice++;
 						else choice--;
-					}
+					}*/
 					if(menu==2){
 						if(choice >= 1 && choice<=9){
 							if(user_struct->escolha_pos[choice+9-1]==0)
@@ -843,6 +852,7 @@ void start_game(user_data *user_struct)
 							terminate(user_struct->user_data_fifo);
 						}
 					}
+					/*
 					if(menu == 1){
 						if(choice >= 1 && choice<=4)user_struct->n_defesas=choice;
 						else if(choice >= 5 && choice<=8)user_struct->n_atacantes=choice-4;
@@ -858,7 +868,7 @@ void start_game(user_data *user_struct)
 							endwin();
 							terminate(user_struct->user_data_fifo);
 						}
-					}
+					}*/
 					if(menu == 2){
 						if(choice >= 1 && choice<=18) //JOGAR
 						{

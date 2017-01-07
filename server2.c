@@ -399,33 +399,21 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	{
 		//strcpy(msgToSend, "gameDown");
 		int seguir=0;
+
 		if(*isGameRunning!=0) //JOGO A CORRER
 		{
-			seguir = 1;
-		}
-		else
-		{//INICIAR JOGO
-			if(configurar==0){
-				seguir=2;
-				configurar=1;
-			}
-		}
-		if(seguir != 0){
 			for(i = 0; i < *us_players_num; i++)
 			{
 				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
 				{
 					us_players[i].next_menu = 1;
-					if(seguir == 2)
-						us_players[i].criador = 1;
-					else
-						for(j =0;j<18;j++)
-							us_players[i].escolha_pos[j] = pos_ocupadas[j];
+					for(j =0;j<18;j++)
+						us_players[i].escolha_pos[j] = pos_ocupadas[j];
 				}
 			}
 		}
 	}
-
+/*
 	if(strcmp(user_struct_temp->user_data_cmd, "CONFIG") == 0) //comando PLAY vindo dum cliente
 	{
 		//printf("-1");
@@ -470,7 +458,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 		}
 	}
-
+*/
 	if(strcmp(user_struct_temp->user_data_cmd, "PLAY") == 0) //comando PLAY vindo dum cliente
 	{
 		int temp =0;
@@ -497,6 +485,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				}
 			}
 		}
+		/*
 		else
 		{//INICIAR JOGO
 			temp=1;
@@ -522,6 +511,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				}
 			}
 		}
+		*/
 		if(temp == 1){
 			pos_ocupadas[user_struct_temp->user_data_order - 1]=1;
 			for(i = 0; i < *us_players_num; i++)
@@ -916,7 +906,7 @@ void falhou_login(user_data *us_players, int *us_players_num, user_data *us_temp
 	{
 		//max de jogadores atingido
 		case 0:
-			printf(ASC_C_GREEN " - Utilizador %s tentou ligar-se...limite de jogadores atingido" ASC_C_NORMAL, us_temp->user_data_uname);
+			printf(ASC_C_RED " - Utilizador %s tentou ligar-se...limite de jogadores atingido" ASC_C_NORMAL, us_temp->user_data_uname);
 			printf("\n");
 			//para o cliente tomar conhecimento colocar MAX no seu username e password
 			memset(us_temp->user_data_uname, 0, sizeof(us_temp->user_data_uname));
@@ -928,7 +918,7 @@ void falhou_login(user_data *us_players, int *us_players_num, user_data *us_temp
 		
 		//login inválido
 		case 1:
-			printf(ASC_C_GREEN " - Utilizador %s tentou ligar-se...login invalido" ASC_C_NORMAL, us_temp->user_data_uname);
+			printf(ASC_C_RED " - Utilizador %s tentou ligar-se...login invalido" ASC_C_NORMAL, us_temp->user_data_uname);
 			printf("\n");
 			//para o cliente tomar conhecimento colocar FAIL no seu username e password
 			memset(us_temp->user_data_uname, 0, sizeof(us_temp->user_data_uname));
@@ -940,7 +930,7 @@ void falhou_login(user_data *us_players, int *us_players_num, user_data *us_temp
 		
 		//user já está ligado
 		case 2:
-			printf(ASC_C_GREEN " - Utilizador %s tentou ligar-se...ja existe" ASC_C_NORMAL, us_temp->user_data_uname);
+			printf(ASC_C_RED " - Utilizador %s tentou ligar-se...ja existe" ASC_C_NORMAL, us_temp->user_data_uname);
 			printf("\n");
 			//para o cliente tomar conhecimento colocar EXISTS no seu username e password
 			memset(us_temp->user_data_uname, 0, sizeof(us_temp->user_data_uname));
@@ -951,7 +941,7 @@ void falhou_login(user_data *us_players, int *us_players_num, user_data *us_temp
 			break;
 	}
 }
-void faz_login(user_data *us_players, int *us_players_num, user_data *us_temp)
+void faz_login(user_data *us_players, int *us_players_num, user_data *us_temp, int *isGameRunning)
 {
 	int i;
 	if(*us_players_num == MAX_JOG) //numero de jogadores no maximo
@@ -982,10 +972,10 @@ void faz_login(user_data *us_players, int *us_players_num, user_data *us_temp)
 	//colocar OK nos 2 campos
 	strcpy(us_temp->user_data_uname, "OK");
 	strcpy(us_temp->user_data_upass, "OK");
-	for(i =0;i<18;i++)
-		us_temp->escolha_pos[i] = pos_ocupadas[i];
+	us_temp->jogo_correr=*isGameRunning;
+
 }
-void verifica_login(user_data *us_players, int *us_players_num, user_data *us_temp, char * fname_users)
+void verifica_login(user_data *us_players, int *us_players_num, user_data *us_temp, char * fname_users, int *isGameRunning)
 {
 	FILE *f_users; //ficheiro de nomes/passwds
 	char line[MAX_CMD], *uname, *upass;
@@ -1013,7 +1003,7 @@ void verifica_login(user_data *us_players, int *us_players_num, user_data *us_te
 	fclose(f_users);
 	
 	if(uname_found && upass_found)
-		faz_login(us_players, us_players_num, us_temp);
+		faz_login(us_players, us_players_num, us_temp, isGameRunning);
 	else
 		falhou_login(us_players, us_players_num, us_temp, 1); //login inválido
 	
@@ -1053,7 +1043,7 @@ void trata_fifo_server(int fifo_serv, user_data *us_players, int *us_players_num
 	}
 	else //LOGIN
 	{
-		verifica_login(us_players, us_players_num, &user_struct_temp, fname_users);
+		verifica_login(us_players, us_players_num, &user_struct_temp, fname_users, isGameRunning);
 	}
 }
 
