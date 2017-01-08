@@ -86,18 +86,6 @@ void trata_fifo_client(int fifo_cli, user_data *user_struct, int * isGameRunning
 		*isPlaying = 0;
 		user_struct->user_data_ingame = 0;
 	}
-	else if(strcmp(user_struct->user_data_cmd, "pacmanWon") == 0) //server diz que o pacman venceu
-	{
-		*isGameRunning = 0;
-		*isPlaying = 0;
-		user_struct->user_data_ingame = 0;
-	}
-	else if(strcmp(user_struct->user_data_cmd, "ghostsWon") == 0) //server diz que os fantasmas venceram
-	{
-		*isGameRunning = 0;
-		*isPlaying = 0;
-		user_struct->user_data_ingame = 0;
-	}
 	
 	clear(); //limpar o ecrã apenas nesta situação para evitar flicker
 }
@@ -143,80 +131,6 @@ void print_menu1(WINDOW * w, int c){
 			mvwprintw(w, 4, 7, "Sair");
 			wattroff(w, A_REVERSE); 
 			break;
-	}
-}
-
-void print_menu2(WINDOW * w, int c){
-	clear();
-	mvwprintw(w, 2, 5, "Defesas");
-	mvwprintw(w, 3, 5, "1");
-	mvwprintw(w, 3, 7, "2");
-	mvwprintw(w, 3, 9, "3");
-	mvwprintw(w, 3, 11, "4");
-	
-	mvwprintw(w, 2, 13, "Atacantes");
-	mvwprintw(w, 3, 13, "1");
-	mvwprintw(w, 3, 15, "2");
-	mvwprintw(w, 3, 17, "3");
-	mvwprintw(w, 3, 19, "4");
-
-	mvwprintw(w, 5, 5, "Jogar");
-	mvwprintw(w, 5, 13, "Sair");
-
-	switch(c)
-	{
-		case 1:
-			wattron(w, A_REVERSE); 
-			mvwprintw(w, 3, 5, "1");
-			wattroff(w, A_REVERSE); 
-			break;
-		case 2:
-			wattron(w, A_REVERSE); 
-			mvwprintw(w, 3, 7, "2");
-			wattroff(w, A_REVERSE); 
-			break;
-		case 3:
-			wattron(w, A_REVERSE); 
-			mvwprintw(w, 3, 9, "3");
-			wattroff(w, A_REVERSE); 
-			break;
-		case 4:
-			wattron(w, A_REVERSE); 
-			mvwprintw(w, 3, 11, "4");
-			wattroff(w, A_REVERSE); 
-			break;
-
-		case 5:
-			wattron(w, A_REVERSE); 
-			mvwprintw(w, 3, 13, "1");
-			wattroff(w, A_REVERSE); 
-			break;
-		case 6:
-			wattron(w, A_REVERSE); 
-			mvwprintw(w, 3, 15, "2");
-			wattroff(w, A_REVERSE); 
-			break;
-		case 7:
-			wattron(w, A_REVERSE); 
-			mvwprintw(w, 3, 17, "3");
-			wattroff(w, A_REVERSE); 
-			break;
-		case 8:
-			wattron(w, A_REVERSE);
-			mvwprintw(w, 3, 19, "4");
-			wattroff(w, A_REVERSE); 
-			break;
-		case 9:
-			wattron(w, A_REVERSE);
-			mvwprintw(w, 5, 5, "Jogar");
-			wattroff(w, A_REVERSE); 
-			break;	
-		case 10:
-			wattron(w, A_REVERSE);
-			mvwprintw(w, 5, 13, "Sair");
-			wattroff(w, A_REVERSE); 
-			break;
-
 	}
 }
 
@@ -590,25 +504,15 @@ void start_game(user_data *user_struct)
 				if(!isPlaying)
 				{
 					if(user_struct->next_menu!=0 && menu != 2){
-						//if(user_struct->criador==0)
-						//	menu++;
 						menu=2;
 						user_struct->next_menu=0;
 						choice = 1;
-						/*
-						if(menu==1){
-							user_struct->n_defesas=2;
-							user_struct->n_atacantes=2;
-						}
-						*/
 					}
 					isGameRunning=user_struct->jogo_correr;
 					if(isGameRunning==0)menu=0;
 					werase(wgame);
 					wrefresh(wgame);
 					clear();
-					//mvprintw(1, 1, "Menu: %d", menu);
-					//mvprintw(2, 1, "Criador: %d", user_struct->criador);
 					mvprintw(1, 1, "User: %s", user_struct->user_data_uname);
 					if(isGameRunning)
 						mvprintw(2, 1, "Jogo a decorrer");
@@ -621,11 +525,6 @@ void start_game(user_data *user_struct)
 						print_menu1(wmenu, choice);
 						refresh();
 					}
-					/*
-					if(menu == 1){
-						print_menu_limit(wmenu, 25, 18);
-						print_menu2(wmenu, choice);
-					}*/
 					if(menu == 2){
 						wclear(wmenu);
 						print_menu_limit(wmenu, 25, 18);
@@ -664,18 +563,6 @@ void start_game(user_data *user_struct)
 							choice=1;
 						}
 					}
-					/*
-					if(menu==1){
-						if(choice>=1 && choice <= 4){
-							choice=9;
-						}
-						else if(choice>=5 && choice<=8){
-							choice=10;
-						}
-						else if(choice == 9)
-							choice = 1;
-						else choice = 5;
-					}*/
 					if(menu==2)
 						do{
 							if(choice == 10)
@@ -705,18 +592,6 @@ void start_game(user_data *user_struct)
 							choice=1;
 						}
 					}
-					/*
-					if(menu==1){
-						if(choice>=1 && choice <= 4){
-							choice=9;
-						}
-						else if(choice>=5 && choice<=8){
-							choice=10;
-						}
-						else if(choice == 9)
-							choice = 1;
-						else choice = 5;
-					}*/
 					if(menu==2)
 						do{
 							if(choice == 9){
@@ -739,12 +614,6 @@ void start_game(user_data *user_struct)
 			case 'd':
 			case KEY_RIGHT:
 				if(!isPlaying){
-					/*
-					if(menu==1){
-						if(choice == 8)choice =1;
-						else if(choice == 10)choice--;
-						else choice++;
-					}*/
 					if(menu==2){
 						if(choice >= 1 && choice<=9){
 							if(user_struct->escolha_pos[choice+9-1]==0)
@@ -766,12 +635,6 @@ void start_game(user_data *user_struct)
 			case 'a':
 			case KEY_LEFT:
 				if(!isPlaying){
-					/*
-					if(menu==1){
-						if(choice == 1)choice =8;
-						else if(choice == 9)choice++;
-						else choice--;
-					}*/
 					if(menu==2){
 						if(choice >= 1 && choice<=9){
 							if(user_struct->escolha_pos[choice+9-1]==0)
@@ -856,23 +719,6 @@ void start_game(user_data *user_struct)
 							terminate(user_struct->user_data_fifo);
 						}
 					}
-					/*
-					if(menu == 1){
-						if(choice >= 1 && choice<=4)user_struct->n_defesas=choice;
-						else if(choice >= 5 && choice<=8)user_struct->n_atacantes=choice-4;
-						else if(choice == 9) //JOGAR
-						{
-
-							//começar o jogo
-							//user_struct->user_data_order=choice;
-							enviar_mensagem_server(user_struct, "CONFIG");
-						}
-						else if(choice == 10) //JOGAR
-						{
-							endwin();
-							terminate(user_struct->user_data_fifo);
-						}
-					}*/
 					if(menu == 2){
 						if(choice >= 1 && choice<=18) //JOGAR
 						{
@@ -899,8 +745,6 @@ void start_game(user_data *user_struct)
 			//mostrar menu com a devida opção escolhida
 			if(menu==0)
 				print_menu1(wmenu, choice);
-			if(menu==1)
-				print_menu2(wmenu, choice);
 			if(menu==2)
 				print_menu3(wmenu, choice);
 		}

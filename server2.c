@@ -15,12 +15,6 @@
 //max jogadores - A MUDAR PARA VARIAVEL DE AMBIENTE
 #define MAX_JOG		18
 
-//1- pacman
-//fantasmas:
-//			2 - verde
-//			3 - amarelo
-//			4 - magenta
-//			5 - ciano
 
 typedef struct{
 int tempo, num, num_oc, fim, humano;
@@ -86,31 +80,7 @@ int init_bola[2] = {25,10};
 int fim = 0;
 int chuto = 0;
 
-//guardar posições antigas(caso o cliente tenha entrado mas a
-//IA já tenha alterado a posição do seu fantasma)
-int old_xy_ghost1[2] = {0, 0};
-int old_xy_ghost2[2] = {0, 0};
-int old_xy_ghost3[2] = {0, 0};
-int old_xy_ghost4[2] = {0, 0};
-
-//posições de A e B
-int pos_xy_A[2] = {0, 0};
-int pos_xy_B[2] = {0, 0};
-
 int pos_ocupadas[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-int configurar = 0;
-//número total de casas com comida
-int count_total_food = 0;
-//total casas 'O' já comidas
-int count_eaten = 0;
-//vidas do pacman
-int pacman_lives = PACMAN_LIVES_DEFAULT;
-
-//placeholder para o nome do mapa em uso
-//char map[MAX_CMD] = "original.map"; //por carrega o mapa original
-//"backup" do mapa do jogo
-char backup_game_map[MAP_X][MAP_Y];
 
 //--------threads-------
 pthread_mutex_t trinco;
@@ -153,7 +123,6 @@ void signal_handle(int sign)
 	}
 }
 
-//atualizar as posições do pacman e dos fantasmas
 void update_pos(char game_map[MAP_X][MAP_Y])
 {
 	int i, j;
@@ -181,7 +150,6 @@ void create_game_map(char game_map[MAP_X][MAP_Y])
 		for(j = 0; j < MAP_X; j++)
 		{
 			game_map[j][i] = ' ';
-			//backup_game_map[j][i] = 117; //criar backup
 		}
 	}
 	
@@ -193,17 +161,10 @@ void create_game_map(char game_map[MAP_X][MAP_Y])
 	game_map[MAP_X-1][14]=188;
 }
 
-//função que verifica quais clientes continuam ligados
-//usando-a como uma rotina chamada em ciclo, facilita o processo
-//de ter em conta quais clientes continuam ligados e quais sairam
-// recebe o array de structs dos jogadores ligados e quantos estão ligados
-//caso 1 cliente tenha saido, ajustar o array
 void verify_connected_clients(user_data *us_players, int *us_players_num)
 {
-	//sair logo caso nao haja jogadores ligados
 	if (*us_players_num == 0)
 		return;
-	//else...continuar a função
 	
 	int i, j;
 	int count_ok = 0; //contador que força
@@ -230,9 +191,6 @@ void verify_connected_clients(user_data *us_players, int *us_players_num)
 			if(us_players[i].user_data_pid == 0)
 			{//cliente que já saiu
 				printf(ASC_C_GREEN " - Utilizador %s desligou-se..." ASC_C_NORMAL, us_players[i].user_data_uname);
-				
-				//se for pacman e jogo estiver a correr
-				//terminar o jogo
 				
 				memset(&(us_players[i]), 0, sizeof(user_data)); //memset apenas
 				//ao membro do array em questão
@@ -267,21 +225,29 @@ void *move_bola()
 			dir_bola = rand()%4;
 			switch(dir_bola){
 				case 0:
-						if(init_xy_Jogador[posse_bola_ant][1]-1>0)//cima
+						if(init_xy_Jogador[posse_bola_ant][1]-1>0){//cima
 							init_bola[1]=init_xy_Jogador[posse_bola_ant][1]-1;
+							init_bola[0]=init_xy_Jogador[posse_bola_ant][0];
+						}
 						break;
 					
 				case 1:
-					if(init_xy_Jogador[posse_bola_ant][1]+1<20)//baixo
+					if(init_xy_Jogador[posse_bola_ant][1]+1<20){//baixo
 						init_bola[1]=init_xy_Jogador[posse_bola_ant][1]+1;
+						init_bola[0]=init_xy_Jogador[posse_bola_ant][0];
+					}
 					break;
 				case 2:
-					if(init_xy_Jogador[posse_bola_ant][0]-1>0)//esq
+					if(init_xy_Jogador[posse_bola_ant][0]-1>0){//esq
 						init_bola[0]=init_xy_Jogador[posse_bola_ant][0]-1;
+						init_bola[1]=init_xy_Jogador[posse_bola_ant][1];
+					}
 					break;
 				case 3:
-					if(init_xy_Jogador[posse_bola_ant][0]+1<50)//dir
+					if(init_xy_Jogador[posse_bola_ant][0]+1<50){//dir
 						init_bola[0]=init_xy_Jogador[posse_bola_ant][0]+1;
+						init_bola[1]=init_xy_Jogador[posse_bola_ant][1];
+					}
 					break;
 			}
 		}
@@ -477,52 +443,6 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 		}
 	}
-	/*
-	if(strcmp(user_struct_temp->user_data_cmd, "CONFIG") == 0) //comando PLAY vindo dum cliente
-	{
-		//printf("-1");
-		//fflush(stdout);
-		strcpy(msgToSend, "gameDown");
-		printf("-- %d - %d --", user_struct_temp->n_defesas, user_struct_temp->n_atacantes);
-		//fflush(stdout);
-		defesas = user_struct_temp->n_defesas;
-		//printf("0.1");
-		//fflush(stdout);
-		atacantes = user_struct_temp->n_atacantes;
-		//printf("0.2\n");
-		//fflush(stdout);
-		for(i=4;i>4-(4-defesas);i--){
-		//	printf("%d",i);
-		//	fflush(stdout);
-			pos_ocupadas[i]=-1;
-			pos_ocupadas[i+9]=-1;
-		}
-		num_jog=(defesas+atacantes+1)*2;
-		printf("1\n");
-		fflush(stdout);
-		for(i=8;i>8-(4-atacantes);i--){
-		//	printf("%d",i);
-		//	fflush(stdout);
-			pos_ocupadas[i]=-1;
-			pos_ocupadas[i+9]=-1;
-		}
-		//printf("2");
-		//fflush(stdout);
-		for(i = 0; i < *us_players_num; i++)
-		{
-			if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-			{
-				us_players[i].next_menu = 1;
-				printf("3");
-				fflush(stdout);
-				for(j =0;j<18;j++)
-							us_players[i].escolha_pos[j] = pos_ocupadas[j];
-				printf("4");
-				fflush(stdout);
-			}
-		}
-	}
-	*/
 	if(strcmp(user_struct_temp->user_data_cmd, "PLAY") == 0) //comando PLAY vindo dum cliente
 	{
 		int temp =0;
@@ -549,33 +469,6 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				}
 			}
 		}
-		/*
-		else
-		{//INICIAR JOGO
-			temp=1;
-			printf(" - Entrei %d...",user_struct_temp->user_data_order);
-			fflush(stdout);
-
-			*isGameRunning = 1; //um jogo está agora a correr
-			//encontrar o jogador que criou o jogo
-			//e colocar lhe user_data_order a 1 (pacman)
-			playerOrder = 1;//numero de jogadores (inicialmente a 1)
-			//pacman_lives = 3;
-			
-			for(i = 0; i < *us_players_num; i++)
-			{
-				if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
-				{
-					us_players[i].user_data_order = user_struct_temp->user_data_order;
-					//us_players[i].posx = init_xy_Jogador[user_struct_temp->user_data_order-1][0];
-					//us_players[i].posy = init_xy_Jogador[user_struct_temp->user_data_order-1][1];
-					//us_players[i].ghosts = 0;
-					//us_players[i].food = 0;
-					us_players[i].user_data_ingame = 1;
-				}
-			}
-		}
-		*/
 		if(temp == 1){
 			pos_ocupadas[user_struct_temp->user_data_order - 1]=1;
 			for(i = 0; i < *us_players_num; i++)
@@ -586,9 +479,6 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 					us_players[i].posy = init_xy_Jogador[user_struct_temp->user_data_order-1][1];
 					
 					us_players[i].user_data_order = user_struct_temp->user_data_order; //posição do jogador
-					us_players[i].ghosts = 0;
-					//us_players[i].food = 0;
-					us_players[i].edible = 0;
 					us_players[i].user_data_ingame = 1;
 				}
 			}
@@ -605,26 +495,16 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			}
 		}
 		
-		//se o jogador tiver order == 1 (é o pacman) o jogo termina
-		//senão, o fantasma que controlava simplesmente voltará ao controlo da IA (caso implementado)
-		if(us_players[i].user_data_order == 1) //se for o pacman
+		if(playerOrder == 1) 
 		{
+			playerOrder = 0;
 			//terminar jogo
-			*isGameRunning = 0;
+			fim = 1;
 			strcpy(msgToSend, "gameDown");
 			us_players[i].user_data_order = 0;
-			count_eaten = 0;
-			
-			for(i = 0; i < *us_players_num; i++)
-			{
-				us_players[i].user_data_order = -1;
-				us_players[i].user_data_ingame = 0;
-			}
 		}
 		else
 		{
-			//remover o cliente do jogo (manter conexão ao servidor)
-			//e passar o controlo do fantasma á IA
 			playerOrder--;
 			//encontrar o cliente
 			for(i = 0; i < *us_players_num; i++)
@@ -635,12 +515,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				}
 			}
 			
-			
-			//us_players[i].food = 0;
-			us_players[i].ghosts = 0;
 			us_players[i].user_data_ingame = 0;
-			us_players[i].pacmans = 0;
-			us_players[i].edible = 0;
 			sprintf(msgToSend, "%dleft", us_players[i].user_data_order);
 			us_players[i].user_data_order = 0;
 		}	
@@ -694,54 +569,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	}
 	
 	//verificações de fim de jogo
-	/*
-	if(count_total_food - count_eaten == 0)
-	{
-		memset(msgToSend, 0, sizeof(msgToSend));
-		//pacman venceu
-		strcpy(msgToSend, "pacmanWon");
-		//terminar jogo
-		*isGameRunning = 0;
-		count_eaten = 0;
-		pacman_lives = PACMAN_LIVES_DEFAULT;
-		//repor o mapa
-		memcpy(*game_map, *backup_game_map, MAP_X*MAP_Y);
-		
-		for(i = 0; i < *us_players_num; i++)
-		{
-			us_players[i].user_data_order = 0;
-			us_players[i].food = 0;
-			us_players[i].ghosts = 0;
-			us_players[i].user_data_ingame = 0;
-			us_players[i].pacmans = 0;
-			us_players[i].edible = 0;
-			us_players[i].isAtopFood = 'N';
-		}
-	}
-	if(pacman_lives == 0)
-	{
-		memset(msgToSend, 0, sizeof(msgToSend));
-		//fantasmas venceram
-		strcpy(msgToSend, "ghostsWon");
-		//terminar jogo
-		*isGameRunning = 0;
-		count_eaten = 0;
-		pacman_lives = PACMAN_LIVES_DEFAULT;
-		//repor o mapa
-		memcpy(*game_map, *backup_game_map, MAP_X*MAP_Y);
-		
-		for(i = 0; i < *us_players_num; i++)
-		{
-			us_players[i].user_data_order = 0;
-			us_players[i].food = 0;
-			us_players[i].ghosts = 0;
-			us_players[i].user_data_ingame = 0;
-			us_players[i].pacmans = 0;
-			us_players[i].edible = 0;
-			us_players[i].isAtopFood = 'N';
-		}
-	}
-	*/
+	
 	for(i = 0; i < *us_players_num; i++)
 	{	
 		//reset á mensagem actualmente em user_data_cmd
@@ -843,6 +671,13 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 			}
 		}
 	}
+	else if(strcmp(cmd, "stop") == 0) //stop
+	{
+		if(*isGameRunning!=0){
+			fim = 1;
+			printf(" - Fim do jogo \n - " ASC_C_GREEN "%d " ASC_C_RED " %d\n"ASC_C_NORMAL, golos_verde, golos_vermelho);
+		}
+	}
 	else if(strcmp(cmd, "ndefesas") == 0) //start n 
 	{
 		if(arg1 == '\0' && strlen(arg1)!=1)
@@ -888,7 +723,7 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 		else
 		{
 			f_users = fopen(fname_users, "a"); //abrir append text
-			fprintf(f_users, "%s:%s;\n", arg1, arg2);
+			fprintf(f_users, "%s %s\n", arg1, arg2);
 			fclose(f_users);
 			printf(ASC_C_GREEN " - Utilizador %s adicionado com sucesso" ASC_C_NORMAL, arg1);
 			printf("\n");
@@ -964,7 +799,7 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 	}
 	else if(strcmp(cmd, "help") == 0) //help (mostra comandos possíveis)
 	{
-		printf(" - " ASC_C_CYAN "add" ASC_C_YELLOW " username password" ASC_C_NORMAL " -> adicionar um user\n");
+		printf(" - " ASC_C_CYAN "user" ASC_C_YELLOW " username password" ASC_C_NORMAL " -> adicionar um user\n");
 		printf(" - " ASC_C_CYAN "users" ASC_C_NORMAL " -> listar users\n");
 		printf(" - " ASC_C_CYAN "kick" ASC_C_YELLOW " username" ASC_C_NORMAL " -> terminar conexao com user\n");
 		printf(" - " ASC_C_CYAN "game" ASC_C_NORMAL " -> mostra info do jogo a decorrer\n");
@@ -1092,9 +927,9 @@ void verifica_login(user_data *us_players, int *us_players_num, user_data *us_te
 	f_users = fopen(fname_users, "r"); //abrir read text
 	while(fgets(line, sizeof(line), f_users) != NULL) //enquanto nao chegar ao fim do ficheiro
 	{												  //ler linha inteira
-		uname = strtok(line, ":"); //retirar username
+		uname = strtok(line, " "); //retirar username
 		
-		upass = strtok(NULL, ";"); //retirar password
+		upass = strtok(NULL, "\n"); //retirar password
 		
 		//comparar uname ao us_temp->uname e upass ao us_temp->upass
 		if(strcmp(uname, us_temp->user_data_uname) == 0 && strcmp(upass, us_temp->user_data_upass) == 0)
@@ -1197,7 +1032,7 @@ void main(int argc, char *argv[])
 	else
 	{
 		strcpy(fname_users, argv[1]); //guardar o nome do ficheiro dos login's
-		strcat(fname_users, ".usr"); //adicionar uma extensão específica
+		strcat(fname_users, ".txt"); //adicionar uma extensão específica
 	}
 	
 	printf(" A abrir servidor (pid:%d)\n", getpid());
@@ -1303,15 +1138,10 @@ void main(int argc, char *argv[])
 					else if(i<num_jog/2)jog[i].num_oc=i+4-defesas;
 					else if(i<=num_jog/2+defesas)jog[i].num_oc=9+i-num_jog/2;
 					else jog[i].num_oc=14+i-num_jog/2-defesas-1;
-					//printf("%d: %d ", i, jog[i].num_oc);
 					if((i>0&&i<=defesas)||(i>num_jog/2&&i<=num_jog/2+defesas))
 						jog[i].tempo=400000;
 					else
 						jog[i].tempo=300000;
-						/*
-						if(i<num_jog) jog[i].num=i;
-						else jog[i].num=i + num_jog/2;
-						*/
 					pthread_create(&tarefa[i],NULL,&move_jogador,(void *)&jog[i]);
 					
 				}
