@@ -49,7 +49,7 @@ void signal_handle(int sign)
 }
 
 //função que interpreta o conteúdo do fifo do cliente
-void trata_fifo_client(int fifo_cli, user_data *user_struct, int * isGameRunning, int *isPlaying, int *pacman_lifes)
+void trata_fifo_client(int fifo_cli, user_data *user_struct, int * isGameRunning, int *isPlaying)
 {
 	
 	memset(user_struct, 0, sizeof(*user_struct));
@@ -516,8 +516,7 @@ void start_game(user_data *user_struct)
 	
 	int choice = 1, c;
 	int menu=0;
-	//user_struct->n_defesas=2;
-	//user_struct->n_atacantes=2;
+	
 	user_struct->next_menu=0;
 	//user_struct->jogo_correr=0;
 	//janela menu
@@ -586,7 +585,7 @@ void start_game(user_data *user_struct)
 			if(FD_ISSET(fifo_cli, &fd_read)) //fifo client tem dados
 			{
 				//ler info que foi escrita no fifo do cliente
-				trata_fifo_client(fifo_cli, user_struct, &isGameRunning, &isPlaying, &pacman_lifes);
+				trata_fifo_client(fifo_cli, user_struct, &isGameRunning, &isPlaying);
 				//apenas fazer refresh caso seja enviado algo ao cliente
 				if(!isPlaying)
 				{
@@ -603,9 +602,10 @@ void start_game(user_data *user_struct)
 						}
 						*/
 					}
+					isGameRunning=user_struct->jogo_correr;
+					if(isGameRunning==0)menu=0;
 					werase(wgame);
 					wrefresh(wgame);
-					isPlaying = 0;
 					clear();
 					//mvprintw(1, 1, "Menu: %d", menu);
 					//mvprintw(2, 1, "Criador: %d", user_struct->criador);
@@ -616,8 +616,10 @@ void start_game(user_data *user_struct)
 						mvprintw(2, 1, "Nao existe jogo a decorrer");
 					refresh();
 					if(menu == 0){
+						wclear(wmenu);
 						print_menu_limit(wmenu, 25, 18);
 						print_menu1(wmenu, choice);
+						refresh();
 					}
 					/*
 					if(menu == 1){
@@ -625,8 +627,10 @@ void start_game(user_data *user_struct)
 						print_menu2(wmenu, choice);
 					}*/
 					if(menu == 2){
+						wclear(wmenu);
 						print_menu_limit(wmenu, 25, 18);
 						print_menu3(wmenu, choice);
+						refresh();
 					}
 					wrefresh(wmenu);
 				}
