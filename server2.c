@@ -218,110 +218,173 @@ void *move_bola()
 {
 	int ch;
 	do{
-		if(chuto != -1){
-			if(chuto)
-			chuto = -1;
-			posse_bola_ant=posse_bola;
-			posse_bola=-1;
-			dir_bola = rand()%4;
-
-			switch(dir_bola){
-				case 0:
-						if(init_xy_Jogador[posse_bola_ant][1]-1>0){//cima
-							init_bola[1]=init_xy_Jogador[posse_bola_ant][1]-1;
-							init_bola[0]=init_xy_Jogador[posse_bola_ant][0];
-						}
-						break;
-					
-				case 1:
-					if(init_xy_Jogador[posse_bola_ant][1]+1<20){//baixo
-						init_bola[1]=init_xy_Jogador[posse_bola_ant][1]+1;
-						init_bola[0]=init_xy_Jogador[posse_bola_ant][0];
-					}
-					break;
-				case 2:
-					if(init_xy_Jogador[posse_bola_ant][0]-1>0){//esq
-						init_bola[0]=init_xy_Jogador[posse_bola_ant][0]-1;
-						init_bola[1]=init_xy_Jogador[posse_bola_ant][1];
-					}
-					break;
-				case 3:
-					if(init_xy_Jogador[posse_bola_ant][0]+1<50){//dir
-						init_bola[0]=init_xy_Jogador[posse_bola_ant][0]+1;
-						init_bola[1]=init_xy_Jogador[posse_bola_ant][1];
-					}
-					break;
-			}
+		if(init_bola[0]==0 && init_bola[1]>=6 && init_bola[1]<=14){
+			golos_vermelho++;
+			chuto=-1;
+			posse_bola=0;
+			init_bola[0]=init_xy_Jogador[0][0]+1;
+			init_bola[1]=init_xy_Jogador[0][1];
 		}
-		if(posse_bola == -1){
-			if(dir_bola!=-1){
+		else if(init_bola[0]==50 && init_bola[1]>=6 && init_bola[1]<=14){
+			golos_verde++;
+			chuto=-1;
+			posse_bola=9;
+			init_bola[0]=init_xy_Jogador[9][0]-1;
+			init_bola[1]=init_xy_Jogador[9][1];
+		}
+		else{
+			if(chuto != -1){
+				if(chuto==5){
+					if(posse_bola<9)dir_bola=3;
+					else dir_bola=2;
+				}
+				else if(chuto==18){
+					dir_bola= init_xy_Jogador[posse_bola][3];
+				}
+				else{
+					dir_bola = rand()%4;
+				}
+
+				int acertou=0;
+
+				if(posse_bola==0||posse_bola==9){
+					acertou= rand()%4;
+					if(acertou<1){
+						acertou=1;
+					}
+					else{
+						acertou = 0;
+					}
+				}
+				else if(posse_bola<=4||(posse_bola>=10&&posse_bola<=13)){
+					acertou= rand()%10;
+					if(acertou<8){
+						acertou=1;
+					}
+					else{
+						acertou = 0;
+					}
+				}
+				else{
+					acertou= rand()%10;
+					if(acertou<6){
+						acertou=1;
+					}
+					else{
+						acertou = 0;
+					}
+				}
+
+				if(acertou==0){
+					int aux = dir_bola;
+					do{
+						dir_bola = rand()%4;
+					}while(aux==dir_bola);
+				}
+
+				chuto = -1;
+				posse_bola_ant=posse_bola;
+				posse_bola=-1;
+				
+
 				switch(dir_bola){
 					case 0:
-						if(init_bola[1]>0)//cima
-							init_bola[1]--;
+							if(init_xy_Jogador[posse_bola_ant][1]-1>0){//cima
+								init_bola[1]=init_xy_Jogador[posse_bola_ant][1]-1;
+								init_bola[0]=init_xy_Jogador[posse_bola_ant][0];
+							}
 							break;
 						
 					case 1:
-					if(init_bola[1]<20)//baixo
-						init_bola[1]++;
+						if(init_xy_Jogador[posse_bola_ant][1]+1<20){//baixo
+							init_bola[1]=init_xy_Jogador[posse_bola_ant][1]+1;
+							init_bola[0]=init_xy_Jogador[posse_bola_ant][0];
+						}
 						break;
 					case 2:
-					if(init_bola[0]>0)//esq
-						init_bola[0]--;
+						if(init_xy_Jogador[posse_bola_ant][0]-1>0){//esq
+							init_bola[0]=init_xy_Jogador[posse_bola_ant][0]-1;
+							init_bola[1]=init_xy_Jogador[posse_bola_ant][1];
+						}
 						break;
 					case 3:
-					if(init_bola[0]<50)//dir
-						init_bola[0]++;
+						if(init_xy_Jogador[posse_bola_ant][0]+1<50){//dir
+							init_bola[0]=init_xy_Jogador[posse_bola_ant][0]+1;
+							init_bola[1]=init_xy_Jogador[posse_bola_ant][1];
+						}
 						break;
 				}
-				if((posse_bola_ant>=1&&posse_bola_ant<=4)||(posse_bola_ant>=10&&posse_bola_ant<=13))
-					usleep(400000);
-				else
-					usleep(300000);
 			}
-			for(int i= 0; i<18;i++){
-				if(pos_ocupadas[i]!=-1){
-					if(init_xy_Jogador[i][0]>=init_bola[0]-1&&init_xy_Jogador[i][0]<=init_bola[0]+1){
-						if(init_xy_Jogador[i][1]>=init_bola[1]-1&&init_xy_Jogador[i][1]<=init_bola[1]+1){
-							posse_bola=i;
-							dir_bola=-1;
-						}
-					}
-				}
-			}
-			
-		}
-		else{
-			for(int i= 0; i<18;i++){
-				if(pos_ocupadas[i]!=-1){
-					if(posse_bola!=i){
-						//printf("%d,%d - %d,%d\n",init_xy_Jogador[i][0],init_xy_Jogador[i][1],init_bola[0],init_bola[1]);
-						if((init_xy_Jogador[i][0]>=init_bola[0]-1&&init_xy_Jogador[i][0]<=init_bola[0]+1)&&(init_xy_Jogador[i][1]>=init_bola[1]-1&&init_xy_Jogador[i][1]<=init_bola[1]+1 )){
-							posse_bola_ant=posse_bola;
-							posse_bola=i;
-							dir_bola=-1;
+			if(posse_bola == -1){
+				if(dir_bola!=-1){
+					switch(dir_bola){
+						case 0:
+							if(init_bola[1]>0)//cima
+								init_bola[1]--;
+								break;
+							
+						case 1:
+						if(init_bola[1]<20)//baixo
+							init_bola[1]++;
 							break;
+						case 2:
+						if(init_bola[0]>0)//esq
+							init_bola[0]--;
+							break;
+						case 3:
+						if(init_bola[0]<50)//dir
+							init_bola[0]++;
+							break;
+					}
+					if((posse_bola_ant>=1&&posse_bola_ant<=4)||(posse_bola_ant>=10&&posse_bola_ant<=13))
+						usleep(400000);
+					else
+						usleep(300000);
+				}
+				for(int i= 0; i<18;i++){
+					if(pos_ocupadas[i]!=-1){
+						if(init_xy_Jogador[i][0]>=init_bola[0]-1&&init_xy_Jogador[i][0]<=init_bola[0]+1){
+							if(init_xy_Jogador[i][1]>=init_bola[1]-1&&init_xy_Jogador[i][1]<=init_bola[1]+1){
+								posse_bola=i;
+								dir_bola=-1;
+							}
 						}
 					}
 				}
+				
 			}
-			if(movimento_bola==0){
-				init_bola[1] = init_xy_Jogador[posse_bola][1]-1;
-				init_bola[0] = init_xy_Jogador[posse_bola][0];
+			else{
+				for(int i= 0; i<18;i++){
+					if(pos_ocupadas[i]!=-1){
+						if(posse_bola!=i){
+							//printf("%d,%d - %d,%d\n",init_xy_Jogador[i][0],init_xy_Jogador[i][1],init_bola[0],init_bola[1]);
+							if((init_xy_Jogador[i][0]>=init_bola[0]-1&&init_xy_Jogador[i][0]<=init_bola[0]+1)&&(init_xy_Jogador[i][1]>=init_bola[1]-1&&init_xy_Jogador[i][1]<=init_bola[1]+1 )){
+								posse_bola_ant=posse_bola;
+								posse_bola=i;
+								dir_bola=-1;
+								break;
+							}
+						}
+					}
+				}
+				if(movimento_bola==0){
+					init_bola[1] = init_xy_Jogador[posse_bola][1]-1;
+					init_bola[0] = init_xy_Jogador[posse_bola][0];
+				}
+				if(movimento_bola==1){
+					init_bola[1] = init_xy_Jogador[posse_bola][1]+1;
+					init_bola[0] = init_xy_Jogador[posse_bola][0];
+				}
+				if(movimento_bola==2){
+					init_bola[1] = init_xy_Jogador[posse_bola][1];
+					init_bola[0] = init_xy_Jogador[posse_bola][0]-1;
+				}
+				if(movimento_bola==3){
+					init_bola[1] = init_xy_Jogador[posse_bola][1];
+					init_bola[0] = init_xy_Jogador[posse_bola][0]+1;
+				}
+				usleep(100000);
 			}
-			if(movimento_bola==1){
-				init_bola[1] = init_xy_Jogador[posse_bola][1]+1;
-				init_bola[0] = init_xy_Jogador[posse_bola][0];
-			}
-			if(movimento_bola==2){
-				init_bola[1] = init_xy_Jogador[posse_bola][1];
-				init_bola[0] = init_xy_Jogador[posse_bola][0]-1;
-			}
-			if(movimento_bola==3){
-				init_bola[1] = init_xy_Jogador[posse_bola][1];
-				init_bola[0] = init_xy_Jogador[posse_bola][0]+1;
-			}
-			usleep(100000);
 		}
 	}while(fim!=1); 
 }
@@ -334,12 +397,29 @@ void *move_jogador( void *dados)
 		//printf("%d-",j->num_oc);
 		if(pos_ocupadas[j->num_oc] == 0){
 			if(j->num_oc==0 || j->num_oc == 9){//GR
-				if(init_bola[1]>init_xy_Jogador[j->num_oc][1])
+				if(posse_bola==0||posse_bola==9){
+					if(j->num_oc==0)init_xy_Jogador[j->num_oc][2]=3;
+					else init_xy_Jogador[j->num_oc][2]=2;
+					chuto = 5;
+				}
+				else if(init_bola[1]>init_xy_Jogador[j->num_oc][1]){
 					init_xy_Jogador[j->num_oc][2]=1;
-				if(init_bola[1]<init_xy_Jogador[j->num_oc][1])
+				}
+				else if(init_bola[1]<init_xy_Jogador[j->num_oc][1]){
 					init_xy_Jogador[j->num_oc][2]=0;
+				}
+				else{
+					if(j->num_oc==0)init_xy_Jogador[j->num_oc][2]=3;
+					else init_xy_Jogador[j->num_oc][2]=2;
+				}
 			}
-			else init_xy_Jogador[j->num_oc][2]=rand()%4;
+			else{
+				init_xy_Jogador[j->num_oc][2]=rand()%4;
+				if(posse_bola==j->num_oc){
+					int chutar=rand()%10;
+					if(chutar<1)chuto=5;
+				}
+			} 
 		}
 		int ocupado = 0;
 		switch(init_xy_Jogador[j->num_oc][2]){
@@ -380,7 +460,12 @@ void *move_jogador( void *dados)
 							}
 						}
 					}
-				if(ocupado==0)init_xy_Jogador[j->num_oc][0]--;
+				if(ocupado==0){
+					if(!(pos_ocupadas[j->num_oc]==0 && j->num_oc==9)){
+						if(!(j->num_oc == 9 && init_xy_Jogador[j->num_oc][0] == 44))
+							init_xy_Jogador[j->num_oc][0]--;
+					}
+				}
 			}
 			break;
 			case 3:
@@ -393,7 +478,12 @@ void *move_jogador( void *dados)
 							}
 						}
 					}
-				if(ocupado==0)init_xy_Jogador[j->num_oc][0]++;
+				if(ocupado==0){
+					if(!(pos_ocupadas[j->num_oc]==0 && j->num_oc==0)){
+						if(!(j->num_oc == 0 && init_xy_Jogador[j->num_oc][0] == 6))
+							init_xy_Jogador[j->num_oc][0]++;
+					}
+				}
 			}
 			break;
 		}
@@ -402,15 +492,6 @@ void *move_jogador( void *dados)
 				movimento_bola=init_xy_Jogador[j->num_oc][2];
 			init_xy_Jogador[j->num_oc][2]=-1;
 		}
-		pthread_mutex_lock(&trinco);
-		//if (j->num>=0&&j->num<4){
-		//mvaddch(ele[j->num].y,ele[j->num].x,' ');
-		//ele[j->num].y+=d.y; 
-		//ele[j->num].x+=d.x;
-		//mvaddch(ele[j->num].y,ele[j->num].x,'0'+j->num);
-		//	refresh(); 
-		//	}
-		pthread_mutex_unlock(&trinco);
 		usleep(j->tempo);
 	}while(!fim); 
 }
@@ -423,7 +504,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	int fifo_cli;
 	char msgToSend[MAX_CMD]; //mensagem a enviar de volta
 	
-	printf(" - Entrei 1 %s order %d...\n", user_struct_temp->user_data_cmd, user_struct_temp->user_data_order);
+	//printf(" - Entrei 1 %s order %d...\n", user_struct_temp->user_data_cmd, user_struct_temp->user_data_order);
 	fflush(stdout);
 	if(strcmp(user_struct_temp->user_data_cmd, "ENTRAR") == 0) //comando PLAY vindo dum cliente
 	{
@@ -502,6 +583,7 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 			playerOrder = 0;
 			//terminar jogo
 			fim = 1;
+			alarm(0);
 			strcpy(msgToSend, "gameDown");
 			us_players[i].user_data_order = 0;
 		}
@@ -549,8 +631,10 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 		if(comp_temp!=5){
 			if(comp_temp>=6)comp_temp--;
 			int aux;
-			if(us_players[i].user_data_order<=9)aux=0+comp_temp;
+			if(user_struct_temp->user_data_order<=9)aux=0+comp_temp;
 			else aux=9+comp_temp;
+			printf("%d\n",us_players[i].user_data_order);
+			printf("%d\n",aux);
 			if(user_struct_temp->user_data_order!=posse_bola){
 				if(pos_ocupadas[aux]==0){
 					for(i = 0; i < *us_players_num; i++)
@@ -566,10 +650,10 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 				}	
 			}
 			else{
-				chuto=aux;
+				chuto = aux;
 			}
 		}
-		
+		else chuto = 5;
 		
 	}
 	
@@ -577,6 +661,8 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 	
 	for(i = 0; i < *us_players_num; i++)
 	{	
+		us_players[i].golos_vermelha=golos_vermelho;
+		us_players[i].golos_verde=golos_verde;
 		//reset á mensagem actualmente em user_data_cmd
 		memset(us_players[i].user_data_cmd, 0, MAX_CMD);
 		//colocar msgToSend em user_data_cmd
@@ -810,16 +896,12 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 		printf(" - " ASC_C_CYAN "result" ASC_C_NORMAL " -> mostra info do jogo a decorrer\n");
 		printf(" - " ASC_C_CYAN "shutdown" ASC_C_NORMAL " -> encerrar servidor\n");
 		printf(" - " ASC_C_CYAN "clear" ASC_C_NORMAL " -> limpar ecra\n");
-		//printf(" - " ASC_C_CYAN "history" ASC_C_NORMAL " -> mostra historico do servidor\n");
 	}
 	else if(strcmp(cmd, "clear") == 0) //clear (limpa a consola)
 	{
 		limpa_consola();
 	}
-	//else if(strcmp(cmd, "history") == 0) //history (mostra historico de output)
-	//{
-	//	printf("COMANDO HISTORY\n");
-	//}
+
 	else //comando inválido
 	{
 		printf(ASC_C_RED " - Comando invalido (use help)" ASC_C_NORMAL);
@@ -828,7 +910,6 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 	
 	
 	fflush(stdin); //limpar stdin
-	//limpa_consola();
 }
 
 //--------------------------------LOGIN--------------------------------//
@@ -1154,6 +1235,8 @@ void main(int argc, char *argv[])
 				if(fim == 1){
 					isGameRunning = 0;
 					isStarted = 0;
+					golos_vermelho=0;
+					golos_verde=0;
 				}
 				else
 					usleep(10000); 
@@ -1161,6 +1244,8 @@ void main(int argc, char *argv[])
 					if(us_players[i].user_data_ingame==1)
 					{
 						if(isGameRunning==0){
+							us_players[i].golos_vermelha=golos_vermelho;
+							us_players[i].golos_verde=golos_verde;
 							us_players[i].next_menu=0;
 							us_players[i].jogo_correr=0;
 							//reset á mensagem actualmente em user_data_cmd
@@ -1169,6 +1254,8 @@ void main(int argc, char *argv[])
 							strcpy(us_players[i].user_data_cmd, "gameDown");	
 						}
 						else{
+							us_players[i].golos_vermelha=golos_vermelho;
+							us_players[i].golos_verde=golos_verde;
 							memcpy(us_players[i].user_data_map, game_map, MAP_X*MAP_Y);
 							update_pos(us_players[i].user_data_map);
 						}

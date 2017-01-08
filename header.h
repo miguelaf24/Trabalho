@@ -43,8 +43,8 @@ struct utilizador
 	int user_data_ingame; // 1/0
 	int jogo_correr;
 	int next_menu;
-	int n_atacantes;
-	int n_defesas;
+	int golos_vermelha;
+	int golos_verde;
 	
 	int escolha_pos[18];
 	

@@ -401,7 +401,10 @@ void print_game_map(user_data *user_struct, WINDOW * wgame)
 				mvwaddch(wgame, i, j, user_struct->user_data_map[j][i]);
 		}
 	}
-	
+	wbkgdset(wgame, COLOR_PAIR(4));
+	mvwprintw(wgame, 21, 0, "Verde: %d", user_struct->golos_verde);
+	wbkgdset(wgame, COLOR_PAIR(3));
+	mvwprintw(wgame, 21, 35, "Vermelha: %d", user_struct->golos_vermelha);
 	refresh();
 	wrefresh(wgame);
 }
@@ -454,7 +457,7 @@ void start_game(user_data *user_struct)
 	
 	wmenu = newwin(18, 25, 6, 10);
 	keypad(wmenu, TRUE);
-	wgame = newwin(MAP_Y, MAP_X, 1, 2);
+	wgame = newwin(MAP_Y + 1, MAP_X, 1, 2);
 	keypad(wgame, TRUE);
 	
 	clear();
