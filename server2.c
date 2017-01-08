@@ -806,8 +806,8 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 	{
 		printf(" - " ASC_C_CYAN "user" ASC_C_YELLOW " username password" ASC_C_NORMAL " -> adicionar um user\n");
 		printf(" - " ASC_C_CYAN "users" ASC_C_NORMAL " -> listar users\n");
-		printf(" - " ASC_C_CYAN "kick" ASC_C_YELLOW " username" ASC_C_NORMAL " -> terminar conexao com user\n");
-		printf(" - " ASC_C_CYAN "game" ASC_C_NORMAL " -> mostra info do jogo a decorrer\n");
+		printf(" - " ASC_C_CYAN "red" ASC_C_YELLOW " username" ASC_C_NORMAL " -> terminar conexao com user\n");
+		printf(" - " ASC_C_CYAN "result" ASC_C_NORMAL " -> mostra info do jogo a decorrer\n");
 		printf(" - " ASC_C_CYAN "shutdown" ASC_C_NORMAL " -> encerrar servidor\n");
 		printf(" - " ASC_C_CYAN "clear" ASC_C_NORMAL " -> limpar ecra\n");
 		//printf(" - " ASC_C_CYAN "history" ASC_C_NORMAL " -> mostra historico do servidor\n");
