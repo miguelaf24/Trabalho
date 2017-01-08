@@ -25,8 +25,8 @@
 #define TERM_MAX_X		60
 #define TERM_MAX_Y		35
 
-#define MAP_X	51//56
-#define MAP_Y	21//33
+#define MAP_X	51
+#define MAP_Y	21
 
 
 

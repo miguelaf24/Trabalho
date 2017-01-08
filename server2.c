@@ -78,7 +78,7 @@ int dir_bola =-1;
 int movimento_bola = -1;
 int init_bola[2] = {25,10};
 int fim = 0;
-int chuto = 0;
+int chuto = -1;
 
 int pos_ocupadas[18]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
