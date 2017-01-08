@@ -219,10 +219,12 @@ void *move_bola()
 	int ch;
 	do{
 		if(chuto != -1){
+			if(chuto)
 			chuto = -1;
 			posse_bola_ant=posse_bola;
 			posse_bola=-1;
 			dir_bola = rand()%4;
+
 			switch(dir_bola){
 				case 0:
 						if(init_xy_Jogador[posse_bola_ant][1]-1>0){//cima
@@ -544,27 +546,30 @@ void trata_comando_cliente(user_data *user_struct_temp, user_data *us_players, i
 
 	int comp_temp = user_struct_temp->user_data_cmd[0]-'0';
 	if(comp_temp >=0 && comp_temp <=9){
-		if(comp_temp>=6)comp_temp--;
-		int aux;
-		if(us_players[i].user_data_order<=9)aux=0+comp_temp;
-		else aux=9+comp_temp;
-		if(user_struct_temp->user_data_order!=posse_bola){
-			if(pos_ocupadas[aux]==0){
-				for(i = 0; i < *us_players_num; i++)
-				{
-					if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+		if(comp_temp!=5){
+			if(comp_temp>=6)comp_temp--;
+			int aux;
+			if(us_players[i].user_data_order<=9)aux=0+comp_temp;
+			else aux=9+comp_temp;
+			if(user_struct_temp->user_data_order!=posse_bola){
+				if(pos_ocupadas[aux]==0){
+					for(i = 0; i < *us_players_num; i++)
 					{
-						break; //quebrar o ciclo quando encontrado o jogador em questão
+						if(strcmp(us_players[i].user_data_uname, user_struct_temp->user_data_uname) == 0 )
+						{
+							break; //quebrar o ciclo quando encontrado o jogador em questão
+						}
 					}
-				}
-				pos_ocupadas[us_players[i].user_data_order-1]=0;
-				us_players[i].user_data_order=aux+1;
-				pos_ocupadas[aux]=1;
-			}	
+					pos_ocupadas[us_players[i].user_data_order-1]=0;
+					us_players[i].user_data_order=aux+1;
+					pos_ocupadas[aux]=1;
+				}	
+			}
+			else{
+				chuto=aux;
+			}
 		}
-		else{
-			chuto=aux;
-		}
+		
 		
 	}
 	
@@ -804,7 +809,6 @@ void trata_stdin(char * fname_users, user_data *us_players, int *us_players_num,
 		printf(" - " ASC_C_CYAN "kick" ASC_C_YELLOW " username" ASC_C_NORMAL " -> terminar conexao com user\n");
 		printf(" - " ASC_C_CYAN "game" ASC_C_NORMAL " -> mostra info do jogo a decorrer\n");
 		printf(" - " ASC_C_CYAN "shutdown" ASC_C_NORMAL " -> encerrar servidor\n");
-		printf(" - " ASC_C_CYAN "map" ASC_C_YELLOW " nome-ficheiro" ASC_C_NORMAL " -> usar mapa diferente\n");
 		printf(" - " ASC_C_CYAN "clear" ASC_C_NORMAL " -> limpar ecra\n");
 		//printf(" - " ASC_C_CYAN "history" ASC_C_NORMAL " -> mostra historico do servidor\n");
 	}

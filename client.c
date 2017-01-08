@@ -411,8 +411,6 @@ void print_game_map(user_data *user_struct, WINDOW * wgame)
 //só é chamada se o login for aceite pelo servidor
 void start_game(user_data *user_struct)
 {
-	//int p_scr_x, p_scr_y; //dimensoes do ecra parent (stdscr)
-	//int score_size = 2; //tamanho Y da janela score
 	
 	int fifo_serv, fifo_cli; //file descriptor retornado de open()
 	
@@ -432,7 +430,7 @@ void start_game(user_data *user_struct)
 	int menu=0;
 	
 	user_struct->next_menu=0;
-	//user_struct->jogo_correr=0;
+
 	//janela menu
 	WINDOW *wmenu, *wgame;
 	
@@ -666,7 +664,9 @@ void start_game(user_data *user_struct)
 			case 51://3
 				
 			case 52://4
-				
+			
+			case 53://5
+
 			case 54://6
 			
 			case 55://7
